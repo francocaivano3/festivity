@@ -4,14 +4,14 @@ import Bgimg from "../assets/hero-image.jpg";
 const Login = () => {
     return (
         <div className="grid min-h-screen lg:grid-cols-2">
-            <div className="flex items-center justify-center px-8">
+            <div className="bg-[#624995] lg:bg-[#FFFFFF] flex items-center justify-center px-8">
                 <div className="mx-auto w-full max-w-sm space-y-6">
                     <div className="space-y-2 text-left">
-                        <h1 className="text-2xl font-bold tracking-tight text-[#624995]">Iniciar Sesión</h1>
+                        <h1 className="text-2xl font-bold tracking-tight text-[#FFFFFF]">Iniciar Sesión</h1>
                     </div>
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <label htmlFor="email" className="font-sans">Email</label>
+                            <label htmlFor="email" className="font-sans text-[#FFFFFF]">Email</label>
                             <input 
                             type="email" 
                             name="email" 
@@ -21,10 +21,10 @@ const Login = () => {
                             className="w-full p-2 border border-black rounded-lg" />
                         </div>
                         <div className="space-y-2">
-                            <label htmlFor="password" className="font-sans">Password</label>
+                            <label htmlFor="password" className="font-sans text-[#FFFFFF]">Password</label>
                             <input type="password" name="password" id="password" required className="w-full p-2 border border-black rounded-lg" placeholder="**********"/>
                         </div>
-                        <button className="w-full p-3 bg-[#624995] text-white hover:bg-[#775ab0] rounded-xl">
+                        <button className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
                             Log In
                         </button>
                     </div>
