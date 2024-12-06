@@ -12,7 +12,13 @@ const Login = () => {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <label htmlFor="email" className="font-sans">Email</label>
-                            <input type="email" name="email" id="email" required placeholder="juanperez@gmail.com" className="valid:border-green-500 invalid:border-red-500 w-full p-2 border border-black rounded-lg" />
+                            <input 
+                            type="email" 
+                            name="email" 
+                            id="email" 
+                            required 
+                            placeholder="juanperez@gmail.com" 
+                            className="w-full p-2 border border-black rounded-lg" />
                         </div>
                         <div className="space-y-2">
                             <label htmlFor="password" className="font-sans">Password</label>
@@ -24,7 +30,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <div className="relative bg-cover bg-center" style={{backgroundImage: `url(${Bgimg})`}}>
+            <div className="hidden lg:block relative bg-cover bg-center" style={{backgroundImage: `url(${Bgimg})`}}>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <img src={Logo} alt="logo de festivity" width={300} height={150} className="z-10"/>
                 </div>
