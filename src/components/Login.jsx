@@ -4,7 +4,7 @@ import Bgimg from "../assets/hero-image.jpg";
 const Login = () => {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      <div className="bg-[#624995] lg:bg-[#FFFFFF] flex items-center justify-center px-8">
+      <div className="bg-gradient-to-r from-violet-600 to-indigo-600 lg:bg-[#FFFFFF] flex items-top justify-center px-8 py-16">
         <div className="mx-auto w-full max-w-sm space-y-6">
           <div className="space-y-2 text-left">
             <h1 className="text-2xl font-bold tracking-tight text-[#FFFFFF]">
