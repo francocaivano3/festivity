@@ -36,7 +36,7 @@ const Sidebar = () => {
         setIsSidebarVisible(!isSidebarVisible);
     }
 
-    return (<div className="w-64 fixed z-50 inset-0">
+    return (<div className="w-64 fixed z-50 inset-0 min-h-screen">
          <div className="h-screen bg-[#f2f4f6] text-dark flex flex-col">
       <div className="flex items-center justify-center h-12">
       </div>
