@@ -4,6 +4,7 @@ import environment from '../utils/environment';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo.png";
 import Bgimg from "../assets/hero-image.jpg";
+import { jwtDecode } from "jwt-decode";
 
 
 
@@ -45,12 +46,16 @@ const Login = () => {
 
         try {
             const response = await Auth.login({ UserName: emailState, Password: passwordState});
+            const decoded = jwtDecode(response.token);
+            console.log("AUDIENCE: ", decoded);
+            const userRole = decoded.Role;
 
-            if(response) {
+            if(userRole === "Client") {
                 navigate("/");
-                alert(`${response.token}`);
-                console.log(response);
-            } else {
+            } else if(userRole === "EventOrganizer") {
+                navigate("/organizer");
+            }
+            else {
                 setError("Invalid credentials");
             }
         } catch(e) {
