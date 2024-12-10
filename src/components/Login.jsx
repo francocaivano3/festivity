@@ -92,7 +92,7 @@ const Login = () => {
                 htmlFor="password"
                 className="font-sans text-[#FFFFFF] text-lg"
               >
-                Password
+                Contraseña
               </label>
               <input
                 type="password"
@@ -106,9 +106,9 @@ const Login = () => {
               />
             </div>
             <br />
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{ color: "#D66666" }}>{error}</p>}
           <button type='submit' onClick={handleSendData} className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
-            Log In
+            Iniciar Sesión
           </button>
           <div className="text-center text-white underline">
             <a href="#">Olvidaste tu contraseña?</a>
