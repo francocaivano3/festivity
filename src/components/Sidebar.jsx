@@ -1,4 +1,4 @@
-import {House, Ticket, Settings, LogOut, LogIn, CircleUserRound, Text} from "lucide-react";
+import {House, Ticket, Settings, LogOut, LogIn, CircleUserRound, CalendarPlus, Calendar} from "lucide-react";
 import imgUser from "../assets/hero-image.jpg";
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
@@ -9,6 +9,7 @@ const Sidebar = () => {
 
     const [isAuth, setIsAuth] = useState(true);
     const [user, setUser] = useState("Usuario");
+    const [userRole, setUserRole] = useState("");
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const token = localStorage.getItem("authToken");
 
@@ -20,20 +21,24 @@ const Sidebar = () => {
         } else {
             const decoded = jwtDecode(token);
             setUser(decoded.Name || "Usuario");
+            if(decoded.Role === "Client"){
+              setUserRole("Client");
+            } else if(decoded.Role === "EventOrganizer"){
+              setUserRole("EventOrganizer");
+            } else {
+              setUserRole("SuperAdmin");
+            }
         }
     } else {
         setIsAuth(false);
     }
     }, [token]);
+    
 
     const handleLogout = () => {
         Auth.logout();
         setIsAuth(false);
         window.location.reload(false);
-    }
-
-    const toggleSidebar = () => {
-        setIsSidebarVisible(!isSidebarVisible);
     }
 
     return (<div className="w-64 fixed z-50 inset-0 min-h-screen">
@@ -47,17 +52,34 @@ const Sidebar = () => {
             {isAuth ? <h2 className="text-xl text-center mb-14">{user}</h2> : <h2 className="text-xl text-center mb-14">{user}</h2>}
         <ul className="space-y-4">
           <li>
-            <Link to="/dashboard" className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+            <Link to={userRole === "Client" || userRole === "" ? "/" : "/organizer"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
               <House className="h-6 w-6" />
               <span>Dashboard</span>
             </Link>
           </li>
           <li>
-            <Link to="/team" className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+            <Link to={userRole === "Client" || userRole === "" ? "/" : "/organizer"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+              {userRole === "Client" || userRole === "" ? 
+              <>
               <Ticket className="h-6 w-6" />
               <span>Mis tickets</span>
+              </>
+               :
+               <>
+               <Calendar className="h-6 w-6" />
+               <span>Mis eventos</span>
+               </>
+              }
             </Link>
           </li>
+          {userRole === "EventOrganizer" &&
+            <li>
+              <Link to="/create-event" className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+                <CalendarPlus className="h-6 w-6" />
+                <span>Crear evento</span>
+              </Link>
+            </li>
+          }
           <li>
             <Link to="/projects" className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
             <Settings className="h-6 w-6" />
