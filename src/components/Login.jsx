@@ -47,7 +47,6 @@ const Login = () => {
         try {
             const response = await Auth.login({ UserName: emailState, Password: passwordState});
             const decoded = jwtDecode(response.token);
-            console.log("AUDIENCE: ", decoded);
             const userRole = decoded.Role;
 
             if(userRole === "Client") {

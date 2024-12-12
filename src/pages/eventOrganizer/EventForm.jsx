@@ -97,7 +97,7 @@ return (
             <div className="space-y-2">
                 <label htmlFor="Date">Fecha</label>
                 <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="date" name="Date" value={eventData.Date} onChange={handleChange} placeholder="Ingrese la fecha del evento"/>
+                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="datetime-local" name="Date" value={eventData.Date} onChange={handleChange} placeholder="Ingrese la fecha del evento"/>
             </div>
             <div className="space-y-2">
                 <label htmlFor="NumberOfTickets">Número de tickets</label>

@@ -11,7 +11,7 @@ export const AuthContextProvider = ({children}) => {
         try {
             const response = await Auth.login(body);
 
-            if(response.token) {
+            if(response.token !== "error") {
                 setUser({email});
                 setAuthToken(response.token);
                 localStorage.setItem('authToken', response.token);

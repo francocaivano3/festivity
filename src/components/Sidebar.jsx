@@ -12,6 +12,7 @@ const Sidebar = () => {
     const [userRole, setUserRole] = useState("");
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const token = localStorage.getItem("authToken");
+    const navigate = useNavigate();
 
     useEffect(() => {
       if (token) {
@@ -38,6 +39,7 @@ const Sidebar = () => {
     const handleLogout = () => {
         Auth.logout();
         setIsAuth(false);
+        navigate("/");
         window.location.reload(false);
     }
 
