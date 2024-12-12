@@ -115,7 +115,7 @@ return (
                 <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="Price" value={eventData.Price} onChange={handleChange} placeholder="Ingrese el precio de las entradas" />
             </div>
 
-            <button className="px-6 py-2 bg-violet-500 hover:scale-105 rounded-lg text-white" type="submit">Crear</button>
+            <button className="px-6 py-2 bg-violet-500 hover:scale-105 rounded-lg text-white" type="submit">Crear evento</button>
         </form>
         </div>
     </div>
