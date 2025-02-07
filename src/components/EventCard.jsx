@@ -1,11 +1,9 @@
 import { MapPin, Calendar1, Ticket, CircleDollarSign, Clock } from "lucide-react";
 import Event  from "../assets/Event.jpg";
-import { useNavigate } from "react-router-dom";
 
 const EventCard = ({Name, Address, City, Day, NumberOfTickets, Category, Price}) => {
     const day = new Date(Day).toLocaleDateString();
     const hour = new Date(Day).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const navigate = useNavigate();
 
     return (
     <div className="flex-1 justify-center bg-white shadow-lg hover:scale-105 transition-all duration-400 rounded-2xl h-fit">

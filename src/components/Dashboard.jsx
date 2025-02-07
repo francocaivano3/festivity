@@ -26,12 +26,12 @@ const Dashboard = () => {
     }
 
    return (
-   <div className="flex-1 min-h-screen bg-indigo-600">
+   <div className="flex-1 min-h-screen bg-white">
         <div className="flex p-4"> 
-            <Sidebar className={isSidebarOpen ? "block" : "hidden"}/>
-            {isSidebarOpen && <button className="z-50   " onClick={toggleSidebar}><Text className="h-8 w-8 hover:scale-110 transition-all" /></button>}
-            <button onClick={toggleSidebar}><Text className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-white"/></button>
-            <h1 className={isSidebarOpen ? "text-3xl font-bold text-white ml-40" : "text-3xl font-bold text-white"}>Eventos</h1>
+            {isSidebarOpen && <Sidebar />}
+            {isSidebarOpen && <button className="z-50" onClick={toggleSidebar}><Text className="h-8 w-8 hover:scale-110 transition-all" /></button>}
+            <button onClick={toggleSidebar}><Text className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-600"/></button>
+            <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-600 ml-40" : "text-3xl font-bold text-indigo-600"}>Eventos</h1>
         </div>
    </div>)
 }

@@ -60,7 +60,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to={userRole === "Client" || userRole === "" ? "/" : "/organizer"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+            <Link to={userRole === "Client" || userRole === "" ? "/" : "/my-events"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
               {userRole === "Client" || userRole === "" ? 
               <>
               <Ticket className="h-6 w-6" />
