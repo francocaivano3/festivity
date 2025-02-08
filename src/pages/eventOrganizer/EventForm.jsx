@@ -8,7 +8,7 @@ import background from "../../assets/background.png";
 const EventForm = () => {
   const token = localStorage.getItem("authToken");
   const id = jwtDecode(token).NameIdentifier;
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [eventData, setEventData] = useState({
     Name: "",
     Address: "",
@@ -20,7 +20,7 @@ const EventForm = () => {
     EventOrganizerId: id,
   });
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +50,11 @@ const EventForm = () => {
   };
 
     const toggleSidebar = () => {
+      if(!isSidebarOpen) {
+          document.body.classList.add("overflow-hidden");
+      } else {
+          document.body.classList.remove("overflow-hidden");
+      }
         setIsSidebarOpen(!isSidebarOpen);
     }
 
@@ -76,9 +81,10 @@ return (
           Crear evento
         </h1>
         </div>
-        <div className="flex justify-center items-center w-2/4 mx-auto">
+        <div className="flex justify-center items-center w-3/5 mx-auto">
 
-        <form onSubmit={handleSubmit} className="bg-white p-16 w-full space-y-4 mb-10 rounded-xl">
+        <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white p-16 w-full space-y-4 mb-10 ml-12 rounded-xl` : `bg-white p-16 w-full space-y-4 mb-10 rounded-xl`}>
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-2">
                 <label htmlFor="Name">Nombre</label>
                 <br />
@@ -89,25 +95,30 @@ return (
                 <br />
                 <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="Address" value={eventData.Address} onChange={handleChange} placeholder="Ingrese la dirección del evento" />
             </div>
-            <div className="space-y-2">
-                <label htmlFor="City">Ciudad</label>
-                <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="City" value={eventData.City} onChange={handleChange} placeholder="Ingrese la ciudad del evento" />
+          </div>
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div className="space-y-2">
+                  <label htmlFor="City">Ciudad</label>
+                  <br />
+                  <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="City" value={eventData.City} onChange={handleChange} placeholder="Ingrese la ciudad del evento" />
+              </div>
+              <div className="space-y-2">
+                  <label htmlFor="Date">Fecha</label>
+                  <br />
+                  <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="datetime-local" name="Date" value={eventData.Date} onChange={handleChange} placeholder="Ingrese la fecha del evento"/>
+              </div>
             </div>
-            <div className="space-y-2">
-                <label htmlFor="Date">Fecha</label>
-                <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="datetime-local" name="Date" value={eventData.Date} onChange={handleChange} placeholder="Ingrese la fecha del evento"/>
-            </div>
-            <div className="space-y-2">
-                <label htmlFor="NumberOfTickets">Número de tickets</label>
-                <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="NumberOfTickets" value={eventData.NumberOfTickets} onChange={handleChange} placeholder="Ingrese el número de tickets" />
-            </div>
-            <div className="space-y-2">
-                <label htmlFor="Category">Categoría</label>
-                <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="Category" value={eventData.Category} onChange={handleChange} placeholder="Ingrese la categoría del evento" />
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div className="space-y-2">
+                  <label htmlFor="NumberOfTickets">Número de tickets</label>
+                  <br />
+                  <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="NumberOfTickets" value={eventData.NumberOfTickets} onChange={handleChange} placeholder="Ingrese el número de tickets" />
+              </div>
+              <div className="space-y-2">
+                  <label htmlFor="Category">Categoría</label>
+                  <br />
+                  <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="Category" value={eventData.Category} onChange={handleChange} placeholder="Ingrese la categoría del evento" />
+              </div>
             </div>
             <div className="space-y-2">
                 <label htmlFor="Price">Precio</label>
@@ -115,7 +126,7 @@ return (
                 <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="Price" value={eventData.Price} onChange={handleChange} placeholder="Ingrese el precio de las entradas" />
             </div>
 
-            <button className="px-6 py-2 bg-violet-500 hover:scale-105 rounded-lg text-white" type="submit">Crear evento</button>
+            <button className="px-6 py-2 bg-[#6361f1] hover:scale-105 rounded-lg text-white" type="submit">Crear evento</button>
         </form>
         </div>
     </div>

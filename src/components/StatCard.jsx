@@ -1,4 +1,3 @@
-
 const StatCard = ({title, value, icon}) => {
     return (
         <div className="bg-white rounded-lg mt-6 p-6 border-2 hover:border-[#6366f1] transition-colors duration-300">

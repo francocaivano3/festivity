@@ -11,12 +11,20 @@ const OrganizerDashboard = () => {
   const [isAuth, setIsAuth] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [eventToEdit, setEventToEdit] = useState({});
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const toggleModal = (eventId) => {
+    setIsModalOpen(!isModalOpen);
+    const event = events.find((event) => event.id === eventId);
+    setEventToEdit(event); 
+    console.log(event);
+  }
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -45,6 +53,28 @@ const OrganizerDashboard = () => {
     fetchEvents();
   }, []);
 
+  const handleDelete = async(eventId) => {
+    const confirmDeletion = window.confirm("Quieres borrar este evento?");
+    if(confirmDeletion && localStorage.getItem("authToken")){
+      try{
+        const response = await fetch(`${environment.backendUrl}/api/Events/${eventId}`, {
+          method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('authToken')}`,
+          }
+        });
+        if(!response.ok){
+          throw new Error("Error deleting event");
+        }
+        alert("Event deleted successfully");
+        window.location.reload();
+      } catch(e) { 
+        console.error("Error deleting event: ", e);
+        alert("Error deleting event");
+      }
+    }
+  }
+
   // TODO ESTO ESTA HARDCODEADO, MODIFICAR ENDPOINT
   const totalEvents = events.length;
   const totalSold = totalEvents * 100;
@@ -55,6 +85,12 @@ const OrganizerDashboard = () => {
 
   return (
     <div className="flex-1 min-h-screen bg-gray-50">
+       {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={toggleSidebar}
+        />
+      )}
       <div className="flex p-4">
         {isSidebarOpen && <Sidebar />}
         {isSidebarOpen && (
@@ -77,7 +113,7 @@ const OrganizerDashboard = () => {
         </h1>
 
       </div>
-      <div className={isSidebarOpen ? `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 blur-sm` : `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12`}>
+      <div className={isSidebarOpen ? `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8 blur-sm` : `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8`}>
         <StatCard title={"Eventos Totales"} value={totalEvents} icon={<CalendarDays size={28}/>} />
         <StatCard title={"Total de Asistentes"} value={totalSold} icon={<Users size={28}/>} />
         <StatCard title={"Ingresos Totales"} value={`$${totalEarnings}`} icon={<DollarSign size={28}/>} />
@@ -104,10 +140,10 @@ const OrganizerDashboard = () => {
                             <td className="px-6 py-4 whitespace-nowrap">{event.numberOfTickets}</td>
                             <td className="px-6 py-4 whitespace-nowrap">${event.price}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => setIsModalOpen(true)}>
+                                <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => toggleModal(event.id)}>
                                     <Edit size={18}/>
                                 </button>
-                                <button className="text-red-600 hover:text-red-800 mr-2">
+                                <button className="text-red-600 hover:text-red-800 mr-2" onClick={() => handleDelete(event.id)}>
                                     <Trash2 size={18}/>
                                 </button>
                             </td>
@@ -117,7 +153,7 @@ const OrganizerDashboard = () => {
             </table>
         </div>
       </div>
-      {isModalOpen && <EditEventModal/>}
+      {isModalOpen && <EditEventModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} eventToEdit={eventToEdit}/>}
     </div>
   );
 };

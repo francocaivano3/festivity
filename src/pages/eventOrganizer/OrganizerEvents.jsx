@@ -9,17 +9,35 @@ const OrganizerEvents = () => {
     const [events, setEvents] = useState([]);
 
     const toggleSidebar = () => {
+        if(!isSidebarOpen) {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
         setIsSidebarOpen(!isSidebarOpen);
     }
 
     useEffect(() => {
+        return () => {
+            document.body.classList.remove("overflow-hidden"); 
+        };
+    }, []);
+
+    useEffect(() => {
         fetchEvents(setEvents);
+        events.sort((a, b) => new Date(a.date) - new Date (b.date));
     }, []);
 
     console.log(events);
 
    return (
     <div className="flex-1 min-h-screen bg-gray-50">
+        {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={toggleSidebar}
+        />
+      )}
          <div className="flex p-4"> 
              {isSidebarOpen && <Sidebar />}
              {isSidebarOpen && <button className="z-50 sticky top-0" onClick={toggleSidebar}><Text className="h-8 w-8 hover:scale-110 transition-all" /></button>}
