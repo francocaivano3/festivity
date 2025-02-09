@@ -1,18 +1,22 @@
 import Sidebar from "../../components/Sidebar";
 import EditEventModal from "./EditEventModal";
 import { useEffect, useState } from "react";
-import { Text, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import environment from "../../utils/environment";
 import StatCard from "../../components/StatCard";
-import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2 } from "lucide-react"
+import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, Text } from "lucide-react";
+import Alert from "@mui/material/Alert";
+import { useAlert } from "../../context/alertContext";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 const OrganizerDashboard = () => {
-  const [isAuth, setIsAuth] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventToEdit, setEventToEdit] = useState({});
   const [events, setEvents] = useState([]);
+  const [alert, setAlert] = useState({message: "", type: ""});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [eventIdToDelete, setEventIdToDelete] = useState(null);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -23,7 +27,6 @@ const OrganizerDashboard = () => {
     setIsModalOpen(!isModalOpen);
     const event = events.find((event) => event.id === eventId);
     setEventToEdit(event); 
-    console.log(event);
   }
 
   useEffect(() => {
@@ -53,36 +56,38 @@ const OrganizerDashboard = () => {
     fetchEvents();
   }, []);
 
-  const handleDelete = async(eventId) => {
-    const confirmDeletion = window.confirm("Quieres borrar este evento?");
-    if(confirmDeletion && localStorage.getItem("authToken")){
-      try{
-        const response = await fetch(`${environment.backendUrl}/api/Events/${eventId}`, {
+  const handleConfirmDelete = async (eventIdToDelete) => {
+    if (eventIdToDelete && localStorage.getItem("authToken")) {
+      try {
+        const response = await fetch(`${environment.backendUrl}/api/Events/${eventIdToDelete}`, {
           method: "DELETE",
           headers: {
-            "Authorization": `Bearer ${localStorage.getItem('authToken')}`,
-          }
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+          },
         });
-        if(!response.ok){
+        if (!response.ok) {
           throw new Error("Error deleting event");
         }
-        alert("Event deleted successfully");
-        window.location.reload();
-      } catch(e) { 
+        setAlert({ message: "Evento eliminado exitosamente", type: "success" });
+        setTimeout(() => {
+          setAlert({ message: "", type: "" });
+        }, 3500);
+        setIsDialogOpen(false);
+        setEvents((prevEvents) => prevEvents.filter((event) => event.id !== eventIdToDelete))
+      } catch (e) {
         console.error("Error deleting event: ", e);
-        alert("Error deleting event");
+        setAlert({ message: "Error al eliminar el evento", type: "error" });
       }
     }
-  }
+  };
 
   // TODO ESTO ESTA HARDCODEADO, MODIFICAR ENDPOINT
   const totalEvents = events.length;
   const totalSold = totalEvents * 100;
   const totalEarnings = totalSold * 1000;
-  const averagePrice = totalEarnings / totalSold;
+  const averagePrice = totalEarnings / totalSold || 0;
   //
   const tableTitles = ["Nombre del Evento", "Fecha", "Ciudad", "Tickets", "Precio", "Acciones"];
-
   return (
     <div className="flex-1 min-h-screen bg-gray-50">
        {isSidebarOpen && (
@@ -120,10 +125,13 @@ const OrganizerDashboard = () => {
         <StatCard title={"Valor promedio de la entrada"} value={`$${averagePrice}`} icon={<TrendingUp size={28}/>} />
       </div>
 
-      <div className={isSidebarOpen ? `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12 blur-sm` : `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12`}>
+      <div className={isSidebarOpen ? `bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm` : `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12`}>
+        
+        {events.length > 0 ? 
+        <>
         <h2 className="text-xl font-semibold mb-4">Eventos Activos 🔥</h2>
         <div>
-            <table className="min-w-full rounded-lg">
+            <table className="min-w-full rounded-lg shadow-lg">
                 <thead className="bg-[#6366f1]">
                     <tr>
                         {tableTitles.map((title) => (
@@ -138,12 +146,15 @@ const OrganizerDashboard = () => {
                             <td className="px-6 py-4 whitespace-nowrap">{new Date(event.date).toLocaleDateString()}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{event.city}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{event.numberOfTickets}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">${event.price}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{event.price}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => toggleModal(event.id)}>
                                     <Edit size={18}/>
                                 </button>
-                                <button className="text-red-600 hover:text-red-800 mr-2" onClick={() => handleDelete(event.id)}>
+                                <button className="text-red-600 hover:text-red-800 mr-2" onClick={() => {
+                                  setEventIdToDelete(event.id);
+                                  setIsDialogOpen(true);
+                                }}>
                                     <Trash2 size={18}/>
                                 </button>
                             </td>
@@ -152,8 +163,22 @@ const OrganizerDashboard = () => {
                 </tbody>
             </table>
         </div>
+        </> : <h3 className="underline">No hay eventos activos</h3>}
       </div>
-      {isModalOpen && <EditEventModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} eventToEdit={eventToEdit}/>}
+      {isModalOpen && <EditEventModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} eventToEdit={eventToEdit} setAlert={setAlert}/>}
+      {alert.message && (
+    <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/4 mx-auto">
+        {alert.message}
+    </Alert>
+    )}     
+
+      <ConfirmDialog 
+      open={isDialogOpen}
+      onClose={() => setIsDialogOpen(false)}
+      onConfirm={() => handleConfirmDelete(eventIdToDelete)}
+      message="Estás seguro de que quieres eliminar este evento?"
+      />
+
     </div>
   );
 };

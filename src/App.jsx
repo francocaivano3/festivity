@@ -1,6 +1,8 @@
+import AlertProvider from "./context/alertContext";
+import Alert from "./components/Alert";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
-import OrganizerDashboard from "./pages/eventOrganizer/organizerDashboard";
+import OrganizerDashboard from "./pages/eventOrganizer/OrganizerDashboard";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import EventForm from "./pages/eventOrganizer/EventForm";
 import OrganizerEvents from "./pages/eventOrganizer/OrganizerEvents";
@@ -16,9 +18,10 @@ const App = () => {
   ])
 
   return (
-      <div>
+      <AlertProvider>
+        <Alert />
         <RouterProvider router={router} />
-      </div>
+      </AlertProvider>
   )
 }
 
