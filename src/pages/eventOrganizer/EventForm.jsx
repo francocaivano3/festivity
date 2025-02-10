@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import environment from "../../utils/environment";
 import Sidebar from "../../components/Sidebar";
-import {Text} from "lucide-react";
+import {AlignLeft} from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import background from "../../assets/background.png";
-
+import ConfirmDialog from "../../components/ConfirmDialog";
+import { useNavigate } from "react-router-dom";
 const EventForm = () => {
   const token = localStorage.getItem("authToken");
-  const id = jwtDecode(token).NameIdentifier;
+  const id = token ? jwtDecode(token).NameIdentifier : null;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [alert, setAlert] = useState({message: "", type: ""});
   const [eventData, setEventData] = useState({
     Name: "",
     Address: "",
@@ -20,8 +23,8 @@ const EventForm = () => {
     EventOrganizerId: id,
   });
 
-  
-  
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData((prev) => ({ ...prev, [name]: value }));
@@ -40,14 +43,31 @@ const EventForm = () => {
         },
         body: JSON.stringify(eventData),
       });
-      console.log(response);
+      
       if (!response.ok) {
-        throw new Error(`Failed to create event: ${response.status}`);
+        let errorMessage = "Ha ocurrido un error!";
+        try{
+            const errorData = await response.json(); 
+            errorMessage = errorData.message || errorMessage;
+        } catch(_) {
+            throw new Error(errorMessage);
+        }
+        
+        setAlert({ message: "El evento se ha creado con éxito!", type: "success" });
+        setTimeout(() => navigate("/organizer"), 4000);
       }
+
+      setAlert({ message: "El evento se ha creado con éxito!", type: "success" });
+      
+      setTimeout(() => {
+          navigate("/organizer");
+      }, 4000);
+
     } catch (e) {
-      console.error("Error submitting event");
+      setAlert({ message: e.message, type: "error" });
     }
   };
+
 
     const toggleSidebar = () => {
       if(!isSidebarOpen) {
@@ -65,11 +85,11 @@ return (
         {isSidebarOpen && <Sidebar />}
         {isSidebarOpen && (
           <button className="z-50" onClick={toggleSidebar}>
-            <Text className="h-8 w-8 hover:scale-110 transition-all" />
+            <AlignLeft className="h-8 w-8 hover:scale-110 transition-all" />
           </button>
         )}
         <button onClick={toggleSidebar}>
-          <Text className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-white" />
+          <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-white" />
         </button>
         <h1
           className={
@@ -80,7 +100,17 @@ return (
         >
           Crear evento
         </h1>
+        
         </div>
+        {isConfirmOpen && (
+            <ConfirmDialog
+                open={isConfirmOpen}
+                message="¿Estás seguro de que quieres crear este evento?"
+                onConfirm={() => handleSubmit}
+                onClose={() => setIsConfirmOpen(false)}
+            />
+        )}
+        
         <div className="flex justify-center items-center w-3/5 mx-auto">
 
         <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white p-16 w-full space-y-4 mb-10 ml-12 rounded-xl` : `bg-white p-16 w-full space-y-4 mb-10 rounded-xl`}>
@@ -112,7 +142,7 @@ return (
               <div className="space-y-2">
                   <label htmlFor="NumberOfTickets">Número de tickets</label>
                   <br />
-                  <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="NumberOfTickets" value={eventData.NumberOfTickets} onChange={handleChange} placeholder="Ingrese el número de tickets" />
+                  <input min="1" className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="NumberOfTickets" value={eventData.NumberOfTickets} onChange={handleChange} placeholder="Ingrese el número de tickets" />
               </div>
               <div className="space-y-2">
                   <label htmlFor="Category">Categoría</label>
@@ -123,10 +153,16 @@ return (
             <div className="space-y-2">
                 <label htmlFor="Price">Precio</label>
                 <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="Price" value={eventData.Price} onChange={handleChange} placeholder="Ingrese el precio de las entradas" />
+                <input min="0" step="1" className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="Price" value={eventData.Price} onChange={handleChange} placeholder="Ingrese el precio de las entradas" />
             </div>
-
-            <button className="px-6 py-2 bg-[#6361f1] hover:scale-105 rounded-lg text-white" type="submit">Crear evento</button>
+            <div className="flex justify-between">
+              <button className="px-6 py-2 bg-[#6361f1] hover:scale-105 rounded-lg text-white" type="submit">Crear evento</button>
+              {alert.message && (
+                <div className={`alert ${alert.type === "success" ? "bg-green-500" : "bg-red-500"} text-white p-3 rounded-md`}>
+                  {alert.message}
+                </div>
+              )}
+            </div>
         </form>
         </div>
     </div>

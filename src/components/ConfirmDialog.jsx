@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography  } from '@mui/material';
 const ConfirmDialog = ({open, onClose, onConfirm, message}) => {
 
     return(
@@ -29,7 +29,6 @@ const ConfirmDialog = ({open, onClose, onConfirm, message}) => {
                 <Button
                  onClick={() => {onConfirm();
                  onClose();}}
-                 color='#6366f1'
                  sx={{
                     backgroundColor: '#6366f1',
                     color: '#fff',

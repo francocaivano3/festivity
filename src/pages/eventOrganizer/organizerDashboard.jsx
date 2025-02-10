@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import environment from "../../utils/environment";
 import StatCard from "../../components/StatCard";
-import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, Text } from "lucide-react";
+import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
 import Alert from "@mui/material/Alert";
 import { useAlert } from "../../context/alertContext";
 import ConfirmDialog from "../../components/ConfirmDialog";
@@ -100,11 +100,11 @@ const OrganizerDashboard = () => {
         {isSidebarOpen && <Sidebar />}
         {isSidebarOpen && (
           <button className="z-50 sticky top-0" onClick={toggleSidebar}>
-            <Text className="h-8 w-8 hover:scale-110 transition-all" />
+            <AlignLeft className="h-8 w-8 hover:scale-110 transition-all" />
           </button>
         )}
         <button onClick={toggleSidebar}>
-          <Text className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500" />
+          <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500" />
         </button>
 
         <h1
@@ -163,11 +163,16 @@ const OrganizerDashboard = () => {
                 </tbody>
             </table>
         </div>
-        </> : <h3 className="underline">No hay eventos activos</h3>}
+        </> :
+        <div className="1/2 bg-white">
+          <div className="flex justify-center">
+              <h3 className="font-bold text-[#6366f1] p-6 mx-auto">NO HAY EVENTOS ACTIVOS</h3>
+          </div>
+        </div>}       
       </div>
       {isModalOpen && <EditEventModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} eventToEdit={eventToEdit} setAlert={setAlert}/>}
       {alert.message && (
-    <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/4 mx-auto">
+    <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/4 mx-auto mt-8">
         {alert.message}
     </Alert>
     )}     

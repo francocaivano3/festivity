@@ -50,17 +50,22 @@
                     throw new Error(`Failed to delete event`);
                 }
                 setIsModalOpen(false);
+                setAlert({ message: "El evento ha sido borrado con éxito!", type: "success" });
                 setTimeout(() => {
-                    setAlert({ message: "El evento ha sido borrado con éxito!", type: "success" });
+                   window.location.reload(); 
                 }, 3500);
-                window.location.reload();
+                
             } catch (e) {
                 setAlert({ message: "Ha ocurrido un error!", type: "error" });
+                console.error("flsadjlfaj")
             }
         }
     };
 
-        const navigate = useNavigate();
+    const handleCancel = () => {
+        console.log("alnflsad");
+        setIsConfirmOpen(false);
+    }
 
         const handleChange = (e) => {
             const {name, value} = e.target;
@@ -83,8 +88,7 @@
                     },
                     body: JSON.stringify(eventData)
                 });
-                console.log(`RESPONSE: ${response}`);
-                console.log('Event data to be sent:', eventData);
+                
                 if(!response.ok){
                     const errorData = await response.json(); 
                     setAlert({ message: `Error: ${errorData.message || 'Ha ocurrido un error!'}`, type: "error" });
@@ -95,7 +99,7 @@
                 setIsModalOpen(false);
                 setTimeout(() => {
                     window.location.reload();
-                }, 4000);
+                }, 2000);
             } catch(e) {
                 setAlert({ message: "Error al actualizar el evento!", type: "error" });
             }
@@ -108,7 +112,7 @@
                     open={isConfirmOpen}
                     message="¿Estás seguro de que quieres eliminar este evento?"
                     onConfirm={confirmDeletion}
-                    onCancel={() => setIsConfirmOpen(false)}
+                    onClose={() => setIsConfirmOpen(false)}
                 />
             )}
             <div className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-40">

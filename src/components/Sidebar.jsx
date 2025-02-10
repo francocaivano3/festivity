@@ -48,19 +48,18 @@ const Sidebar = () => {
       <div className="flex items-center justify-center h-12">
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 px-4">
             {!isAuth ? <CircleUserRound className="mx-auto mb-5 h-16 w-16 text-indigo-800"/> : <img src={imgUser} alt="" className="w-20 h-20 rounded-full mx-auto mb-5"/>}
             {isAuth ? <h2 className="text-xl text-center mb-14">{user}</h2> : <h2 className="text-xl text-center mb-14">{user}</h2>}
         <ul className="space-y-4">
           <li>
-            <Link to={userRole === "Client" || userRole === "" ? "/" : "/organizer"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+            <Link to={userRole === "Client" || userRole === "" ? "/client" : "/organizer"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
               <House className="h-6 w-6" />
-              <span>Dashboard</span>
+              {userRole === "Client" ? <span>Eventos</span> : <span>Dashboard</span>}
             </Link>
           </li>
           <li>
-            <Link to={userRole === "Client" || userRole === "" ? "/" : "/my-events"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+            <Link to={userRole === "Client" || userRole === "" ? "/my-tickets" : "/my-events"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
               {userRole === "Client" || userRole === "" ? 
               <>
               <Ticket className="h-6 w-6" />

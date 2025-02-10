@@ -1,42 +1,42 @@
 import environment from "./environment";
 
-export const fetchEvents = async (setEvents) => {
+export const fetchData = async (endpoint, params = {}, requiresAuth = true) => {
     try {
-        const response = await fetch(`${environment.backendUrl}/api/Events/organizer/events`, {
-            method: "GET",
-            headers: {
-                authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            }
-        });
+        const url = new URL(`${environment.backendUrl}${endpoint}`);
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
-        if(!response.ok){
-            throw new Error("Failed to fetch events");
+        const headers = {};
+
+        if(requiresAuth) {
+            headers.authorization = `Bearer ${localStorage.getItem("authToken")}`;
         }
-        const data = await response.json();
-        setEvents(data);
-    } catch (e) {
-        console.error("Error while fetching events: ", e);
+
+        const response = await fetch(url, { method: "GET", headers });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch ${endpoint}`);
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        console.error(`Error while fetching ${endpoint}:`, error);
+        return null;
     };
 }
 
-export const soldTickets = async (eventId) => {
-    try {
-        const response = await fetch(`${environment.backendUrl}/api/Events/organizers/events/event/tickets/sold?eventId=${eventId}`, {
-            method: "GET",
-            headers: {
-                authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            }
-        });
-
-        if(!response.ok){
-            throw new Error("Failed to fetch sold tickets");
-        }
-        const data = await response.json();
-        console.log(data);
-        return data;
-    } catch (e) {
-        console.error("Error while fetching sold tickets: ", e);
-        return 0;
-    }
+export const fetchEvents = async() => {
+    return await fetchData("/api/Events/organizer/events");
 }
 
+export const soldTickets = async (eventId) => {
+    return await fetchData("/api/Events/organizers/events/event/tickets/sold", { eventId });
+}
+
+export const fetchAllEvents = async() => {
+    return await fetchData("/api/Client/get-all-events");
+}
+
+export const fetchAllMyTickets = async() => {
+    return await fetchData("/api/Client/client/get-tickets");
+}

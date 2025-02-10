@@ -31,7 +31,9 @@ const Auth = {
     },
     isTokenExpired: () => {
         const token = localStorage.getItem("authToken");
-        if(!token) return true;
+        if(!token || token.split(".").length !== 3){
+            return true;
+        } 
         const decodedToken = jwtDecode(token);
         const currentTime = Date.now() / 1000;
         return decodedToken.exp < currentTime;

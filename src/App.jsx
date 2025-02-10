@@ -3,10 +3,12 @@ import Alert from "./components/Alert";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import OrganizerDashboard from "./pages/eventOrganizer/OrganizerDashboard";
+import ClientDashboard from "./pages/cliente/ClientDashboard";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import EventForm from "./pages/eventOrganizer/EventForm";
 import OrganizerEvents from "./pages/eventOrganizer/OrganizerEvents";
 import Error from "./components/Error";
+import MyTickets from "./pages/cliente/MyTickets";
 const App = () => {
   const router = createBrowserRouter([
     {element: <Login/>, path: "/login", },
@@ -14,7 +16,9 @@ const App = () => {
     {element: <OrganizerDashboard/>, path: "/organizer"},
     {element: <EventForm/>, path: "/create-event"},
     {element: <OrganizerEvents/>, path: "/my-events"},
-    {element: <Error/>, path: "*", }
+    {element: <Error/>, path: "*"},
+    {element: <ClientDashboard/>, path: "/client"},
+    {element: <MyTickets/>, path: "/my-tickets"}
   ])
 
   return (

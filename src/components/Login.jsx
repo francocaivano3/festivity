@@ -48,9 +48,9 @@ const Login = () => {
             const response = await Auth.login({ UserName: emailState, Password: passwordState});
             const decoded = jwtDecode(response.token);
             const userRole = decoded.Role;
-
+            console.log("token", response.token)
             if(userRole === "Client") {
-                navigate("/");
+                navigate("/client");
             } else if(userRole === "EventOrganizer") {
                 navigate("/organizer");
             }

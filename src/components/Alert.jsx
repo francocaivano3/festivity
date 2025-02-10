@@ -1,5 +1,5 @@
 import { useAlert } from "../context/alertContext";
-const Alert = ({message, type}) => {
+const Alert = ({}) => {
     const {alert} = useAlert();
 
     if(!alert.message) return null;
