@@ -51,13 +51,14 @@ const MyTickets = () => {
         </button>
             <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-500 ml-40" : "text-3xl font-bold text-indigo-500"}>Mis Tickets</h1>
         </div>
-        
         {events.length > 0 ? 
-        events.map((event) => (
-            <Ticket event={event}/>
-        ))
+        <div className={isSidebarOpen ? "mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-12 py-8 blur-sm" : "mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-12 py-8"}>
+            {events.map((event, i) => (
+                <Ticket key={i} event={event}/>
+            ))}
+        </div>
         :
-        <div className="min-h-screen flex justify-center">
+        <div className={isSidebarOpen ? "min-h-screen flex justify-center blur-sm" : "min-h-screen flex justify-center"}>
             <h1 className="text-[#6366f1] underline font-bold text-xl">NO TIENES TICKETS</h1>
         </div>}
 

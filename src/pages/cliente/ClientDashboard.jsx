@@ -8,10 +8,20 @@ const ClientDashboard = () => {
     const [events, setEvents] = useState([]);
 
     const toggleSidebar = () => {
+        if(!isSidebarOpen) {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
         setIsSidebarOpen(!isSidebarOpen);
     };
 
     useEffect(() => {
+        if(isSidebarOpen) {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
         const loadEvents = async() => {
             const data = await fetchAllEvents();
             if(data) setEvents(data);

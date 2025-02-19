@@ -46,19 +46,19 @@ const Login = () => {
 
         try {
             const response = await Auth.login({ UserName: emailState, Password: passwordState});
+            console.log("token", response.token);
             const decoded = jwtDecode(response.token);
             const userRole = decoded.Role;
-            console.log("token", response.token)
             if(userRole === "Client") {
                 navigate("/client");
             } else if(userRole === "EventOrganizer") {
                 navigate("/organizer");
             }
             else {
-                setError("Invalid credentials");
+                setError("Credenciales inválidas");
             }
         } catch(e) {
-            setError("Error occurred");
+            setError("Ha ocurrido un error");
             console.error("Login error: ", e);
         }
     }
