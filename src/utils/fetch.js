@@ -40,3 +40,27 @@ export const fetchAllEvents = async() => {
 export const fetchAllMyTickets = async() => {
     return await fetchData("/api/Client/client/get-tickets");
 }
+
+export const buyTicket = async (eventId) => {
+    try {
+        const response = await fetch(`${environment.backendUrl}/events/event/${eventId}/buy-ticket`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('authToken')}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        console.log(response);
+
+        if(!response.ok){
+            const errorMessage = await response.text(); 
+            throw new Error(`Error al comprar el ticket: ${errorMessage}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error("Error al comprar el ticket: ", error);
+        return {success: false, message: error.message};
+    }
+}

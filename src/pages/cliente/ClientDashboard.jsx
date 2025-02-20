@@ -6,7 +6,7 @@ import EventCard from "../../components/EventCard";
 const ClientDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
-
+    
     const toggleSidebar = () => {
         if(!isSidebarOpen) {
             document.body.classList.add("overflow-hidden");
@@ -44,7 +44,7 @@ const ClientDashboard = () => {
                  <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-500 ml-40" : "text-3xl font-bold text-indigo-500"}>Eventos</h1>
              </div>
              <div className={isSidebarOpen ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full" : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full"}>
-                {events.length > 0 ? events.map(event => <EventCard role={"Client"} key={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>) : <h2>No hay eventos</h2>}
+                {events.length > 0 ? events.map(event => <EventCard role={"Client"} key={event.id} EventId={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>) : <h2>No hay eventos</h2>}
              </div>
         </div>)
 }

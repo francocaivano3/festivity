@@ -46,13 +46,16 @@ const Login = () => {
 
         try {
             const response = await Auth.login({ UserName: emailState, Password: passwordState});
-            console.log("token", response.token);
             const decoded = jwtDecode(response.token);
+            console.log(decoded);
             const userRole = decoded.Role;
+            
             if(userRole === "Client") {
                 navigate("/client");
+                window.location.reload();
             } else if(userRole === "EventOrganizer") {
-                navigate("/organizer");
+              navigate("/organizer");
+                window.location.reload();
             }
             else {
                 setError("Credenciales inválidas");

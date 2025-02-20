@@ -9,6 +9,11 @@ const MyTickets = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
+        if(isSidebarOpen) {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
         const loadEvents = async () => {
             const fetchedEvents = await fetchAllMyTickets();
             console.log("Datos recibidos:", fetchedEvents);

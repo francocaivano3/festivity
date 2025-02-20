@@ -30,6 +30,7 @@ const OrganizerDashboard = () => {
   }
 
   useEffect(() => {
+    document.body.classList.remove("overflow-hidden");
     const fetchEvents = async () => {
       try {
         const response = await fetch(
