@@ -132,7 +132,7 @@
                                     name="Name"
                                     id="Name"
                                     defaultValue={eventData.Name}
-                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1] focus:outline-none"
+                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
                                     placeholder="Ingrese el nombre del evento"
                                     onChange={handleChange}
                                 />
@@ -145,7 +145,7 @@
                                     id="Address"
                                     defaultValue={eventData.Address}
                                     placeholder="Ingrese la dirección del evento"
-                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1] focus:outline-none"
+                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -157,7 +157,7 @@
                                     id="City"
                                     defaultValue={eventData.City}
                                     placeholder="Ingrese la ciudad del evento"
-                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1] focus:outline-none"
+                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -168,7 +168,7 @@
                                     type="datetime-local"
                                     name="Date"
                                     defaultValue={eventData.Date}
-                                    className="bg-gray-200 pl-4 w-full size-10 rounded-md border-2 border-gray-300 focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1] focus:outline-none"
+                                    className="bg-gray-200 pl-4 w-full size-10 rounded-md border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -179,7 +179,7 @@
                                     type="text"
                                     name="Category"
                                     defaultValue={eventData.Category}
-                                    className="bg-gray-200 pl-4 w-full size-10 rounded-md border-2 border-gray-300 focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1] focus:outline-none"
+                                    className="bg-gray-200 pl-4 w-full size-10 rounded-md border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
                                     onChange={handleChange}
                                 />
                             </div>
@@ -190,7 +190,7 @@
                                     type="number"
                                     name="Price"
                                     defaultValue={eventData.Price}
-                                    className="bg-gray-200 pl-4 w-full size-10 border-2 rounded-md border-gray-300 focus:border-[#6366f1] focus:ring-2 focus:ring-[#6366f1] focus:outline-none"
+                                    className="bg-gray-200 pl-4 w-full size-10 border-2 rounded-md border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
                                     onChange={handleChange}
                                 />
                             </div>

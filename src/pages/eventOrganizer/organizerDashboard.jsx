@@ -121,7 +121,7 @@ const OrganizerDashboard = () => {
       </div>
       <div className={isSidebarOpen ? `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8 blur-sm` : `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8`}>
         <StatCard title={"Eventos Totales"} value={totalEvents} icon={<CalendarDays size={28}/>} />
-        <StatCard title={"Total de Asistentes"} value={totalSold} icon={<Users size={28}/>} />
+        <StatCard title={"Entradas Vendidas"} value={totalSold} icon={<Users size={28}/>} />
         <StatCard title={"Ingresos Totales"} value={`$${totalEarnings}`} icon={<DollarSign size={28}/>} />
         <StatCard title={"Valor promedio de la entrada"} value={`$${averagePrice}`} icon={<TrendingUp size={28}/>} />
       </div>

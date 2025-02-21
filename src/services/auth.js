@@ -29,6 +29,26 @@ const Auth = {
     logout: () => {
         localStorage.removeItem("authToken");
     },
+
+    register: async(body) => {
+        let url = `${environment.backendUrl}/api/client`;
+        let options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        const response = await fetch(url, options);
+        if(!response.ok){
+            throw new Error("Failed to authenticate user");
+        }
+
+        return (true);
+        
+    },
+
     isTokenExpired: () => {
         const token = localStorage.getItem("authToken");
         if(!token || token.split(".").length !== 3){
@@ -38,10 +58,12 @@ const Auth = {
         const currentTime = Date.now() / 1000;
         return decodedToken.exp < currentTime;
     },
+
     checkAndRemoveExpiredToken: () => {
         const token = localStorage.getItem("authToken");
         if(Auth.isTokenExpired(token)) {
             Auth.logout();
+            window.location.reload(); 
         }
     }
 }

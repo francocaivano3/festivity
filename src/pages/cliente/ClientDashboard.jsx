@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AlignLeft } from "lucide-react";
 import { fetchAllEvents } from "../../utils/fetch";
 import EventCard from "../../components/EventCard";
+import bgIMG from "../../assets/party.png";
 const ClientDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
@@ -30,7 +31,7 @@ const ClientDashboard = () => {
     }, []);
 
     return (
-        <div className="flex-1 min-h-screen bg-gray-50">
+        <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200">
             {isSidebarOpen && (
             <div
               className="fixed inset-0 z-40"

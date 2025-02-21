@@ -6,7 +6,7 @@ const AlertContext = createContext();
 const AlertProvider = ({children}) => {
     const [alert, setAlert] = useState({message: "", type: ""});
 
-    const showAlert = (message, type = "success", duration = 3000) => {
+    const showAlert = (message, type, duration = 3000) => {
         setAlert({message, type});
         
         setTimeout(() => {

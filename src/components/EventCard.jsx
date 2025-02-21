@@ -56,6 +56,7 @@ const validateForm = () => {
                     navigate("/my-tickets");
                   }, 2000);
               } else {
+                  setIsModalOpen(false);
                   showAlert("Error al comprar el ticket", "error");
               }
           } catch (e) {

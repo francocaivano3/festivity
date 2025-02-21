@@ -11,9 +11,11 @@ import OrganizerEvents from "./pages/eventOrganizer/OrganizerEvents";
 import Error from "./components/Error";
 import MyTickets from "./pages/cliente/MyTickets";
 import { AuthContextProvider } from "./context/authContext";
+import Register from "./components/Register";
 const App = () => {
   const router = createBrowserRouter([
     {element: <Login/>, path: "/login", },
+    {element: <Register/>, path: "/register"},
     {element: <Dashboard/>, path: "/"},
     {element:
       <Private requiredRole={"EventOrganizer"}>

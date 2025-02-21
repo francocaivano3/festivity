@@ -37,14 +37,14 @@ const MyTickets = () => {
     }, [isSidebarOpen]);
 
     return (
-        <div>
+        <div className="bg-gradient-to-r from-violet-100 to-violet-300 min-h-screen">
             {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40"
           onClick={toggleSidebar}
         />
       )}
-      <div className="flex p-4">
+      <div className="flex p-4 bg-gradient-to-r from-violet-100 to-violet-300">
         {isSidebarOpen && <Sidebar />}
         {isSidebarOpen && (
           <button className="z-50 sticky top-0" onClick={toggleSidebar}>

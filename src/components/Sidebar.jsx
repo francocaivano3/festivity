@@ -8,9 +8,8 @@ import Auth from "../services/auth";
 const Sidebar = () => {
 
     const [isAuth, setIsAuth] = useState(true);
-    const [user, setUser] = useState("Usuario");
+    const [user, setUser] = useState("Invitado");
     const [userRole, setUserRole] = useState("");
-    const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const token = localStorage.getItem("authToken");
     const navigate = useNavigate();
 
@@ -21,7 +20,7 @@ const Sidebar = () => {
             Auth.checkAndRemoveExpiredToken();
         } else {
             const decoded = jwtDecode(token);
-            setUser(decoded.Name || "Usuario");
+            setUser(decoded.Name); //ACA HABIA UN || INVITADO
             if(decoded.Role === "Client"){
               setUserRole("Client");
             } else if(decoded.Role === "EventOrganizer"){

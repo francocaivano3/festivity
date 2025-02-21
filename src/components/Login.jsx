@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import Auth from "../services/auth";
-import environment from '../utils/environment';
 import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo.png";
 import Bgimg from "../assets/hero-image.jpg";
 import { jwtDecode } from "jwt-decode";
-
-
 
 const Login = () => {
     const [emailState, setEmailState] = useState("");
@@ -29,7 +26,7 @@ const Login = () => {
         return regex.test(email);
     }
 
-    const handleSendData = async(e) => {
+  const handleSendData = async(e) => {
         e.preventDefault();
 
         if(!validateEmail(emailState)){
@@ -117,8 +114,9 @@ const Login = () => {
           <button type='submit' onClick={handleSendData} className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
             Iniciar Sesión
           </button>
-          <div className="text-center text-white underline">
-            <a href="#">Olvidaste tu contraseña?</a>
+          <div className="text-center text-white flex flex-col justify-center items-center">
+            <p className='mt-4'>Todavía no tenés cuenta?</p>
+            <button onClick={() => navigate("/register")} className='underline mt-2 w-fit'>Registrarse</button>
           </div>
           </div>
         </div>
