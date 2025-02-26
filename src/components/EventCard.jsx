@@ -3,9 +3,8 @@ import Event from "../assets/Event.jpg";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { buyTicket } from "../utils/fetch";
-import { useAlert } from "../context/alertContext";
 
-const EventCard = ({ EventId, Name, Address, City, Day, NumberOfTickets, Category, Price, role }) => {
+const EventCard = ({ alert, setAlert, EventId, Name, Address, City, Day, NumberOfTickets, Category, Price, role }) => {
   const day = new Date(Day).toLocaleDateString()
   const hour = new Date(Day).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   const navigate = useNavigate();
@@ -17,7 +16,6 @@ const EventCard = ({ EventId, Name, Address, City, Day, NumberOfTickets, Categor
         cvv: ""
   });
   const [errors, setErrors] = useState({});
-  const {showAlert} = useAlert();
 
 const validateForm = () => {
   const newErrors = {}
@@ -48,22 +46,22 @@ const validateForm = () => {
           try {
               const response = await buyTicket(eventId);
               if(response.success){
-                  showAlert("Compra realizada con éxito", "success");
+                  setAlert({message:"Compra realizada con éxito", type:"success"});
                   setIsModalOpen(false);
                   setFormData({cardNumber: "", cardName: "", expiration: "", cvv: ""});
                   setErrors({});
                   setTimeout(() => {
                     navigate("/my-tickets");
-                  }, 2000);
+                  }, 3000);
               } else {
                   setIsModalOpen(false);
-                  showAlert("Error al comprar el ticket", "error");
+                  setAlert({message:"Error al comprar el ticket", type:"error"});
               }
           } catch (e) {
-            showAlert("Error en la compra del ticket, inténtelo nuevamente!", "error");
+            setAlert({message:"Error en la compra del ticket, inténtelo nuevamente!", type:"error"});
           }
       }
-  }
+}
 
   const handleChange = (e) => {
       const { name, value } = e.target
@@ -71,7 +69,7 @@ const validateForm = () => {
         ...prev,
         [name]: value,
       }))
-  }
+}
 
   const handleExpirationChange = (e) => {
     let value = e.target.value;
@@ -92,6 +90,11 @@ const validateForm = () => {
     }));
 };
 
+const handleModalToggle = () => {
+  if (!isModalOpen) {
+    setIsModalOpen(true);
+  }
+};
 
   useEffect(() => {
     const originalStyle = document.body.style.overflow; 
@@ -147,27 +150,31 @@ const validateForm = () => {
             >
               {NumberOfTickets > 0 ? "Disponible" : "Agotado"}
             </span>
-            {NumberOfTickets > 0 && role === "EventOrganizer" && (
-              <button
-                className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
-                onClick={() => navigate("/organizer")}
-              >
-                Editar
-              </button>
-            )}
-            {NumberOfTickets > 0 && role === "Client" ? (
-              <button
-                className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
-                onClick={() => setIsModalOpen(true)}
-              >
-                Comprar
-              </button>
-            ) : <button
+            {role === "EventOrganizer" ? (
+        <button
+          className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
+          onClick={() => navigate("/organizer")}
+        >
+          Editar
+        </button>
+      ) : (
+        (NumberOfTickets > 0 && role === "Client") ? (
+          <button
             className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
-            onClick={() => null}
+            onClick={handleModalToggle}
           >
             Comprar
-          </button>}
+          </button>
+        ) : (
+          <button
+            className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
+            onClick={role !== "Invitado" ? () => null : () => navigate("/login")}
+          >
+            Comprar
+          </button>
+        )
+      )}
+
           </div>
         </div>
       </div>

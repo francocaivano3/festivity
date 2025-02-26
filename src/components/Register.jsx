@@ -66,9 +66,9 @@ const Register = () => {
  return (
 <div className="grid min-h-screen lg:grid-cols-2">
      <div className="lg:items-center bg-gradient-to-r from-violet-600 to-indigo-600 flex items-top justify-center px-8 py-8">
-        <div className="mx-auto max-w-md space-y-6 px-8 shadow-2xl">
+        <div className="mx-auto max-w-md space-y-6 px-8 shadow-2xl rounded-xl">
           <div className="space-y-2 text-left">
-            <h1 className="text-2xl font-bold tracking-tight text-[#FFFFFF] mt-2">
+            <h1 className="text-2xl font-bold tracking-tight text-[#FFFFFF] mt-4">
               Registrarse
             </h1>
           </div>
@@ -158,9 +158,18 @@ const Register = () => {
           <button type='submit' onClick={handleSendData} className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
             Registrarse
           </button>
+
           <div className="text-center text-white flex flex-col justify-center items-center">
-            <p className='mt-4'>Ya tenés cuenta?</p>
-            <a href='/login' className='underline mt-2 w-fit mb-2'>Iniciar Sesión</a>
+            <p className='mt-2'>Ya tenés cuenta?</p>
+            <a href='/login' className='underline mt-2 w-fit'>Iniciar Sesión</a>
+
+            <div className="flex items-center justify-center my-2 p-2 w-3/4">
+                  <span className="border-t border-white flex-grow"></span>
+                  <span className="mx-2 text-white">o</span>
+                  <span className="border-t border-white flex-grow"></span>
+            </div>
+            
+            <a href='/' className='underline w-fit mb-4'>Continua como invitado</a>
           </div>
           </div>
         </div>

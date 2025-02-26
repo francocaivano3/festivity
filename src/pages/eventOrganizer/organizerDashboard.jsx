@@ -6,7 +6,6 @@ import environment from "../../utils/environment";
 import StatCard from "../../components/StatCard";
 import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
 import Alert from "@mui/material/Alert";
-import { useAlert } from "../../context/alertContext";
 import ConfirmDialog from "../../components/ConfirmDialog";
 
 const OrganizerDashboard = () => {
@@ -17,6 +16,12 @@ const OrganizerDashboard = () => {
   const [alert, setAlert] = useState({message: "", type: ""});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [eventIdToDelete, setEventIdToDelete] = useState(null);
+  const [data, setData] = useState({
+    totalEvents: events.length,
+    totalSold: 0,
+    totalEarnings: 0,
+    averagePrice: 0,
+  })
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -55,6 +60,10 @@ const OrganizerDashboard = () => {
       }
     };
     fetchEvents();
+
+    const fetchStats = async () => {
+      
+    }
   }, []);
 
   const handleConfirmDelete = async (eventIdToDelete) => {
@@ -83,12 +92,14 @@ const OrganizerDashboard = () => {
   };
 
   // TODO ESTO ESTA HARDCODEADO, MODIFICAR ENDPOINT
-  const totalEvents = events.length;
-  const totalSold = totalEvents * 100;
-  const totalEarnings = totalSold * 1000;
-  const averagePrice = totalEarnings / totalSold || 0;
+  // const totalEvents = events.length;
+  // const totalSold = totalEvents * 100;
+  // const totalEarnings = totalSold * 1000;
+  // const averagePrice = totalEarnings / totalSold || 0;
   //
   const tableTitles = ["Nombre del Evento", "Fecha", "Ciudad", "Tickets", "Precio", "Acciones"];
+
+
   return (
     <div className="flex-1 min-h-screen bg-gray-50">
        {isSidebarOpen && (
@@ -120,16 +131,21 @@ const OrganizerDashboard = () => {
 
       </div>
       <div className={isSidebarOpen ? `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8 blur-sm` : `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8`}>
-        <StatCard title={"Eventos Totales"} value={totalEvents} icon={<CalendarDays size={28}/>} />
-        <StatCard title={"Entradas Vendidas"} value={totalSold} icon={<Users size={28}/>} />
-        <StatCard title={"Ingresos Totales"} value={`$${totalEarnings}`} icon={<DollarSign size={28}/>} />
-        <StatCard title={"Valor promedio de la entrada"} value={`$${averagePrice}`} icon={<TrendingUp size={28}/>} />
+        <StatCard title={"Eventos Totales"} value={data.totalEvents} icon={<CalendarDays size={28}/>} />
+        <StatCard title={"Entradas Vendidas"} value={data.totalSold} icon={<Users size={28}/>} />
+        <StatCard title={"Ingresos Totales"} value={`$${data.totalEarnings}`} icon={<DollarSign size={28}/>} />
+        <StatCard title={"Valor promedio de la entrada"} value={`$${data.averagePrice}`} icon={<TrendingUp size={28}/>} />
       </div>
 
       <div className={isSidebarOpen ? `bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm` : `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12`}>
         
         {events.length > 0 ? 
         <>
+            {alert.message && (
+        <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/2 mx-auto">
+            {alert.message}
+        </Alert>
+        )}    
         <h2 className="text-xl font-semibold mb-4">Eventos Activos 🔥</h2>
         <div>
             <table className="min-w-full rounded-lg shadow-lg">
@@ -152,7 +168,7 @@ const OrganizerDashboard = () => {
                                 <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => toggleModal(event.id)}>
                                     <Edit size={18}/>
                                 </button>
-                                <button className="text-red-600 hover:text-red-800 mr-2" onClick={() => {
+                                <button className="text-red-600 hover:text-red-800" onClick={() => {
                                   setEventIdToDelete(event.id);
                                   setIsDialogOpen(true);
                                 }}>
@@ -171,12 +187,7 @@ const OrganizerDashboard = () => {
           </div>
         </div>}       
       </div>
-      {isModalOpen && <EditEventModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} eventToEdit={eventToEdit} setAlert={setAlert}/>}
-      {alert.message && (
-    <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/4 mx-auto mt-8">
-        {alert.message}
-    </Alert>
-    )}     
+      {isModalOpen && <EditEventModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} eventToEdit={eventToEdit} setAlert={setAlert}/>}     
 
       <ConfirmDialog 
       open={isDialogOpen}

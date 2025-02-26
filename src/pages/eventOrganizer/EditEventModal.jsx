@@ -77,6 +77,36 @@
 
         const handleSubmit = async(e) => {
             e.preventDefault();
+
+            if (!eventData.Name || !eventData.Address || !eventData.City || !eventData.Date || !eventData.Category || !eventData.Price) {
+                setAlert({ message: "Todos los campos son obligatorios.", type: "error" });
+                setIsModalOpen(false);
+                setTimeout(() => {
+                    setAlert({ message: "", type: "" });
+                  }, 3000);
+                return;
+            }
+
+            if (eventData.Price < 1) {
+                setAlert({ message: "El precio debe ser de al menos 1$.", type: "error" });
+                setIsModalOpen(false);
+                setTimeout(() => {
+                    setAlert({ message: "", type: "" });
+                  }, 3000);
+                return;
+            }
+
+            const today = new Date();
+            const eventDate = new Date(eventData.Date);
+            if (eventDate < today) {
+                setAlert({ message: "La fecha y hora no puede ser anterior al día de hoy.", type: "error" });
+                setIsModalOpen(false);
+                setTimeout(() => {
+                    setAlert({ message: "", type: "" });
+                  }, 3000);
+                return;
+            }
+
             try {
                 const url = `${environment.backendUrl}/update-event`;
                 const method = "PUT";

@@ -12,6 +12,7 @@ import Error from "./components/Error";
 import MyTickets from "./pages/cliente/MyTickets";
 import { AuthContextProvider } from "./context/authContext";
 import Register from "./components/Register";
+import Configuration from "./components/Configuration";
 const App = () => {
   const router = createBrowserRouter([
     {element: <Login/>, path: "/login", },
@@ -46,6 +47,10 @@ const App = () => {
     {
       element: <Error errorNum={403}/>,
       path: "/error403"
+    },
+    {
+      element: <Configuration/>,
+      path: "/configuration"
     }
   ])
 

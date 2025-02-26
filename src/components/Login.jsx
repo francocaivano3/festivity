@@ -30,12 +30,12 @@ const Login = () => {
         e.preventDefault();
 
         if(!validateEmail(emailState)){
-            setError("Invalid email address");
+            setError("Email inválido");
             return;
         }
 
         if(passwordState === ""){
-            setError("Password is required");
+            setError("Ingrese la contraseña");
             return;
         }
 
@@ -109,14 +109,21 @@ const Login = () => {
                 placeholder="**********"
               />
             </div>
-            <br />
-            {error && <p style={{ color: "#D66666" }}>{error}</p>}
-          <button type='submit' onClick={handleSendData} className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
+            {error && <p style={{ color: "#FFA500" }}>{error}</p>}
+          <button type='submit' id='button' onClick={handleSendData} className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
             Iniciar Sesión
           </button>
           <div className="text-center text-white flex flex-col justify-center items-center">
             <p className='mt-4'>Todavía no tenés cuenta?</p>
-            <button onClick={() => navigate("/register")} className='underline mt-2 w-fit'>Registrarse</button>
+              <button onClick={() => navigate("/register")} className='underline mt-2 w-fit font-semibold'>Registrarse</button>
+
+              <div className="flex items-center justify-center my-2 p-2 w-3/4">
+                  <span className="border-t border-white flex-grow"></span>
+                  <span className="mx-2 text-white">o</span>
+                  <span className="border-t border-white flex-grow"></span>
+              </div>
+
+              <button onClick={() => navigate("/")} className='underline mt-2 w-fit text-white'>Continuar como invitado</button>
           </div>
           </div>
         </div>
@@ -131,7 +138,7 @@ const Login = () => {
             alt="logo de festivity"
             width={300}
             height={150}
-            className="z-10"
+            className="z-10 drop-shadow-2xl"
           />
         </div>
       </div>

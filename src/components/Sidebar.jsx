@@ -81,7 +81,7 @@ const Sidebar = () => {
             </li>
           }
           <li>
-            <Link to="/projects" className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+            <Link to="/configuration" className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
             <Settings className="h-6 w-6" />
               <span>Configuración</span>
             </Link>
