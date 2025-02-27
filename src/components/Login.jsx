@@ -12,11 +12,26 @@ const Login = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("authToken");
-        if(token) {
-            navigate("/"); //DASHBOARD => "/DASHBOARD"
-        }
-    }, []);
+      const token = localStorage.getItem("authToken");
+  
+      if (token) {
+          try {
+              const decoded = jwtDecode(token);
+              const role = decoded.Role;
+  
+              setTimeout(() => {  
+                  if (role === "EventOrganizer" && window.location.pathname !== "/organizer") {
+                      navigate("/organizer");
+                  } else if (role === "Client" && window.location.pathname !== "/client") {
+                      navigate("/client");
+                  }
+              }, 500);
+          } catch (error) {
+              console.error("Error decoding token:", error);
+              localStorage.removeItem("authToken"); 
+          }
+      }
+  }, []);
 
     const handleEmailChange = (e) => setEmailState(e.target.value);
     const handlePasswordChange = (e) => setPasswordState(e.target.value);
@@ -44,29 +59,28 @@ const Login = () => {
         try {
             const response = await Auth.login({ UserName: emailState, Password: passwordState});
             const decoded = jwtDecode(response.token);
-            console.log(decoded);
             const userRole = decoded.Role;
             
             if(userRole === "Client") {
-                navigate("/client");
-                window.location.reload();
+              navigate("/client");
+              window.location.reload();
             } else if(userRole === "EventOrganizer") {
               navigate("/organizer");
-                window.location.reload();
+              window.location.reload();
             }
             else {
                 setError("Credenciales inválidas");
             }
+
         } catch(e) {
-            setError("Ha ocurrido un error");
-            console.error("Login error: ", e);
+            setError("Usuario no encontrado");
         }
     }
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="lg:items-center bg-gradient-to-r from-violet-600 to-indigo-600 flex items-top justify-center px-8 py-16">
-        <div className="mx-auto w-full max-w-sm space-y-6">
+        <form className="mx-auto w-full max-w-sm space-y-6" onSubmit={handleSendData}>
           <div className="space-y-2 text-left">
             <h1 className="text-2xl font-bold tracking-tight text-[#FFFFFF]">
               Iniciar Sesión
@@ -110,7 +124,7 @@ const Login = () => {
               />
             </div>
             {error && <p style={{ color: "#FFA500" }}>{error}</p>}
-          <button type='submit' id='button' onClick={handleSendData} className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
+          <button type='submit' id='button' className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
             Iniciar Sesión
           </button>
           <div className="text-center text-white flex flex-col justify-center items-center">
@@ -126,7 +140,7 @@ const Login = () => {
               <button onClick={() => navigate("/")} className='underline mt-2 w-fit text-white'>Continuar como invitado</button>
           </div>
           </div>
-        </div>
+        </form>
       </div>
       <div
         className="hidden lg:block relative bg-cover bg-center"

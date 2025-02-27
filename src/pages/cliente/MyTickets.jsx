@@ -3,10 +3,11 @@ import Ticket from "../../components/Ticket";
 import { fetchAllMyTickets } from "../../utils/fetch";
 import { AlignLeft } from "lucide-react";
 import Sidebar from "../../components/Sidebar";
-
+import Skeleton from "../../components/Skeleton";
 const MyTickets = () => {
     const [events, setEvents] = useState([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if(isSidebarOpen) {
@@ -21,6 +22,11 @@ const MyTickets = () => {
                 setEvents(fetchedEvents);
             }
         };
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500); 
+
         loadEvents();
     }, []);
 
@@ -56,16 +62,24 @@ const MyTickets = () => {
         </button>
             <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-500 ml-40" : "text-3xl font-bold text-indigo-500"}>Mis Tickets</h1>
         </div>
-        {events.length > 0 ? 
-        <div className={isSidebarOpen ? "mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-12 py-8 blur-sm" : "mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-12 py-8"}>
-            {events.map((event, i) => (
-                <Ticket key={i} event={event}/>
-            ))}
-        </div>
-        :
-        <div className={isSidebarOpen ? "min-h-screen flex justify-center blur-sm" : "min-h-screen flex justify-center"}>
-            <h1 className="text-[#6366f1] underline font-bold text-xl">NO TIENES TICKETS</h1>
-        </div>}
+
+            {isLoading ? (
+                <div className="mx-auto w-2/3 max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-12 py-8">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <Skeleton key={i} type="tickets" />
+                    ))}
+                </div>
+            ) : events.length > 0 ? (
+                <div className={isSidebarOpen ? "mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-12 py-8 blur-sm" : "mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 gap-12 py-8"}>
+                    {events.map((event, i) => (
+                        <Ticket key={i} event={event} />
+                    ))}
+                </div>
+            ) : (
+                <div className={isSidebarOpen ? "min-h-screen flex justify-center blur-sm" : "min-h-screen flex justify-center"}>
+                    <h1 className="text-[#6366f1] underline font-bold text-xl">NO TIENES TICKETS</h1>
+                </div>
+            )}
 
     </div>  
     );

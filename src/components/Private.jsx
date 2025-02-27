@@ -5,8 +5,6 @@ import { AuthContext } from "../context/authContext";
 const Private = ({children, requiredRole}) => {
     const {user, authToken} = useContext(AuthContext);
 
-    console.log("user: ", user);
-
     if(!authToken){
         return <Navigate to="/login" />;
     }

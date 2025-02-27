@@ -4,10 +4,13 @@ import { AlignLeft } from "lucide-react";
 import { fetchAllEvents } from "../../utils/fetch";
 import EventCard from "../../components/EventCard";
 import Alert from "@mui/material/Alert";
+import Skeleton from "../../components/Skeleton";
+
 const ClientDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
     const [alert, setAlert] = useState({ message: "", type: "" });
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleSidebar = () => {
         if(!isSidebarOpen) {
@@ -28,6 +31,11 @@ const ClientDashboard = () => {
             const data = await fetchAllEvents();
             if(data) setEvents(data);
         };
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
+
         loadEvents();
     }, []);
 
@@ -52,9 +60,19 @@ const ClientDashboard = () => {
                     )}    
                  </div>
              </div>
+             {isLoading ?
+              (
+                <div className="mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-3 gap-12 py-8">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <Skeleton key={i} type="events" />
+                    ))}
+                </div>
+            ) :
              <div className={isSidebarOpen ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full" : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full"}>
-                {events.length > 0 ? events.map(event => <EventCard alert={alert} setAlert={setAlert} role={"Client"} key={event.id} EventId={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>) : <h2>No hay eventos</h2>}
+                {events.length <= 0 ? <h2>No hay eventos</h2> : events.map(event => <EventCard alert={alert} setAlert={setAlert} role={"Client"} key={event.id} EventId={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>)}
              </div>
+             }
+
         </div>)
 }
 
