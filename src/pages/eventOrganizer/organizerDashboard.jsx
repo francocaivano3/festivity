@@ -1,12 +1,12 @@
 import Sidebar from "../../components/Sidebar";
 import EditEventModal from "./EditEventModal";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import environment from "../../utils/environment";
 import StatCard from "../../components/StatCard";
 import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
 import Alert from "@mui/material/Alert";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import { fetchSold } from "../../utils/fetch";
 
 const OrganizerDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -16,13 +16,13 @@ const OrganizerDashboard = () => {
   const [alert, setAlert] = useState({message: "", type: ""});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [eventIdToDelete, setEventIdToDelete] = useState(null);
-  const [data, setData] = useState({
+  const [stats, setStats] = useState({
     totalEvents: events.length,
     totalSold: 0,
     totalEarnings: 0,
     averagePrice: 0,
-  })
-  const navigate = useNavigate();
+  });
+
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -60,11 +60,35 @@ const OrganizerDashboard = () => {
       }
     };
     fetchEvents();
-
-    const fetchStats = async () => {
-      
-    }
   }, []);
+
+  useEffect(() => {
+    let totalSold = 0;
+    let totalEarnings = 0;
+
+    const calculateStats = async () => {
+      for(let i = 0; i < events.length; i++) {
+        const eventId = events[i].id;
+        const sold = await fetchSold(eventId);
+        totalSold += sold;
+        totalEarnings += sold * events[i].price;
+      }
+      
+      let averagePrice = totalSold > 0 ? totalEarnings / totalSold : 0;
+      averagePrice = averagePrice.toFixed(2);
+
+      setStats({
+        totalEvents: events.length,
+        totalSold,
+        totalEarnings,
+        averagePrice
+      });
+    }
+
+    calculateStats();
+
+  }, [events]);
+
 
   const handleConfirmDelete = async (eventIdToDelete) => {
     if (eventIdToDelete && localStorage.getItem("authToken")) {
@@ -91,14 +115,7 @@ const OrganizerDashboard = () => {
     }
   };
 
-  // TODO ESTO ESTA HARDCODEADO, MODIFICAR ENDPOINT
-  // const totalEvents = events.length;
-  // const totalSold = totalEvents * 100;
-  // const totalEarnings = totalSold * 1000;
-  // const averagePrice = totalEarnings / totalSold || 0;
-  //
   const tableTitles = ["Nombre del Evento", "Fecha", "Ciudad", "Tickets", "Precio", "Acciones"];
-
 
   return (
     <div className="flex-1 min-h-screen bg-gray-50">
@@ -128,17 +145,18 @@ const OrganizerDashboard = () => {
         >
         Organizer Dashboard
         </h1>
-
       </div>
-      <div className={isSidebarOpen ? `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8 blur-sm` : `bg-gradient-to-r from-violet-500 to-blue-700 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8`}>
-        <StatCard title={"Eventos Totales"} value={data.totalEvents} icon={<CalendarDays size={28}/>} />
-        <StatCard title={"Entradas Vendidas"} value={data.totalSold} icon={<Users size={28}/>} />
-        <StatCard title={"Ingresos Totales"} value={`$${data.totalEarnings}`} icon={<DollarSign size={28}/>} />
-        <StatCard title={"Valor promedio de la entrada"} value={`$${data.averagePrice}`} icon={<TrendingUp size={28}/>} />
+      
+      <div className="bg-gradient-to-r from-violet-500 to-blue-700">
+        <h2 className={isSidebarOpen ? "blur-sm text-center pt-4 text-white font-semibold text-xl" : "text-center pt-4 text-white font-semibold text-xl"}>Estadísticas 🚀</h2>
+        <div className={isSidebarOpen ? `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8 blur-sm` : `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-12 pb-8`}>
+          <StatCard title={"Eventos Totales"} value={stats.totalEvents} icon={<CalendarDays size={28}/>} />
+          <StatCard title={"Entradas Vendidas"} value={stats.totalSold} icon={<Users size={28}/>} />
+          <StatCard title={"Ingresos Totales"} value={`$${stats.totalEarnings}`} icon={<DollarSign size={28}/>} />
+          <StatCard title={"Valor promedio de la entrada"} value={`$${stats.averagePrice}`} icon={<TrendingUp size={28}/>} />
+        </div>
       </div>
-
       <div className={isSidebarOpen ? `bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm` : `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12`}>
-        
         {events.length > 0 ? 
         <>
             {alert.message && (
@@ -163,7 +181,7 @@ const OrganizerDashboard = () => {
                             <td className="px-6 py-4 whitespace-nowrap">{new Date(event.date).toLocaleDateString()}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{event.city}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{event.numberOfTickets}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{event.price}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">${event.price}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => toggleModal(event.id)}>
                                     <Edit size={18}/>

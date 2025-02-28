@@ -4,9 +4,11 @@ import {AlignLeft} from "lucide-react";
 import EventCard from "../../components/EventCard";
 import { useNavigate } from "react-router-dom";
 import { fetchEvents } from "../../utils/fetch";
+import Skeleton from "../../components/Skeleton";
 const OrganizerEvents = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleSidebar = () => {
         if(!isSidebarOpen) {
@@ -30,10 +32,11 @@ const OrganizerEvents = () => {
                 setEvents(fetchedEvents);
             }
         };
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
         loadEvents();
     }, []);
-
-    console.log(events);
 
    return (
     <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200">
@@ -49,9 +52,18 @@ const OrganizerEvents = () => {
              <button onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500"/></button>
              <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-500 ml-40" : "text-3xl font-bold text-indigo-500"}>Mis Eventos</h1>
          </div>
-         <div className={isSidebarOpen ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full" : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full"}>
+         {isLoading ? 
+        (
+            <div className="mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-3 gap-12 py-8">
+                {Array.from({ length: 3 }).map((_, i) => (
+                    <Skeleton key={i} type="events" />
+                ))}
+            </div>
+        ) 
+         :
+        <div className={isSidebarOpen ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full" : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full"}>
             {events.length > 0 ? events.map(event => <EventCard role={"EventOrganizer"} key={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>) : <h2>No events</h2>}
-         </div>
+         </div>}
     </div>)
 }
 

@@ -64,3 +64,7 @@ export const buyTicket = async (eventId) => {
         return {success: false, message: error.message};
     }
 }
+
+export const fetchSold = async (eventId) => {
+    return await fetchData(`/api/Events/organizers/events/event/tickets/sold/${eventId}`);
+}

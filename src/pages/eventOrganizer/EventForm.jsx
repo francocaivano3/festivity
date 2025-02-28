@@ -61,7 +61,7 @@ const EventForm = () => {
       
       setTimeout(() => {
           navigate("/organizer");
-      }, 4000);
+      }, 2000);
 
     } catch (e) {
       setAlert({ message: e.message, type: "error" });

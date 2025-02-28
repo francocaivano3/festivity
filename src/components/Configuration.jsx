@@ -48,7 +48,10 @@ const Configuration = () => {
       newErrors.email = "Ingrese un correo electrónico válido";
     }
 
-    if (formData.password && formData.password.length < 6 || formData.password.length === 0) {
+    if (
+      (formData.password && formData.password.length < 6) ||
+      formData.password.length === 0
+    ) {
       newErrors.password = "La contraseña debe tener al menos 6 caracteres";
     }
 
@@ -112,117 +115,160 @@ const Configuration = () => {
 
       <div className="bg-gradient-to-r from-[#8A70FF] to-[#4C6FFF] p-6">
         <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-                {alert && <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/2 mx-auto">{alert.message}</Alert>}
-            
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <h2 className="text-[#6366f1] text-xl">Actualizar información</h2>
-                    <div className="grid gap-6 md:grid-cols-2">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Nombre de Usuario</label>
-                            <input 
-                            type="text" 
-                            name="userName"
-                            value={formData.userName}
-                            onChange={handleChange}
-                            className={`w-full px-4 py-2 rounded-lg border ${errors.userName ? "border-red-500" : "border-gray-200"} focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
-                            placeholder="Ingrese el nombre de usuario"/>
-                            {errors.userName && <p className="text-red-500 text-sm mt-1">{errors.userName}</p>}
-                        </div>
-                        <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    errors.email ? "border-red-500" : "border-gray-200"
-                  } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
-                  placeholder="Enter email"
-                />
-                {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    errors.password ? "border-red-500" : "border-gray-200"
-                  } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
-                  placeholder="Enter password"
-                />
-                {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    errors.confirmPassword ? "border-red-500" : "border-gray-200"
-                  } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
-                  placeholder="Confirm password"
-                />
-                {errors.confirmPassword && <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    errors.phone ? "border-red-500" : "border-gray-200"
-                  } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
-                  placeholder="Enter phone number"
-                />
-                {errors.phone && <p className="mt-1 text-sm text-red-500">{errors.phone}</p>}
-              </div>
-            </div>
-
-            <div className="flex justify-end pt-4">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="px-6 py-2 bg-[#8A70FF] text-white rounded-lg hover:bg-[#7559FF] transition-colors duration-200 flex items-center space-x-2 disabled:opacity-70"
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            {alert && (
+              <Alert
+                variant="filled"
+                severity={alert.type}
+                sx={{ mb: 2 }}
+                className="w-1/2 mx-auto"
               >
-                {isSubmitting ? (
-                  <>
-                    <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        fill="none"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                    <span>Updating...</span>
-                  </>
-                ) : (
-                  "Update Profile"
-                )}
-              </button>
-            </div>
-        </form>
-            </div>
+                {alert.message}
+              </Alert>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <h2 className="text-[#6366f1] text-xl">Actualizar información</h2>
+              <div className="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nombre de Usuario
+                  </label>
+                  <input
+                    type="text"
+                    name="userName"
+                    value={formData.userName}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-lg border ${
+                      errors.userName ? "border-red-500" : "border-gray-200"
+                    } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
+                    placeholder="Ingrese el nombre de usuario"
+                  />
+                  {errors.userName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.userName}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-lg border ${
+                      errors.email ? "border-red-500" : "border-gray-200"
+                    } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
+                    placeholder="Ingrese el email"
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Contraseña
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-lg border ${
+                      errors.password ? "border-red-500" : "border-gray-200"
+                    } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
+                    placeholder="Ingrese la contraseña"
+                  />
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Confirmar contraseña
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-lg border ${
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-200"
+                    } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
+                    placeholder="Confirme la contraseña"
+                  />
+                  {errors.confirmPassword && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Número de teléfono
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-lg border ${
+                      errors.phone ? "border-red-500" : "border-gray-200"
+                    } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
+                    placeholder="Ingrese el número de teléfono"
+                  />
+                  {errors.phone && (
+                    <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-6 py-2 bg-[#8A70FF] text-white rounded-lg hover:bg-[#7559FF] transition-colors duration-200 flex items-center space-x-2 disabled:opacity-70"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg
+                        className="animate-spin h-5 w-5 mr-2"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      <span>Updating...</span>
+                    </>
+                  ) : (
+                    "Actualizar"
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

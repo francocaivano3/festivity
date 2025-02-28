@@ -4,11 +4,13 @@ import Sidebar from "./Sidebar";
 import {fetchAllEvents} from "../utils/fetch";
 import {AlignLeft} from "lucide-react";
 import EventCard from "./EventCard";
+import Skeleton from "./Skeleton";
 
 const Dashboard = () => {
     const [isAuth, setIsAuth] = useState(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -23,6 +25,11 @@ const Dashboard = () => {
             console.log("Datos obtenidos:", data);
             console.log(events || "anana");
         };
+
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
+
         loadEvents();
 
         if(!token) {
@@ -55,9 +62,17 @@ const Dashboard = () => {
             <button onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-600"/></button>
             <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-600 ml-40" : "text-3xl font-bold text-indigo-600"}>Eventos</h1>
         </div>
+        {isLoading ?
+              (
+                <div className="mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-3 gap-12 py-8">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <Skeleton key={i} type="events" />
+                    ))}
+                </div>
+            ) :
         <div className={isSidebarOpen ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full" : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full"}>
            {events.length <= 0 ? <h2 className="text-[#6366f1] underline font-bold col-span-full text-center">NO HAY EVENTOS</h2> : events.map(event => <EventCard role={"Invitado"} key={event.id} EventId={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>)}
-        </div>
+        </div>}
    </div>)
 }
 
