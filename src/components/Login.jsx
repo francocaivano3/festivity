@@ -67,6 +67,9 @@ const Login = () => {
             } else if(userRole === "EventOrganizer") {
               navigate("/organizer");
               window.location.reload();
+            } else if(userRole === "SuperAdmin"){
+              navigate("/superadmin");
+              window.location.reload();
             }
             else {
                 setError("Credenciales inválidas");

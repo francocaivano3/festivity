@@ -5,6 +5,8 @@ import {fetchAllEvents} from "../utils/fetch";
 import {AlignLeft} from "lucide-react";
 import EventCard from "./EventCard";
 import Skeleton from "./Skeleton";
+import Empty from "./Empty";
+import img from "../assets/new-years-party-decoration.png";
 
 const Dashboard = () => {
     const [isAuth, setIsAuth] = useState(true);
@@ -70,9 +72,15 @@ const Dashboard = () => {
                     ))}
                 </div>
             ) :
-        <div className={isSidebarOpen ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full" : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full"}>
-           {events.length <= 0 ? <h2 className="text-[#6366f1] underline font-bold col-span-full text-center">NO HAY EVENTOS</h2> : events.map(event => <EventCard role={"Invitado"} key={event.id} EventId={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>)}
-        </div>}
+            (events.length > 0 ? 
+                <div className={isSidebarOpen ? `mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full` : `mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full`}>
+                   {events.map(event => <EventCard role={"Invitado"} key={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>)}
+                </div>
+                :
+               <div className={isSidebarOpen ? "flex items-center justify-center w-full h-[60vh] p-10 blur-sm" : "flex items-center justify-center w-full h-[60vh] p-10"}>
+                   <Empty image={img} message={"No hay eventos disponibles"} className={"h-[60vh] text-center"}/>
+               </div>
+               )}
    </div>)
 }
 

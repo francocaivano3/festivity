@@ -118,7 +118,7 @@ const OrganizerDashboard = () => {
   const tableTitles = ["Nombre del Evento", "Fecha", "Ciudad", "Tickets", "Precio", "Acciones"];
 
   return (
-    <div className="flex-1 min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
        {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40"
@@ -165,8 +165,8 @@ const OrganizerDashboard = () => {
         </Alert>
         )}    
         <h2 className="text-xl font-semibold mb-4">Eventos Activos 🔥</h2>
-        <div>
-            <table className="min-w-full rounded-lg shadow-lg">
+        <div className="overflow-x-auto">
+            <table className="w-full min-w-max rounded-lg shadow-lg">
                 <thead className="bg-[#6366f1]">
                     <tr>
                         {tableTitles.map((title) => (
@@ -201,7 +201,7 @@ const OrganizerDashboard = () => {
         </> :
         <div className="1/2 bg-white">
           <div className="flex justify-center">
-              <h3 className="font-bold text-[#6366f1] p-6 mx-auto">NO HAY EVENTOS ACTIVOS</h3>
+              <h3 className="font-bold text-[#6366f1] p-6 mx-auto underline">NO HAY EVENTOS ACTIVOS</h3>
           </div>
         </div>}       
       </div>

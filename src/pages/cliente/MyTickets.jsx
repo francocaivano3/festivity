@@ -4,6 +4,8 @@ import { fetchAllMyTickets } from "../../utils/fetch";
 import { AlignLeft } from "lucide-react";
 import Sidebar from "../../components/Sidebar";
 import Skeleton from "../../components/Skeleton";
+import Empty from "../../components/Empty";
+import img from "../../assets/empty-shopping-trolley.png";
 const MyTickets = () => {
     const [events, setEvents] = useState([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -77,7 +79,7 @@ const MyTickets = () => {
                 </div>
             ) : (
                 <div className={isSidebarOpen ? "min-h-screen flex justify-center blur-sm" : "min-h-screen flex justify-center"}>
-                    <h1 className="text-[#6366f1] underline font-bold text-xl">NO TIENES TICKETS</h1>
+                    <Empty image={img} message={"NO TIENES TICKETS"} className={"h-[60vh] text-center mt-8"}/>
                 </div>
             )}
 

@@ -234,14 +234,14 @@ const handleModalToggle = () => {
                     <div>
                         <label htmlFor="cvv" className="block text-sm font-medium text-gray-700">CVV</label>
                         <input
-                            type="number"
-                            name="cvv"
-                            id="cvv"
-                            placeholder="123"
-                            value={formData.cvv}
-                            onChange={handleChange}
-                            className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                        />
+                             type="number"
+                             name="cvv"
+                             id="cvv"
+                             placeholder="123"
+                             value={formData.cvv}
+                             onChange={handleChange}
+                             className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                       />
                         {errors.cvv && <span className="text-red-500 text-sm">{errors.cvv}</span>}
                     </div>
                 </div>

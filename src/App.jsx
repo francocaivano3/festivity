@@ -13,6 +13,7 @@ import MyTickets from "./pages/cliente/MyTickets";
 import { AuthContextProvider } from "./context/authContext";
 import Register from "./components/Register";
 import Configuration from "./components/Configuration";
+import AdminDashboard from "./pages/superAdmin/AdminDashboard";
 const App = () => {
   const router = createBrowserRouter([
     {element: <Login/>, path: "/login", },
@@ -51,6 +52,12 @@ const App = () => {
     {
       element: <Configuration/>,
       path: "/configuration"
+    },{
+      element: 
+      <Private requiredRole={"SuperAdmin"}>
+        <AdminDashboard/>
+      </Private>,
+      path: "/superadmin"
     }
   ])
 

@@ -5,6 +5,8 @@ import EventCard from "../../components/EventCard";
 import { useNavigate } from "react-router-dom";
 import { fetchEvents } from "../../utils/fetch";
 import Skeleton from "../../components/Skeleton";
+import Empty from "../../components/Empty";
+import img from "../../assets/new-years-party-decoration.png";
 const OrganizerEvents = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
@@ -39,7 +41,7 @@ const OrganizerEvents = () => {
     }, []);
 
    return (
-    <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200">
+    <div className="min-h-screen bg-gradient-to-r from-violet-200 to-green-200 min-w-full">
         {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40"
@@ -61,10 +63,28 @@ const OrganizerEvents = () => {
             </div>
         ) 
          :
-        <div className={isSidebarOpen ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full" : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full"}>
-            {events.length > 0 ? events.map(event => <EventCard role={"EventOrganizer"} key={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>) : <h2>No events</h2>}
-         </div>}
+         (events.length > 0 ? 
+         <div className={isSidebarOpen ? `mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full` : `mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full`}>
+            {events.map(event => <EventCard role={"EventOrganizer"} key={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>)}
+         </div>
+         :
+        <div className={isSidebarOpen ? "flex items-center justify-center w-full h-[60vh] p-10 blur-sm" : "flex items-center justify-center w-full h-[60vh] p-10"}>
+            <Empty image={img} message={"No hay eventos disponibles"} className={"h-[60vh] text-center"}/>
+        </div>
+        )
+         
+}            
+            
     </div>)
 }
 
 export default OrganizerEvents;
+
+{/* <div className={isSidebarOpen ? 
+                (isSidebarOpen 
+                ? "mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm w-full" 
+                : "mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 w-full") 
+                : "flex items-center justify-center w-full h-[60vh] p-10"}>
+
+                {events.length > 0 ? events.map(event => <EventCard role={"EventOrganizer"} key={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>) : <Empty image={img} message={"No hay eventos disponibles"} className={"h-[60vh] text-center"}/>}
+            </div>} */}
