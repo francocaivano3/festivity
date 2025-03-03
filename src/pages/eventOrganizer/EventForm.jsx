@@ -4,13 +4,11 @@ import Sidebar from "../../components/Sidebar";
 import {AlignLeft} from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import background from "../../assets/background.png";
-import ConfirmDialog from "../../components/ConfirmDialog";
 import { useNavigate } from "react-router-dom";
 const EventForm = () => {
   const token = localStorage.getItem("authToken");
   const id = token ? jwtDecode(token).NameIdentifier : null;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [alert, setAlert] = useState({message: "", type: ""});
   const [eventData, setEventData] = useState({
     Name: "",
@@ -32,40 +30,38 @@ const EventForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const url = `${environment.backendUrl}/create-event`;
-      const method = "POST";
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventData),
-      });
-      
-      if (!response.ok) {
-        let errorMessage = "Ha ocurrido un error!";
-        try{
-            const errorData = await response.json(); 
-            errorMessage = errorData.message || errorMessage;
-        } catch(_) {
-            throw new Error(errorMessage);
+      try {
+        const url = `${environment.backendUrl}/create-event`;
+        const method = "POST";
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(eventData),
+        });
+        console.log(response);
+        if (!response.ok) {
+          console.log("aaa")
+          let errorMessage = "Ha ocurrido un error!";
+          try{
+              const errorData = await response.json(); 
+              errorMessage = errorData.message || errorMessage;
+          } catch(_) {
+              throw new Error(errorMessage);
+          }
+          setAlert({ message: "Error al crear evento.", type: "error" });
+          return;
         }
-        
         setAlert({ message: "El evento se ha creado con éxito!", type: "success" });
-        setTimeout(() => navigate("/organizer"), 4000);
+        setTimeout(() => {
+            navigate("/organizer");
+        }, 2000);
+  
+      } catch (e) {
+        setAlert({ message: e.message, type: "error" });
       }
-
-      setAlert({ message: "El evento se ha creado con éxito!", type: "success" });
-      
-      setTimeout(() => {
-          navigate("/organizer");
-      }, 2000);
-
-    } catch (e) {
-      setAlert({ message: e.message, type: "error" });
-    }
   };
 
 
@@ -102,18 +98,10 @@ return (
         </h1>
         
         </div>
-        {isConfirmOpen && (
-            <ConfirmDialog
-                open={isConfirmOpen}
-                message="¿Estás seguro de que quieres crear este evento?"
-                onConfirm={() => handleSubmit}
-                onClose={() => setIsConfirmOpen(false)}
-            />
-        )}
         
-        <div className="flex justify-center items-center w-3/5 mx-auto">
+        <div className="flex justify-center items-center w-3/4 sm:w-3/5 mx-auto">
 
-        <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white p-16 w-full space-y-4 mb-10 ml-12 rounded-xl` : `bg-white p-16 w-full space-y-4 mb-10 rounded-xl`}>
+        <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white p-16 w-full space-y-4 mb-10 ml-12 rounded-xl blur-sm` : `bg-white p-16 w-full space-y-4 mb-10 rounded-xl`}>
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-2">
                 <label htmlFor="Name">Nombre</label>
@@ -156,7 +144,7 @@ return (
                 <input min="0" step="1" className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="number" name="Price" value={eventData.Price} onChange={handleChange} placeholder="Ingrese el precio de las entradas" />
             </div>
             <div className="flex justify-between">
-              <button className="px-6 py-2 bg-[#6361f1] hover:scale-105 rounded-lg text-white" type="submit">Crear evento</button>
+              <button className="px-6 py-2 bg-[#6361f1] hover:scale-105 rounded-lg text-white" type="submit" onClick={() => handleSubmit}>Crear evento</button>
               {alert.message && (
                 <div className={`alert ${alert.type === "success" ? "bg-green-500" : "bg-red-500"} text-white p-3 rounded-md`}>
                   {alert.message}

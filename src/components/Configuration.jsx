@@ -113,7 +113,7 @@ const Configuration = () => {
         </h1>
       </div>
 
-      <div className="bg-gradient-to-r from-[#8A70FF] to-[#4C6FFF] p-6">
+      <div className={isSidebarOpen ? "bg-gradient-to-r from-[#8A70FF] to-[#4C6FFF] p-6 blur-sm" : "bg-gradient-to-r from-[#8A70FF] to-[#4C6FFF] p-6"}>
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg p-6">
             {alert && (

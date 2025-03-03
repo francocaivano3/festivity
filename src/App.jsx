@@ -14,6 +14,7 @@ import { AuthContextProvider } from "./context/authContext";
 import Register from "./components/Register";
 import Configuration from "./components/Configuration";
 import AdminDashboard from "./pages/superAdmin/AdminDashboard";
+import CreateOrganizer from "./pages/superAdmin/CreateOrganizer";
 const App = () => {
   const router = createBrowserRouter([
     {element: <Login/>, path: "/login", },
@@ -58,6 +59,13 @@ const App = () => {
         <AdminDashboard/>
       </Private>,
       path: "/superadmin"
+    },
+    {
+      element:
+       <Private requiredRole={"SuperAdmin"}>
+       <CreateOrganizer/>
+      </Private>,
+      path: "/create-organizer"
     }
   ])
 

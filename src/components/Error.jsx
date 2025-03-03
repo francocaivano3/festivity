@@ -9,6 +9,8 @@ const Error = ({errorNum}) => {
             navigate("/organizer");
         } else if(role === "Client"){
             navigate("/client");
+        } else if(role === "SuperAdmin"){
+            navigate("/superadmin");
         } else {
             navigate("/login");
         }

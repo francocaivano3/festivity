@@ -63,7 +63,6 @@
     };
 
     const handleCancel = () => {
-        console.log("alnflsad");
         setIsConfirmOpen(false);
     }
 

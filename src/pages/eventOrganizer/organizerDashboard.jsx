@@ -156,6 +156,7 @@ const OrganizerDashboard = () => {
           <StatCard title={"Valor promedio de la entrada"} value={`$${stats.averagePrice}`} icon={<TrendingUp size={28}/>} />
         </div>
       </div>
+      
       <div className={isSidebarOpen ? `bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm` : `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12`}>
         {events.length > 0 ? 
         <>

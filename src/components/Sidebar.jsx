@@ -7,6 +7,7 @@ import {
   CircleUserRound,
   CalendarPlus,
   Calendar,
+  UserPlus
 } from "lucide-react";
 import imgUser from "../assets/hero-image.jpg";
 import { jwtDecode } from "jwt-decode";
@@ -64,13 +65,14 @@ const Sidebar = () => {
               className="w-20 h-20 rounded-full mx-auto mb-5"
             />
           )}
-          {isAuth ? (
+          {/* {isAuth ? (
             <h2 className="text-xl text-center mb-14">{user}</h2>
           ) : (
             <h2 className="text-xl text-center mb-14">{user}</h2>
-          )}
+          )} */}
+          <h2 className="text-xl text-center mb-14">{user}</h2>
           <ul className="space-y-4">
-            <li>
+            {userRole !== "SuperAdmin" ? <li>
               <Link
                 to={
                   userRole === "Client" || userRole === ""
@@ -86,8 +88,14 @@ const Sidebar = () => {
                   <span>Dashboard</span>
                 )}
               </Link>
-            </li>
+            </li> : 
             <li>
+              <Link to={"/superadmin"} className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+                <House className="h-6 w-6" />
+                <span>Dashboard</span>
+              </Link>  
+            </li>}
+            {userRole !== "SuperAdmin" ? <li>
               <Link
                 to={
                   userRole === "Client" || userRole === ""
@@ -109,6 +117,14 @@ const Sidebar = () => {
                 )}
               </Link>
             </li>
+            :
+            <Link to="/create-organizer" className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded">
+              <>
+                <UserPlus className="h-6 w-6" />
+                <span>Crear Organizador</span>
+              </>
+            </Link>
+            }
             {userRole === "EventOrganizer" && (
               <li>
                 <Link
