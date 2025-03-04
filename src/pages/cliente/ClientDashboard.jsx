@@ -36,7 +36,7 @@ const ClientDashboard = () => {
 
         setTimeout(() => {
             setIsLoading(false);
-        }, 1500);
+        }, 1300);
 
         loadEvents();
     }, []);

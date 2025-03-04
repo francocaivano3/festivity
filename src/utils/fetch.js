@@ -76,3 +76,7 @@ export const fetchOrganizers = async() => {
 export const fetchClients = async() => {
     return await fetchData("/api/Client/client/get-all-clients");
 }
+
+export const fetchClient = async() => {
+    return await fetchData(`/api/Client/client/get-client`);
+}

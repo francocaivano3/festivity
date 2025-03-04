@@ -77,6 +77,12 @@ const EventForm = () => {
 
 return (
     <div className="flex-1 min-h-screen bg-cover bg-center" style={{backgroundImage: `url(${background})`}}>
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={toggleSidebar}
+        />
+      )}
       <div className="flex p-4">
         {isSidebarOpen && <Sidebar />}
         {isSidebarOpen && (

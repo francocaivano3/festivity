@@ -1,24 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AlignLeft } from "lucide-react";
 import Sidebar from "./Sidebar";
 import Alert from "@mui/material/Alert";
+import environment from "../utils/environment";
+import { fetchClient } from "../utils/fetch";
 
-const Configuration = () => {
+const Configuration = ({role}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [confirmPassword, setIsConfirmPassword] = useState("");
   const [formData, setFormData] = useState({
-    userName: "",
+    name: "",
     email: "",
     phone: "",
-    password: "",
-    confirmPassword: "",
+    password: ""
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [alert, setAlert] = useState({ message: "", type: "" });
+  const token = localStorage.getItem("authToken");
+  const [userData, setUserData] = useState({})
+
+  useEffect(() => {
+    const loadUserData = async() => {
+    try {
+      const response = await fetchClient();
+      setUserData(response);
+      setFormData({
+        name: response.name || "",
+        email: response.email || "",
+        phone: response.phone || "",
+        password: response.password || ""
+      })
+    } catch (error) {
+      setAlert({message: error.message, type: 'error'});
+    }}
+    loadUserData();
+  }, []);
+
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const handleConfirmPassword = (e) => {
+    setIsConfirmPassword(e.target.value);
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,13 +64,11 @@ const Configuration = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.userName.trim()) {
-      newErrors.userName = "Ingrese el nombre de usuario";
+    if (!formData.name.trim()) {
+      newErrors.name = `Ingrese el nombre del ${role}`;
     }
 
-    if (!formData.userEmail) {
-      newErrors.userEmail = "Ingrese un correo electrónico válido";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Ingrese un correo electrónico válido";
     }
 
@@ -55,7 +79,7 @@ const Configuration = () => {
       newErrors.password = "La contraseña debe tener al menos 6 caracteres";
     }
 
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== confirmPassword) {
       newErrors.confirmPassword = "Las contraseñas no coinciden";
     }
 
@@ -65,25 +89,45 @@ const Configuration = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    setErrors({});
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+       setErrors(validationErrors);
       return;
-    }
-
+    } 
+    
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      console.log("configuracion enviada");
-      setAlert({ message: "Actualizado con éxito", type: "success" });
-      setIsSubmitting(false);
+    try {
+      const url = `${environment.backendUrl}/api/Client/client/update`;
+      const method = "PUT";
+      const response = await fetch(url, {
+          method: method,
+          headers: {
+              "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+      });
+      console.log(formData);
+      if(!response.ok){
+          const errorData = await response.json(); 
+          setAlert({ message: `Error: ${errorData.message || 'Ha ocurrido un error!'}`, type: "error" });
+          throw new Error("Failed to update event");
+      }
 
+      setAlert({ message: "El usuario ha sido actualizado!", type: "success" });
       setTimeout(() => {
-        setAlert({ message: "", type: "" });
-      }, 3000);
-    }, 1500);
+          window.location.reload();
+      }, 2000);
+  } catch(e) {
+    console.error(e);
+      setAlert({ message: "Error al actualizar el usuario!", type: "error" });
+  }
+
+    setIsSubmitting(false);
   };
 
   return (
@@ -132,21 +176,21 @@ const Configuration = () => {
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre de Usuario
+                    Nombre del {role}
                   </label>
                   <input
                     type="text"
-                    name="userName"
-                    value={formData.userName}
+                    name="name"
                     onChange={handleChange}
+                    defaultValue={formData.name}
                     className={`w-full px-4 py-2 rounded-lg border ${
-                      errors.userName ? "border-red-500" : "border-gray-200"
+                      errors.name ? "border-red-500" : "border-gray-200"
                     } focus:outline-none focus:ring-2 focus:ring-[#8A70FF] focus:border-transparent`}
                     placeholder="Ingrese el nombre de usuario"
                   />
-                  {errors.userName && (
+                  {errors.name && (
                     <p className="text-red-500 text-sm mt-1">
-                      {errors.userName}
+                      {errors.name}
                     </p>
                   )}
                 </div>
@@ -157,7 +201,7 @@ const Configuration = () => {
                   <input
                     type="email"
                     name="email"
-                    value={formData.email}
+                    defaultValue={formData.email}
                     onChange={handleChange}
                     className={`w-full px-4 py-2 rounded-lg border ${
                       errors.email ? "border-red-500" : "border-gray-200"
@@ -176,7 +220,7 @@ const Configuration = () => {
                   <input
                     type="password"
                     name="password"
-                    value={formData.password}
+                    defaultValue={formData.password}
                     onChange={handleChange}
                     className={`w-full px-4 py-2 rounded-lg border ${
                       errors.password ? "border-red-500" : "border-gray-200"
@@ -197,8 +241,8 @@ const Configuration = () => {
                   <input
                     type="password"
                     name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
+                    value={confirmPassword}
+                    onChange={handleConfirmPassword}
                     className={`w-full px-4 py-2 rounded-lg border ${
                       errors.confirmPassword
                         ? "border-red-500"
@@ -220,7 +264,7 @@ const Configuration = () => {
                   <input
                     type="tel"
                     name="phone"
-                    value={formData.phone}
+                    defaultValue={formData.phone}
                     onChange={handleChange}
                     className={`w-full px-4 py-2 rounded-lg border ${
                       errors.phone ? "border-red-500" : "border-gray-200"

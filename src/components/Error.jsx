@@ -1,9 +1,23 @@
 import errorImg from "../assets/errorImg.jpg";
 import { Navigate, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 const Error = ({errorNum}) => {
     const navigate = useNavigate();
-    const role = jwtDecode(localStorage.getItem("authToken")).Role;
+    const [role, setRole] = useState("Invitado");
+
+    useEffect(() => {
+        const tokenString = localStorage.getItem("authToken");
+        if(tokenString){
+            try {
+                const decoded = jwtDecode(tokenString);
+                setRole(decoded.Role || "Invitado");
+            } catch (e) {
+                console.error("Error al decodificar el token: ", e);
+            }
+        }
+    }, []);
+
     const goBack = () => {
         if(role === "EventOrganizer"){
             navigate("/organizer");

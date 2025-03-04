@@ -21,28 +21,28 @@ const App = () => {
     {element: <Register/>, path: "/register"},
     {element: <Dashboard/>, path: "/"},
     {element:
-      <Private requiredRole={"EventOrganizer"}>
+      <Private requiredRoles={["EventOrganizer"]}>
         <OrganizerDashboard/>
       </Private>,
      path: "/organizer"},
     {element: 
-    <Private requiredRole={"EventOrganizer"}>
+    <Private requiredRoles={["EventOrganizer"]}>
       <EventForm/>
     </Private>, 
     path: "/create-event"},
     {element: 
-    <Private requiredRole={"EventOrganizer"}>
+    <Private requiredRoles={["EventOrganizer"]}>
       <OrganizerEvents/>,
     </Private>
     , path: "/my-events"},
     {element: <Error errorNum={404}/>, path: "*"},
     {element: 
-      <Private requiredRole={"Client"}>
+      <Private requiredRoles={["Client"]}>
         <ClientDashboard/>
       </Private>
     , path: "/client"},
     {element: 
-      <Private requiredRole={"Client"}>
+      <Private requiredRoles={["Client"]}>
         <MyTickets/>
       </Private>
     , path: "/my-tickets"},
@@ -51,18 +51,21 @@ const App = () => {
       path: "/error403"
     },
     {
-      element: <Configuration/>,
+      element: 
+      <Private requiredRoles={["Client", "SuperAdmin"]}>
+        <Configuration/>
+      </Private>,
       path: "/configuration"
     },{
       element: 
-      <Private requiredRole={"SuperAdmin"}>
+      <Private requiredRoles={["SuperAdmin"]}>
         <AdminDashboard/>
       </Private>,
       path: "/superadmin"
     },
     {
       element:
-       <Private requiredRole={"SuperAdmin"}>
+       <Private requiredRoles={["SuperAdmin"]}>
        <CreateOrganizer/>
       </Private>,
       path: "/create-organizer"

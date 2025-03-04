@@ -24,13 +24,11 @@ const Dashboard = () => {
         const loadEvents = async() => {
             const data = await fetchAllEvents();
             if(data) setEvents(data);
-            console.log("Datos obtenidos:", data);
-            console.log(events || "anana");
         };
 
         setTimeout(() => {
             setIsLoading(false);
-        }, 1500);
+        }, 1300);
 
         loadEvents();
 

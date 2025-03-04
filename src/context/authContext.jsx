@@ -4,14 +4,15 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
 
-    const [user, setUser] = useState(null);
     const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        if(authToken){
-            setUser(jwtDecode(authToken));
-        }
-    }, []);
+        if (authToken) {
+          setUser(jwtDecode(authToken));
+        } 
+      }, []); 
+
 
     return (
         <AuthContext.Provider value={{ user, authToken }}>

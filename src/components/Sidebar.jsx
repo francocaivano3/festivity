@@ -65,11 +65,6 @@ const Sidebar = () => {
               className="w-20 h-20 rounded-full mx-auto mb-5"
             />
           )}
-          {/* {isAuth ? (
-            <h2 className="text-xl text-center mb-14">{user}</h2>
-          ) : (
-            <h2 className="text-xl text-center mb-14">{user}</h2>
-          )} */}
           <h2 className="text-xl text-center mb-14">{user}</h2>
           <ul className="space-y-4">
             {userRole !== "SuperAdmin" ? <li>
@@ -136,7 +131,7 @@ const Sidebar = () => {
                 </Link>
               </li>
             )}
-            <li>
+            {userRole !== "EventOrganizer" && <li>
               <Link
                 to="/configuration"
                 className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded"
@@ -144,7 +139,7 @@ const Sidebar = () => {
                 <Settings className="h-6 w-6" />
                 <span>Configuración</span>
               </Link>
-            </li>
+            </li>}
           </ul>
         </nav>
         <div className="p-4">

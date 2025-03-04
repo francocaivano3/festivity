@@ -62,10 +62,6 @@
         }
     };
 
-    const handleCancel = () => {
-        setIsConfirmOpen(false);
-    }
-
         const handleChange = (e) => {
             const {name, value} = e.target;
             setEventData((prev) => ({

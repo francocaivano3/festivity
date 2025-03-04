@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo.png";
 import Bgimg from "../assets/hero-image.jpg";
 import { jwtDecode } from "jwt-decode";
-
 const Login = () => {
     const [emailState, setEmailState] = useState("");
     const [passwordState, setPasswordState] = useState("");
@@ -18,7 +17,7 @@ const Login = () => {
           try {
               const decoded = jwtDecode(token);
               const role = decoded.Role;
-  
+            
               setTimeout(() => {  
                   if (role === "EventOrganizer" && window.location.pathname !== "/organizer") {
                       navigate("/organizer");
@@ -60,7 +59,7 @@ const Login = () => {
             const response = await Auth.login({ UserName: emailState, Password: passwordState});
             const decoded = jwtDecode(response.token);
             const userRole = decoded.Role;
-            
+
             if(userRole === "Client") {
               navigate("/client");
               window.location.reload();

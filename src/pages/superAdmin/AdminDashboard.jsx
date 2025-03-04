@@ -4,20 +4,33 @@ import StatCard from "../../components/StatCard";
 import Alert from "@mui/material/Alert";
 import { AlignLeft, Users, CalendarDays, PersonStanding, Tickets, Edit, Trash2 } from "lucide-react";
 import { fetchOrganizers, fetchAllEvents, fetchClients } from "../../utils/fetch";
+import EditOrganizerModal from "./EditOrganizerModal";
+import ConfirmDialog from "../../components/ConfirmDialog";
+import environment from "../../utils/environment";
 const AdminDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [alert, setAlert] = useState({message: "", type: ""});
     const [isLoading, setIsLoading] = useState(true);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [stats, setStats] = useState({
         totalOrganizers: 0,
         totalEvents: 0,
         totalClients: 0,
-    })
+    });
     const [organizers, setOrganizers] = useState([]);
+    const [organizerToEdit, setOrganizerToEdit] = useState({});
+    const [organizerIdToDelete, setOrganizerIdToDelete] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
+
+    const toggleModal = (organizerId) => {
+      setIsModalOpen(!isModalOpen);
+      const organizer = organizers.find((organizer) => organizer.id === organizerId);
+      setOrganizerToEdit(organizer); 
+    }
 
     useEffect(() => {
       const loadData = async () => {
@@ -54,11 +67,41 @@ const AdminDashboard = () => {
       loadData();
     }, []);
 
+    const handleConfirmDelete = async (organizerIdToDelete) => {
+      if (organizerIdToDelete && localStorage.getItem("authToken")) {
+        try {
+          const response = await fetch(`${environment.backendUrl}/api/EventOrganizer/${organizerIdToDelete}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          });
+          if (!response.ok) {
+            throw new Error("Error deleting organizer");
+          }
+          setAlert({ message: "Organizador eliminado exitosamente", type: "success" });
+          setTimeout(() => {
+            window.location.reload();
+            setAlert({ message: "", type: "" });
+          }, 2500);
+          setIsDialogOpen(false);
+          setOrganizers((prevOrganizers) => prevOrganizers.filter((organizer) => organizer.id !== organizerIdToDelete));
+        } catch (e) {
+          console.error("Error deleting organizer: ", e);
+          setAlert({ message: "Error al eliminar el organizador", type: "error" });
+          setTimeout(() => {
+            setAlert({ message: "", type: "" });
+          }, 2500);
+        }
+      }
+    };
+
+
     const tableTitles = ["ID", "Organizador", "Email", "Número de teléfono", "Acciones"];
 
     return (
     <div className="min-h-screen bg-gradient-to-r from-gray-200 to-gray-200">
-            {isSidebarOpen && (
+          {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40"
           onClick={toggleSidebar}
@@ -121,11 +164,11 @@ const AdminDashboard = () => {
                               <td className="px-4 py-4 whitespace-nowrap">{organizer.email}</td>
                               <td className="px-4 py-4 whitespace-nowrap">{organizer.phone}</td>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => toggleModal(event.id)}>
+                                <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => toggleModal(organizer.id)}>
                                     <Edit size={18}/>
                                 </button>
                                 <button className="text-red-600 hover:text-red-800" onClick={() => {
-                                  setEventIdToDelete(event.id);
+                                  setOrganizerIdToDelete(organizer.id);
                                   setIsDialogOpen(true);
                                 }}>
                                     <Trash2 size={18}/>
@@ -140,7 +183,14 @@ const AdminDashboard = () => {
             :
             null}
         </div>
-
+          
+        {isModalOpen && <EditOrganizerModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} organizerToEdit={organizerToEdit} setAlert={setAlert}/>}    
+        <ConfirmDialog 
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={() => handleConfirmDelete(organizerIdToDelete)}
+        message="Estás seguro de que quieres eliminar a este organizador?"
+        />
     </div>
     )
 
