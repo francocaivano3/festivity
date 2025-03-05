@@ -43,7 +43,6 @@ const EventForm = () => {
         });
         console.log(response);
         if (!response.ok) {
-          console.log("aaa")
           let errorMessage = "Ha ocurrido un error!";
           try{
               const errorData = await response.json(); 

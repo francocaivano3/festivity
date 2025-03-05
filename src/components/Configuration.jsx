@@ -4,6 +4,8 @@ import Sidebar from "./Sidebar";
 import Alert from "@mui/material/Alert";
 import environment from "../utils/environment";
 import { fetchClient } from "../utils/fetch";
+import ConfirmDialog from "../components/ConfirmDialog";
+import Auth from "../services/auth";
 
 const Configuration = ({role}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -18,6 +20,7 @@ const Configuration = ({role}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [alert, setAlert] = useState({ message: "", type: "" });
   const token = localStorage.getItem("authToken");
+  const [confirm, setConfirm] = useState(false);
   const [userData, setUserData] = useState({})
 
   useEffect(() => {
@@ -29,7 +32,7 @@ const Configuration = ({role}) => {
         name: response.name || "",
         email: response.email || "",
         phone: response.phone || "",
-        password: response.password || ""
+        password: ""
       })
     } catch (error) {
       setAlert({message: error.message, type: 'error'});
@@ -130,8 +133,50 @@ const Configuration = ({role}) => {
     setIsSubmitting(false);
   };
 
+  const handleDelete = () => {
+    setConfirm(true);
+  }
+
+  const handleDeletion = async() => {
+    
+    try {
+      const url = `${environment.backendUrl}/api/Client/client/delete`;
+      const method = "DELETE";
+      const response = await fetch(url, {
+          method: method,
+          headers: {
+              "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+              "Content-Type": "application/json"
+          }
+      });
+      if(!response.ok){
+          const errorData = await response.json(); 
+          setAlert({ message: `Error: ${errorData.message || 'Error al eliminar el usuario!'}`, type: "error" });
+          throw new Error("Failed to delete user");
+      }
+      setAlert({ message: "El usuario ha sido eliminado!", type: "success" });
+      setTimeout(() => {
+        setAlert({ message: "", type:""});
+        Auth.logout();
+        Auth.checkAndRemoveExpiredToken();
+      }, 2000);
+    } catch (e) {
+      console.error(e);
+      setAlert({ message: "Error al eliminar el usuario!", type: "error" });
+    }
+  }
+
+
   return (
     <div className="min-h-screen">
+      {confirm && (
+                <ConfirmDialog
+                    open={confirm}
+                    message="¿Estás seguro de que quieres eliminar tu cuenta?"
+                    onConfirm={handleDeletion}
+                    onClose={() => setConfirm(false)}
+                />
+            )}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-40" onClick={toggleSidebar} />
       )}
@@ -157,9 +202,9 @@ const Configuration = ({role}) => {
         </h1>
       </div>
 
-      <div className={isSidebarOpen ? "bg-gradient-to-r from-[#8A70FF] to-[#4C6FFF] p-6 blur-sm" : "bg-gradient-to-r from-[#8A70FF] to-[#4C6FFF] p-6"}>
+      <div className={isSidebarOpen ? "p-6 blur-sm" : "p-6"}>
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="bg-white rounded-xl shadow-lg p-6" id="form-config">
             {alert && (
               <Alert
                 variant="filled"
@@ -277,11 +322,11 @@ const Configuration = ({role}) => {
                 </div>
               </div>
 
-              <div className="flex justify-end pt-4">
+              <div className="flex justify-between pt-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2 bg-[#8A70FF] text-white rounded-lg hover:bg-[#7559FF] transition-colors duration-200 flex items-center space-x-2 disabled:opacity-70"
+                  className="px-6 py-2 bg-[#6366f1] text-white rounded-lg hover:bg-[#7559FF] transition-colors duration-200 flex items-center space-x-2 disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <>
@@ -310,8 +355,14 @@ const Configuration = ({role}) => {
                     "Actualizar"
                   )}
                 </button>
+
+                <button type="button" className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700" onClick={handleDelete}>
+                  Borrar cuenta
+                </button>
               </div>
             </form>
+
+            
           </div>
         </div>
       </div>

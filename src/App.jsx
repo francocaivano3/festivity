@@ -1,4 +1,5 @@
 import AlertProvider from "./context/alertContext";
+import { ThemeContextProvider } from "./context/themeContext";
 import Alert from "./components/Alert";
 import Private from "./components/Private";
 import Login from "./components/Login";
@@ -16,6 +17,7 @@ import Configuration from "./components/Configuration";
 import AdminDashboard from "./pages/superAdmin/AdminDashboard";
 import CreateOrganizer from "./pages/superAdmin/CreateOrganizer";
 const App = () => {
+
   const router = createBrowserRouter([
     {element: <Login/>, path: "/login", },
     {element: <Register/>, path: "/register"},
@@ -73,12 +75,14 @@ const App = () => {
   ])
 
   return (
-    <AuthContextProvider>
-      <AlertProvider>
-        <Alert />
-        <RouterProvider router={router} />
-      </AlertProvider>
-    </AuthContextProvider>
+    <ThemeContextProvider>
+      <AuthContextProvider>
+        <AlertProvider>
+          <Alert />
+          <RouterProvider router={router} />
+       </AlertProvider>
+      </AuthContextProvider>
+    </ThemeContextProvider>
   )
 }
 

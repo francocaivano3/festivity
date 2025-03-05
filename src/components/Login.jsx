@@ -75,7 +75,7 @@ const Login = () => {
             }
 
         } catch(e) {
-            setError("Usuario no encontrado");
+            setError("Usuario o Contraseña incorrectas");
         }
     }
 
@@ -139,7 +139,7 @@ const Login = () => {
                   <span className="border-t border-white flex-grow"></span>
               </div>
 
-              <button onClick={() => navigate("/")} className='underline mt-2 w-fit text-white'>Continuar como invitado</button>
+              <button onClick={() => navigate("/")} className='underline mt-2 w-fit text-white font-semibold'>Continuar como invitado</button>
           </div>
           </div>
         </form>

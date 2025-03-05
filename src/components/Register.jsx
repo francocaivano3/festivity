@@ -35,6 +35,9 @@ const Register = () => {
     if(passwordState === ""){
         setError("Password is required");
         return;
+    } else if(passwordState.length < 6){
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
     }
     
     if(userName === ""){
@@ -45,6 +48,9 @@ const Register = () => {
     if(phone === ""){
         setError("El número de teléfono es requerido");
         return;
+    } else if(phone.length < 10) {
+      setError("Ingrese un número de teléfono válido");
+      return;
     }
 
     setError("");
@@ -142,7 +148,7 @@ const Register = () => {
                 value={phone}
                 required
                 className="w-full p-2 border border-black rounded-lg"
-                placeholder="341-1234567"
+                placeholder="3411234567"
               />
             </div>
             <br />

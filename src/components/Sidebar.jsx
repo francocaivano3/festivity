@@ -7,19 +7,25 @@ import {
   CircleUserRound,
   CalendarPlus,
   Calendar,
-  UserPlus
+  UserPlus,
+  Moon,
+  Sun
 } from "lucide-react";
 import imgUser from "../assets/hero-image.jpg";
 import { jwtDecode } from "jwt-decode";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Auth from "../services/auth";
+import { ThemeContext } from "../context/themeContext";
+
 
 const Sidebar = () => {
   const [isAuth, setIsAuth] = useState(true);
   const [user, setUser] = useState("Invitado");
   const [userRole, setUserRole] = useState("");
   const token = localStorage.getItem("authToken");
+  const {theme, toggleTheme} = useContext(ThemeContext);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,10 +58,10 @@ const Sidebar = () => {
 
   return (
     <div className="w-64 fixed z-50 inset-0 min-h-screen">
-      <div className="h-screen bg-[#f2f4f6] text-dark flex flex-col">
+      <div className="h-screen bg-[#f2f4f6] flex flex-col">
         <div className="flex items-center justify-center h-12"></div>
 
-        <nav className="flex-1 px-4">
+        <nav className="flex-1 px-4 mt-8">
           {!isAuth ? (
             <CircleUserRound className="mx-auto mb-5 h-16 w-16 text-indigo-800" />
           ) : (
@@ -140,9 +146,17 @@ const Sidebar = () => {
                 <span>Configuración</span>
               </Link>
             </li>}
+
+            <button className="px-6 border-2 border-black hover:bg-gradient-to-r from-indigo-400 to-violet-500  rounded-xl w-full flex justify-between p-2 mb-4"
+            onClick={() => toggleTheme(theme === "light" ? "dark": "light")}
+            aria-label="toggle theme">
+              <Moon/>
+              <Sun/>
+            </button>
           </ul>
         </nav>
         <div className="p-4">
+
           {isAuth ? (
             <button
               onClick={handleLogout}

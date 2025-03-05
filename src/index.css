@@ -74,3 +74,9 @@ input[type="number"]::-webkit-outer-spin-button {
   box-shadow: 8px 8px #0d0d0e;
   transition: 0.2s;
 }
+
+#form-config {
+  box-shadow: 8px 8px #6366f1;
+  border-top: 1px solid #6366f1;
+  border-left: 1px solid #6366f1;
+}

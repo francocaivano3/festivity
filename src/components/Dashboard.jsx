@@ -76,7 +76,7 @@ const Dashboard = () => {
                 </div>
                 :
                <div className={isSidebarOpen ? "flex items-center justify-center w-full h-[60vh] p-10 blur-sm" : "flex items-center justify-center w-full h-[60vh] p-10"}>
-                   <Empty image={img} message={"No hay eventos disponibles"} className={"h-[60vh] text-center"}/>
+                   <Empty image={img} message={"NO HAY EVENTOS DISPONIBLES"} className={"h-[60vh] text-center"}/>
                </div>
                )}
    </div>)

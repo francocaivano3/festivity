@@ -127,30 +127,30 @@ const CreateOrganizer = () => {
       </div>
 
       <div className="w-3/4 sm:w-3/5 mx-auto mt-14">
-            <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white p-16 w-full space-y-4 mb-10 ml-12 rounded-xl blur-sm` : `bg-white p-16 w-full space-y-4 mb-10 rounded-xl`}>
+            <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white p-16 w-full space-y-4 mb-10 ml-12 rounded-xl blur-sm` : `bg-white p-16 w-full space-y-4 mb-10 rounded-xl shadow-xl`}>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-2">
                 <label htmlFor="Name">Nombre</label>
                 <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="Name" value={organizerToCreate.Name} onChange={handleChange} placeholder="Ingrese el nombre del Organizador" />
+                <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="Name" value={organizerToCreate.Name} onChange={handleChange} placeholder="Ingrese el nombre del Organizador" />
             </div>
             <div className="space-y-2">
                 <label htmlFor="Email">Email</label>
                 <br />
-                <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="email" name="Email" value={organizerToCreate.Email} onChange={handleChange} placeholder="Ingrese el email del Organizador" />
+                <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="email" name="Email" value={organizerToCreate.Email} onChange={handleChange} placeholder="Ingrese el email del Organizador" />
             </div>
           </div>
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               <div className="space-y-2">
                   <label htmlFor="Password">Contraseña</label>
                   <br />
-                  <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="password" name="Password" value={organizerToCreate.Password} onChange={handleChange} placeholder="Ingrese la contraseña"/>
+                  <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="password" name="Password" value={organizerToCreate.Password} onChange={handleChange} placeholder="Ingrese la contraseña"/>
               </div>
               <div className="space-y-2">
                   <label htmlFor="Phone">Teléfono</label>
                   <br />
-                  <input className="w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="tel" name="Phone" value={organizerToCreate.Phone} onChange={handleChange} placeholder="Ingrese el teléfono del Organizador" />
+                  <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="tel" name="Phone" value={organizerToCreate.Phone} onChange={handleChange} placeholder="Ingrese el teléfono del Organizador" />
               </div>
             </div>
             <div className="flex justify-between items-center pt-4">
