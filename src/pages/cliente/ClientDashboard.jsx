@@ -42,7 +42,7 @@ const ClientDashboard = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-violet-200 to-green-200">
+        <div className="min-h-screen bg-gradient-to-r from-violet-200 to-green-200 dark:bg-gradient-to-r dark:from-violet-950 dark:to-purple-500">
             {isSidebarOpen && (
             <div
               className="fixed inset-0 z-40"
@@ -52,9 +52,9 @@ const ClientDashboard = () => {
              <div className="flex p-4"> 
                  {isSidebarOpen && <Sidebar />}
                  {isSidebarOpen && <button className="z-50 sticky top-0" onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all" /></button>}
-                 <button onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500"/></button>
+                 <button onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500 dark:text-white"/></button>
                  <div className="flex w-full justify-between">
-                    <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-500 ml-40" : "text-3xl font-bold text-indigo-500"}>Eventos</h1>
+                    <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-500 ml-40 dark:text-white" : "text-3xl font-bold text-indigo-500 dark:text-white"}>Eventos</h1>
                     {alert.message && (
                         <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/3">
                             {alert.message}

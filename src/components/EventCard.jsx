@@ -112,7 +112,7 @@ const handleModalToggle = () => {
 
   return (
     <div className="flex justify-center p-6">
-      <div className="bg-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-3xl w-full max-w-xl">
+      <div className="bg-white dark:bg-violet-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-3xl w-full max-w-xl">
         <img src={Event || "/placeholder.svg"} alt="" className="rounded-t-3xl w-full h-56 object-cover" />
         <div className="p-6">
           <h2 className="font-bold text-xl text-indigo-600 hover:text-indigo-800">{Name}</h2>
@@ -120,23 +120,23 @@ const handleModalToggle = () => {
 
           <div className="mt-4 space-y-3">
             <div className="flex items-center text-sm">
-              <MapPin className="text-indigo-500 mr-2 flex-shrink-0" />
-              <p className="text-gray-700">{City}, {Address}</p>
+              <MapPin className="text-indigo-500 dark:text-gray-100 mr-2 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-violet-950">{City}, {Address}</p>
             </div>
 
             <div className="flex items-center text-sm">
-              <Calendar1 className="mr-2 text-indigo-500 flex-shrink-0" />
-              <p className="text-gray-700">Fecha: {day}</p>
+              <Calendar1 className="mr-2 text-indigo-500 dark:text-gray-100 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-violet-950">Fecha: {day}</p>
             </div>
 
             <div className="flex items-center text-sm">
-              <Clock className="mr-2 text-indigo-500 flex-shrink-0" />
-              <p className="text-gray-700">Hora: {hour}</p>
+              <Clock className="mr-2 text-indigo-500 dark:text-gray-100 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-violet-950">Hora: {hour}</p>
             </div>
 
             <div className="flex items-center text-sm">
-              <CircleDollarSign className="mr-2 text-indigo-500 flex-shrink-0" />
-              <p className="text-gray-700">Precio: ${Price}</p>
+              <CircleDollarSign className="mr-2 text-indigo-500 dark:text-gray-100 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-violet-950">Precio: ${Price}</p>
             </div>
           </div>
 
@@ -191,7 +191,7 @@ const handleModalToggle = () => {
             </button>
             <form onSubmit={(e) => handleSubmit(e, EventId)} className="space-y-4">
                 <div>
-                    <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700">Número de tarjeta</label>
+                    <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 dark:text-violet-950">Número de tarjeta</label>
                     <input
                         type="number"
                         name="cardNumber"
@@ -205,7 +205,7 @@ const handleModalToggle = () => {
                     {errors.cardNumber && <span className="text-red-500 text-sm">{errors.cardNumber}</span>}
                 </div>
                 <div>
-                    <label htmlFor="cardName" className="block text-sm font-medium text-gray-700">Nombre en la tarjeta</label>
+                    <label htmlFor="cardName" className="block text-sm font-medium text-gray-700 dark:text-violet-950">Nombre en la tarjeta</label>
                     <input
                         type="text"
                         name="cardName"
@@ -219,7 +219,7 @@ const handleModalToggle = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label htmlFor="expiration" className="block text-sm font-medium text-gray-700">Expiración</label>
+                        <label htmlFor="expiration" className="block text-sm font-medium text-gray-700 dark:text-violet-950">Expiración</label>
                         <input
                             type="text"
                             name="expiration"
@@ -232,7 +232,7 @@ const handleModalToggle = () => {
                         {errors.expiration && <span className="text-red-500 text-sm">{errors.expiration}</span>}
                     </div>
                     <div>
-                        <label htmlFor="cvv" className="block text-sm font-medium text-gray-700">CVV</label>
+                        <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 dark:text-violet-950">CVV</label>
                         <input
                              type="number"
                              name="cvv"

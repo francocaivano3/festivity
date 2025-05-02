@@ -49,7 +49,7 @@ const Dashboard = () => {
     }
 
    return (
-   <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200">
+   <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200 dark:bg-gradient-to-r dark:from-violet-950 dark:to-purple-500">
         {isSidebarOpen && (
             <div
               className="fixed inset-0 z-40"
@@ -58,9 +58,9 @@ const Dashboard = () => {
         )}
         <div className="flex p-4"> 
             {isSidebarOpen && <Sidebar />}
-            {isSidebarOpen && <button className="z-50" onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all" /></button>}
-            <button onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-600"/></button>
-            <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-600 ml-40" : "text-3xl font-bold text-indigo-600"}>Eventos</h1>
+            {isSidebarOpen && <button className="z-50" onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all dark:text-white"/></button>}
+            <button onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-600 dark:text-white"/></button>
+            <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-600 ml-40 dark:text-white" : "text-3xl font-bold text-indigo-600 dark:text-white"}>Eventos</h1>
         </div>
         {isLoading ?
               (
