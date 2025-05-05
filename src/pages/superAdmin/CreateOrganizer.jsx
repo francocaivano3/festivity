@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Sidebar from "../../components/Sidebar";
 import { AlignLeft } from "lucide-react";
 import background from "../../assets/bg-create.webp";
+import background2 from "../../assets/wedding.png";
+import { ThemeContext } from "../../context/themeContext";
 import { Alert } from "@mui/material";
 import environment from "../../utils/environment";
 import { useNavigate } from "react-router-dom";
+
 const CreateOrganizer = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [organizerToCreate, setOrganizerToCreate] = useState({
@@ -15,6 +18,10 @@ const CreateOrganizer = () => {
     });
     const [alert, setAlert] = useState({ message: "", type: "" });
     const [error, setError] = useState("");
+
+    const {isDark} = useContext(ThemeContext);
+    const bgImg = isDark ? background2 : background;
+
 
     const navigate = useNavigate();
 
@@ -97,7 +104,7 @@ const CreateOrganizer = () => {
       };
 
     return (
-        <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url(${background})`}}>
+        <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url(${bgImg})`}}>
             {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40"
@@ -112,14 +119,14 @@ const CreateOrganizer = () => {
           </button>
         )}
         <button onClick={toggleSidebar}>
-          <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500" />
+          <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500 dark:text-violet-700" />
         </button>
 
         <h1
         className={
             isSidebarOpen
-            ? "text-3xl font-bold text-indigo-500 ml-40"
-            : "text-3xl font-bold text-indigo-500"
+            ? "text-3xl font-bold text-indigo-500 ml-40 dark:text-violet-700"
+            : "text-3xl font-bold text-indigo-500 dark:text-violet-700"
         }
         >
         Crear Organizador
@@ -127,34 +134,34 @@ const CreateOrganizer = () => {
       </div>
 
       <div className="w-3/4 sm:w-3/5 mx-auto mt-14">
-            <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white p-16 w-full space-y-4 mb-10 ml-12 rounded-xl blur-sm` : `bg-white p-16 w-full space-y-4 mb-10 rounded-xl shadow-xl`}>
+            <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white dark:bg-[#111111] dark:text-violet-400 p-16 w-full space-y-4 mb-10 ml-12 rounded-xl blur-sm` : `bg-white dark:bg-[#111111] dark:text-violet-400 p-16 w-full space-y-4 mb-10 rounded-xl shadow-xl`}>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div className="space-y-2">
                 <label htmlFor="Name">Nombre</label>
                 <br />
-                <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="Name" value={organizerToCreate.Name} onChange={handleChange} placeholder="Ingrese el nombre del Organizador" />
+                <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] dark:focus:ring-violet-700 focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="text" name="Name" value={organizerToCreate.Name} onChange={handleChange} placeholder="Ingrese el nombre del Organizador" />
             </div>
             <div className="space-y-2">
                 <label htmlFor="Email">Email</label>
                 <br />
-                <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="email" name="Email" value={organizerToCreate.Email} onChange={handleChange} placeholder="Ingrese el email del Organizador" />
+                <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] dark:focus:ring-violet-700 focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="email" name="Email" value={organizerToCreate.Email} onChange={handleChange} placeholder="Ingrese el email del Organizador" />
             </div>
           </div>
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               <div className="space-y-2">
                   <label htmlFor="Password">Contraseña</label>
                   <br />
-                  <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="password" name="Password" value={organizerToCreate.Password} onChange={handleChange} placeholder="Ingrese la contraseña"/>
+                  <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] dark:focus:ring-violet-700 focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="password" name="Password" value={organizerToCreate.Password} onChange={handleChange} placeholder="Ingrese la contraseña"/>
               </div>
               <div className="space-y-2">
                   <label htmlFor="Phone">Teléfono</label>
                   <br />
-                  <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="tel" name="Phone" value={organizerToCreate.Phone} onChange={handleChange} placeholder="Ingrese el teléfono del Organizador" />
+                  <input className="focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] dark:focus:ring-violet-700 focus:outline-none w-full border-2 border-gray-400 p-2 rounded-lg text-black placeholder:text-gray-500 placeholder-black" type="tel" name="Phone" value={organizerToCreate.Phone} onChange={handleChange} placeholder="Ingrese el teléfono del Organizador" />
               </div>
             </div>
             <div className="flex justify-between items-center pt-4">
-              <button className="px-6 py-2 bg-[#6361f1] hover:scale-105 rounded-lg text-white" type="submit">Crear organizador</button>
+              <button className="px-6 py-2 bg-[#6361f1] dark:bg-violet-700 hover:scale-105 rounded-lg text-white" type="submit">Crear organizador</button>
               {error && <p className="bg-red-700 text-white p-2 rounded-lg">{error}</p>}
               {alert.message && (
                 <div className={`alert ${alert.type === "success" ? "bg-green-500" : "bg-red-500"} text-white p-3 rounded-md`}>
