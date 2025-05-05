@@ -49,37 +49,75 @@ const Dashboard = () => {
     }
 
    return (
-   <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200 dark:bg-gradient-to-r dark:from-violet-950 dark:to-purple-500">
-        {isSidebarOpen && (
-            <div
-              className="fixed inset-0 z-40"
-              onClick={toggleSidebar}
-            />
-        )}
-        <div className="flex p-4"> 
-            {isSidebarOpen && <Sidebar />}
-            {isSidebarOpen && <button className="z-50" onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all dark:text-white"/></button>}
-            <button onClick={toggleSidebar}><AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-600 dark:text-white"/></button>
-            <h1 className={isSidebarOpen ? "text-3xl font-bold text-indigo-600 ml-40 dark:text-white" : "text-3xl font-bold text-indigo-600 dark:text-white"}>Eventos</h1>
-        </div>
-        {isLoading ?
-              (
-                <div className="mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-3 gap-12 py-8">
-                    {Array.from({ length: 3 }).map((_, i) => (
-                        <Skeleton key={i} type="events" />
-                    ))}
-                </div>
-            ) :
-            (events.length > 0 ? 
-                <div className={isSidebarOpen ? `mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full` : `mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full`}>
-                   {events.map(event => <EventCard role={"Invitado"} key={event.id} Name={event.name} Address={event.address} City={event.city} Day={event.date} NumberOfTickets={event.numberOfTickets} Category={event.category} Price={event.price}/>)}
-                </div>
-                :
-               <div className={isSidebarOpen ? "flex items-center justify-center w-full h-[60vh] p-10 blur-sm" : "flex items-center justify-center w-full h-[60vh] p-10"}>
-                   <Empty image={img} message={"NO HAY EVENTOS DISPONIBLES"} className={"h-[60vh] text-center"}/>
-               </div>
-               )}
-   </div>)
+     <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200 dark:bg-gradient-to-r dark:from-[#111111] dark:to-[#111111]">
+       {isSidebarOpen && (
+         <div className="fixed inset-0 z-40" onClick={toggleSidebar} />
+       )}
+       <div className="flex p-4">
+         {isSidebarOpen && <Sidebar />}
+         {isSidebarOpen && (
+           <button className="z-50" onClick={toggleSidebar}>
+             <AlignLeft className="h-8 w-8 hover:scale-110 transition-all dark:text-white" />
+           </button>
+         )}
+         <button onClick={toggleSidebar}>
+           <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-600 dark:text-violet-500" />
+         </button>
+         <h1
+           className={
+             isSidebarOpen
+               ? "text-3xl font-bold text-indigo-600 ml-40 dark:text-violet-600"
+               : "text-3xl font-bold text-indigo-600 dark:text-violet-600"
+           }
+         >
+           Eventos
+         </h1>
+       </div>
+       {isLoading ? (
+         <div className="mx-auto w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-3 gap-12 py-8">
+           {Array.from({ length: 3 }).map((_, i) => (
+             <Skeleton key={i} type="events" />
+           ))}
+         </div>
+       ) : events.length > 0 ? (
+         <div
+           className={
+             isSidebarOpen
+               ? `mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 blur-sm min-w-full`
+               : `mx-auto max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 p-10 min-w-full`
+           }
+         >
+           {events.map((event) => (
+             <EventCard
+               role={"Invitado"}
+               key={event.id}
+               Name={event.name}
+               Address={event.address}
+               City={event.city}
+               Day={event.date}
+               NumberOfTickets={event.numberOfTickets}
+               Category={event.category}
+               Price={event.price}
+             />
+           ))}
+         </div>
+       ) : (
+         <div
+           className={
+             isSidebarOpen
+               ? "flex items-center justify-center w-full h-[60vh] p-10 blur-sm"
+               : "flex items-center justify-center w-full h-[60vh] p-10"
+           }
+         >
+           <Empty
+             image={img}
+             message={"NO HAY EVENTOS DISPONIBLES"}
+             className={"h-[60vh] text-center"}
+           />
+         </div>
+       )}
+     </div>
+   );
 }
 
 export default Dashboard;

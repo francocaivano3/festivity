@@ -136,7 +136,7 @@ const Sidebar = () => {
                 </Link>
               </li>
             )}
-            {userRole !== "EventOrganizer" && <li>
+            {userRole !== "EventOrganizer" && userRole !== "SuperAdmin" && <li>
               <Link
                 to="/configuration"
                 className="flex items-center space-x-2 hover:bg-gradient-to-r from-indigo-400 to-violet-500 p-2 rounded"

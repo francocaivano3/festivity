@@ -112,31 +112,43 @@ const handleModalToggle = () => {
 
   return (
     <div className="flex justify-center p-6">
-      <div className="bg-white dark:bg-violet-500 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-3xl w-full max-w-xl">
-        <img src={Event || "/placeholder.svg"} alt="" className="rounded-t-3xl w-full h-56 object-cover" />
+      <div className="bg-white dark:bg-[#1f1f1f] shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-2xl w-full max-w-xl">
+        <img
+          src={Event || "/placeholder.svg"}
+          alt=""
+          className="rounded-t-2xl w-full h-56 object-cover"
+        />
         <div className="p-6">
-          <h2 className="font-bold text-xl text-indigo-600 hover:text-indigo-800">{Name}</h2>
-          <h3 className="text-sm text-gray-500 mb-4">{Category}</h3>
+          <h2 className="font-bold text-xl text-indigo-600 hover:text-indigo-800 dark:text-gray-200 uppercase">
+            {Name}
+          </h2>
+          <h3 className="text-sm text-gray-500 mb-4 dark:text-gray-300">
+            {Category}
+          </h3>
 
           <div className="mt-4 space-y-3">
             <div className="flex items-center text-sm">
-              <MapPin className="text-indigo-500 dark:text-gray-100 mr-2 flex-shrink-0" />
-              <p className="text-gray-700 dark:text-violet-950">{City}, {Address}</p>
+              <MapPin className="text-indigo-500 dark:text-violet-600 mr-2 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-gray-200">
+                {City}, {Address}
+              </p>
             </div>
 
             <div className="flex items-center text-sm">
-              <Calendar1 className="mr-2 text-indigo-500 dark:text-gray-100 flex-shrink-0" />
-              <p className="text-gray-700 dark:text-violet-950">Fecha: {day}</p>
+              <Calendar1 className="mr-2 text-indigo-500 dark:text-violet-600 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-gray-200">Fecha: {day}</p>
             </div>
 
             <div className="flex items-center text-sm">
-              <Clock className="mr-2 text-indigo-500 dark:text-gray-100 flex-shrink-0" />
-              <p className="text-gray-700 dark:text-violet-950">Hora: {hour}</p>
+              <Clock className="mr-2 text-indigo-500 dark:text-violet-600 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-gray-200">Hora: {hour}</p>
             </div>
 
             <div className="flex items-center text-sm">
-              <CircleDollarSign className="mr-2 text-indigo-500 dark:text-gray-100 flex-shrink-0" />
-              <p className="text-gray-700 dark:text-violet-950">Precio: ${Price}</p>
+              <CircleDollarSign className="mr-2 text-indigo-500 dark:text-violet-600 flex-shrink-0" />
+              <p className="text-gray-700 dark:text-gray-200">
+                Precio: ${Price}
+              </p>
             </div>
           </div>
 
@@ -144,130 +156,163 @@ const handleModalToggle = () => {
             <span
               className={`${
                 NumberOfTickets > 0
-                  ? "bg-green-200 text-green-800"
+                  ? "bg-green-300 text-green-800 dark:text-white dark:bg-green-500 "
                   : "bg-red-300 text-red-800"
               } p-2 rounded-xl text-xs w-full sm:w-auto text-center`}
             >
               {NumberOfTickets > 0 ? "Disponible" : "Agotado"}
             </span>
             {role === "EventOrganizer" ? (
-        <button
-          className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
-          onClick={() => navigate("/organizer")}
-        >
-          Editar
-        </button>
-      ) : (
-        (NumberOfTickets > 0 && role === "Client") ? (
-          <button
-            className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
-            onClick={handleModalToggle}
-          >
-            Comprar
-          </button>
-        ) : (
-          <button
-            className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
-            onClick={role !== "Invitado" ? () => null : () => navigate("/login")}
-          >
-            Comprar
-          </button>
-        )
-      )}
-
+              <button
+                className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white dark:text-black text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
+                onClick={() => navigate("/organizer")}
+              >
+                Editar
+              </button>
+            ) : NumberOfTickets > 0 && role === "Client" ? (
+              <button
+                className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white dark:text-black text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
+                onClick={handleModalToggle}
+              >
+                Comprar
+              </button>
+            ) : (
+              <button
+                className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white dark:text-black text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
+                onClick={
+                  role !== "Invitado" ? () => null : () => navigate("/login")
+                }
+              >
+                Comprar
+              </button>
+            )}
           </div>
         </div>
       </div>
-      
+
       {isModalOpen && (
-    <div className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-40 z-50">
-        <div className="bg-white rounded-lg w-3/4 md:w-1/2 h-auto p-6 flex-col items-end relative">
-        
+        <div className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-40 z-50">
+          <div className="bg-white rounded-lg w-3/4 md:w-1/2 h-auto p-6 flex-col items-end relative dark:bg-[#1f1f1f]">
             <button
-                className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
-                onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
+              onClick={() => setIsModalOpen(false)}
             >
-                ✖
+              ✖
             </button>
-            <form onSubmit={(e) => handleSubmit(e, EventId)} className="space-y-4">
+            <form
+              onSubmit={(e) => handleSubmit(e, EventId)}
+              className="space-y-4"
+            >
+              <div>
+                <label
+                  htmlFor="cardNumber"
+                  className="block text-sm font-medium text-gray-700 dark:text-violet-500"
+                >
+                  Número de tarjeta
+                </label>
+                <input
+                  type="number"
+                  name="cardNumber"
+                  id="cardNumber"
+                  placeholder="0000 0000 0000 0000"
+                  value={formData.cardNumber}
+                  maxLength={16}
+                  onChange={handleChange}
+                  className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                />
+                {errors.cardNumber && (
+                  <span className="text-red-500 text-sm">
+                    {errors.cardNumber}
+                  </span>
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="cardName"
+                  className="block text-sm font-medium text-gray-700 dark:text-violet-500"
+                >
+                  Nombre en la tarjeta
+                </label>
+                <input
+                  type="text"
+                  name="cardName"
+                  id="cardName"
+                  placeholder="Nombre Apellido"
+                  value={formData.cardName}
+                  onChange={handleChange}
+                  className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                />
+                {errors.cardName && (
+                  <span className="text-red-500 text-sm">
+                    {errors.cardName}
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 dark:text-violet-950">Número de tarjeta</label>
-                    <input
-                        type="number"
-                        name="cardNumber"
-                        id="cardNumber"
-                        placeholder="0000 0000 0000 0000"
-                        value={formData.cardNumber}
-                        maxLength={16}
-                        onChange={handleChange}
-                        className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                    />
-                    {errors.cardNumber && <span className="text-red-500 text-sm">{errors.cardNumber}</span>}
+                  <label
+                    htmlFor="expiration"
+                    className="block text-sm font-medium text-gray-700 dark:text-violet-500"
+                  >
+                    Expiración
+                  </label>
+                  <input
+                    type="text"
+                    name="expiration"
+                    id="expiration"
+                    placeholder="MM/YY"
+                    value={formData.expiration}
+                    onChange={handleExpirationChange}
+                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                  />
+                  {errors.expiration && (
+                    <span className="text-red-500 text-sm">
+                      {errors.expiration}
+                    </span>
+                  )}
                 </div>
                 <div>
-                    <label htmlFor="cardName" className="block text-sm font-medium text-gray-700 dark:text-violet-950">Nombre en la tarjeta</label>
-                    <input
-                        type="text"
-                        name="cardName"
-                        id="cardName"
-                        placeholder="Nombre Apellido"
-                        value={formData.cardName}
-                        onChange={handleChange}
-                        className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                    />
-                    {errors.cardName && <span className="text-red-500 text-sm">{errors.cardName}</span>}
+                  <label
+                    htmlFor="cvv"
+                    className="block text-sm font-medium text-gray-700 dark:text-violet-500"
+                  >
+                    CVV
+                  </label>
+                  <input
+                    type="number"
+                    name="cvv"
+                    id="cvv"
+                    placeholder="123"
+                    value={formData.cvv}
+                    onChange={handleChange}
+                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                  />
+                  {errors.cvv && (
+                    <span className="text-red-500 text-sm">{errors.cvv}</span>
+                  )}
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor="expiration" className="block text-sm font-medium text-gray-700 dark:text-violet-950">Expiración</label>
-                        <input
-                            type="text"
-                            name="expiration"
-                            id="expiration"
-                            placeholder="MM/YY"
-                            value={formData.expiration}
-                            onChange={handleExpirationChange}
-                            className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                        />
-                        {errors.expiration && <span className="text-red-500 text-sm">{errors.expiration}</span>}
-                    </div>
-                    <div>
-                        <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 dark:text-violet-950">CVV</label>
-                        <input
-                             type="number"
-                             name="cvv"
-                             id="cvv"
-                             placeholder="123"
-                             value={formData.cvv}
-                             onChange={handleChange}
-                             className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                       />
-                        {errors.cvv && <span className="text-red-500 text-sm">{errors.cvv}</span>}
-                    </div>
-                </div>
-                <div className="flex justify-between mt-6">
-                    <button
-                        type="button"
-                        className="bg-gray-500 text-white rounded-lg px-4 py-2 hover:bg-gray-700"
-                        onClick={() => setIsModalOpen(false)}
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                        type="submit"
-                        className="bg-[#6366f1] text-white rounded-lg px-4 py-2 hover:bg-[#31339b]"
-                    >
-                        Comprar
-                    </button>
-                </div>
+              </div>
+              <div className="flex justify-between mt-6">
+                <button
+                  type="button"
+                  className="bg-red-500 text-white rounded-lg px-4 py-2 hover:bg-red-600"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#8366f1] text-white rounded-lg px-4 py-2 hover:bg-[#42339b]"
+                >
+                  Comprar
+                </button>
+              </div>
             </form>
+          </div>
         </div>
+      )}
     </div>
-)}
-
-
-    </div>
-  )
+  );
 }
 
 export default EventCard

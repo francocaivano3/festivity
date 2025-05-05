@@ -29,9 +29,9 @@ export const fetchEvents = async() => {
     return await fetchData("/api/Events/organizer/events");
 }
 
-export const soldTickets = async (eventId) => {
-    return await fetchData("/api/Events/organizers/events/event/tickets/sold", { eventId });
-}
+// export const soldTickets = async (eventId) => {
+//     return await fetchData("/api/Events/organizers/events/event/tickets/sold", { eventId });
+// }
 
 export const fetchAllEvents = async() => {
     return await fetchData("/api/Client/get-all-events");
@@ -66,7 +66,13 @@ export const buyTicket = async (eventId) => {
 }
 
 export const fetchSold = async (eventId) => {
-    return await fetchData(`/api/Events/organizers/events/event/tickets/sold/${eventId}`);
+    return await fetchData(`/api/Events/organizers/events/event/tickets/sold?eventId=${eventId}`);
+}
+
+export const fetchAvailable = async (eventId) => {
+  return await fetchData(
+    `/api/Events/organizers/events/event/tickets/available?eventId=${eventId}`
+  );
 }
 
 export const fetchOrganizers = async() => {

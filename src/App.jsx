@@ -36,9 +36,10 @@ const App = () => {
     path: "/create-event"},
     {element: 
     <Private requiredRoles={["EventOrganizer"]}>
-      <OrganizerEvents/>,
-    </Private>
-    , path: "/my-events"},
+      <OrganizerEvents/>
+    </Private>,
+      path: "/my-events"
+    },
     {element: <Error errorNum={404}/>, path: "*"},
     {element: 
       <Private requiredRoles={["Client"]}>
@@ -56,7 +57,7 @@ const App = () => {
     },
     {
       element: 
-      <Private requiredRoles={["Client", "SuperAdmin"]}>
+      <Private requiredRoles={["Client"]}>
         <Configuration/>
       </Private>,
       path: "/configuration"

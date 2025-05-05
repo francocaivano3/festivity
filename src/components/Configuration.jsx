@@ -168,15 +168,15 @@ const Configuration = ({role}) => {
 
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen dark:bg-[#111]">
       {confirm && (
-                <ConfirmDialog
-                    open={confirm}
-                    message="¿Estás seguro de que quieres eliminar tu cuenta?"
-                    onConfirm={handleDeletion}
-                    onClose={() => setConfirm(false)}
-                />
-            )}
+        <ConfirmDialog
+          open={confirm}
+          message="¿Estás seguro de que quieres eliminar tu cuenta?"
+          onConfirm={handleDeletion}
+          onClose={() => setConfirm(false)}
+        />
+      )}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-40" onClick={toggleSidebar} />
       )}
@@ -184,7 +184,7 @@ const Configuration = ({role}) => {
         {isSidebarOpen && <Sidebar />}
         {isSidebarOpen && (
           <button className="z-50 sticky top-0" onClick={toggleSidebar}>
-            <AlignLeft className="h-8 w-8 hover:scale-110 transition-all" />
+            <AlignLeft className="h-8 w-8 hover:scale-110 transition-all dark:text-white" />
           </button>
         )}
         <button onClick={toggleSidebar}>
@@ -194,8 +194,8 @@ const Configuration = ({role}) => {
         <h1
           className={
             isSidebarOpen
-              ? "text-3xl font-bold text-indigo-500 ml-40"
-              : "text-3xl font-bold text-indigo-500"
+              ? "text-3xl font-bold text-indigo-500 ml-40 dark:text-violet-600"
+              : "text-3xl font-bold text-indigo-500 dark:text-violet-600"
           }
         >
           Configuración
@@ -204,7 +204,10 @@ const Configuration = ({role}) => {
 
       <div className={isSidebarOpen ? "p-6 blur-sm" : "p-6"}>
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg p-6" id="form-config">
+          <div
+            className="bg-white rounded-xl shadow-lg p-6 dark:bg-[#1f1f1f]"
+            id="form-config"
+          >
             {alert && (
               <Alert
                 variant="filled"
@@ -217,10 +220,12 @@ const Configuration = ({role}) => {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              <h2 className="text-[#6366f1] text-xl">Actualizar información</h2>
+              <h2 className="text-[#6366f1] dark:text-violet-500 text-xl">
+                Actualizar información
+              </h2>
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-violet-500 mb-2">
                     Nombre del {role}
                   </label>
                   <input
@@ -234,13 +239,11 @@ const Configuration = ({role}) => {
                     placeholder="Ingrese el nombre de usuario"
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.name}
-                    </p>
+                    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-violet-500 mb-2">
                     Email
                   </label>
                   <input
@@ -259,7 +262,7 @@ const Configuration = ({role}) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-violet-500 mb-2">
                     Contraseña
                   </label>
                   <input
@@ -280,7 +283,7 @@ const Configuration = ({role}) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-violet-500 mb-2">
                     Confirmar contraseña
                   </label>
                   <input
@@ -303,7 +306,7 @@ const Configuration = ({role}) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-violet-500 mb-2">
                     Número de teléfono
                   </label>
                   <input
@@ -326,7 +329,7 @@ const Configuration = ({role}) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2 bg-[#6366f1] text-white rounded-lg hover:bg-[#7559FF] transition-colors duration-200 flex items-center space-x-2 disabled:opacity-70"
+                  className="px-6 py-2 bg-[#6366f1] dark:bg-violet-600 dark:hover:bg-violet-800 text-white rounded-lg hover:bg-[#7559FF] transition-colors duration-200 flex items-center space-x-2 disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <>
@@ -356,13 +359,15 @@ const Configuration = ({role}) => {
                   )}
                 </button>
 
-                <button type="button" className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700" onClick={handleDelete}>
+                <button
+                  type="button"
+                  className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700"
+                  onClick={handleDelete}
+                >
                   Borrar cuenta
                 </button>
               </div>
             </form>
-
-            
           </div>
         </div>
       </div>

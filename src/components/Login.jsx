@@ -81,10 +81,13 @@ const Login = () => {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      <div className="lg:items-center bg-gradient-to-r from-violet-600 to-indigo-600 flex items-top justify-center px-8 py-16">
-        <form className="mx-auto w-full max-w-sm space-y-6" onSubmit={handleSendData}>
+      <div className="lg:items-center bg-gradient-to-r from-purple-200 to-indigo-300 dark:bg-gradient-to-r dark:from-violet-600 dark:to-indigo-600  flex items-top justify-center px-8 py-16">
+        <form
+          className="mx-auto w-full max-w-sm space-y-6"
+          onSubmit={handleSendData}
+        >
           <div className="space-y-2 text-left">
-            <h1 className="text-2xl font-bold tracking-tight text-[#FFFFFF]">
+            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-violet-600 dark:bg-gradient-to-r dark:from-white dark:to-white bg-clip-text text-transparent ">
               Iniciar Sesión
             </h1>
           </div>
@@ -92,7 +95,7 @@ const Login = () => {
             <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="font-sans text-[#FFFFFF] text-lg"
+                className="font-sans text-violet-500 dark:text-white text-lg"
               >
                 Email
               </label>
@@ -110,7 +113,7 @@ const Login = () => {
             <div className="space-y-2">
               <label
                 htmlFor="password"
-                className="font-sans text-[#FFFFFF] text-lg"
+                className="font-sans text-violet-500 dark:text-white text-lg"
               >
                 Contraseña
               </label>
@@ -126,21 +129,35 @@ const Login = () => {
               />
             </div>
             {error && <p style={{ color: "#FFA500" }}>{error}</p>}
-          <button type='submit' id='button' className="w-full p-3 bg-[#000000] text-[#FFFFFF] hover:bg-[#775ab0] rounded-xl">
-            Iniciar Sesión
-          </button>
-          <div className="text-center text-white flex flex-col justify-center items-center">
-            <p className='mt-4'>Todavía no tenés cuenta?</p>
-              <button onClick={() => navigate("/register")} className='underline mt-2 w-fit font-semibold'>Registrarse</button>
+            <button
+              type="submit"
+              id="button"
+              className="w-full p-3 bg-gradient-to-r from-violet-500 to-indigo-500 text-[#FFFFFF] dark:bg-gradient-to-r dark:from-[#111111] dark:to-[#111111] dark:hover:bg-gradient-to-r dark:hover:from-violet-500 dark:hover:to-indigo-600 rounded-xl"
+            >
+              Iniciar Sesión
+            </button>
+            <div className="text-center text-violet-500 dark:text-white flex flex-col justify-center items-center">
+              <p className="mt-4">Todavía no tenés cuenta?</p>
+              <button
+                onClick={() => navigate("/register")}
+                className="underline mt-2 w-fit font-semibold"
+              >
+                Registrarse
+              </button>
 
               <div className="flex items-center justify-center my-2 p-2 w-3/4">
-                  <span className="border-t border-white flex-grow"></span>
-                  <span className="mx-2 text-white">o</span>
-                  <span className="border-t border-white flex-grow"></span>
+                <span className="border-t border-[#1f1f1f] dark:border-white flex-grow"></span>
+                <span className="mx-2 text-[#1f1f1f] dark:text-white">o</span>
+                <span className="border-t border-[#1f1f1f] dark:border-white flex-grow"></span>
               </div>
 
-              <button onClick={() => navigate("/")} className='underline mt-2 w-fit text-white font-semibold'>Continuar como invitado</button>
-          </div>
+              <button
+                onClick={() => navigate("/")}
+                className="underline mt-2 w-fit text-violet-500 dark:text-white font-semibold"
+              >
+                Continuar como invitado
+              </button>
+            </div>
           </div>
         </form>
       </div>

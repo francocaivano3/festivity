@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { Trash2 } from "lucide-react";
 import environment from "../../utils/environment";
+
 const EditOrganizerModal = ({isModalOpen, setIsModalOpen, organizerToEdit, setAlert}) => {
     const [organizerData, setOrganizerData] = useState({
         Id: Number(organizerToEdit.id),
@@ -127,93 +128,111 @@ const EditOrganizerModal = ({isModalOpen, setIsModalOpen, organizerToEdit, setAl
     };
 
     return (
-        <>
+      <>
         {isConfirmOpen && (
-                <ConfirmDialog
-                    open={isConfirmOpen}
-                    message="¿Estás seguro de que quieres eliminar este organizador?"
-                    onConfirm={confirmDeletion}
-                    onClose={() => setIsConfirmOpen(false)}
-                />
+          <ConfirmDialog
+            open={isConfirmOpen}
+            message="¿Estás seguro de que quieres eliminar este organizador?"
+            onConfirm={confirmDeletion}
+            onClose={() => setIsConfirmOpen(false)}
+          />
         )}
 
         <div className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-40 z-50">
-                <div className="bg-white rounded-lg w-full sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] h-auto p-6 flex-col items-end relative">
-                    <button
-                        className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
-                        onClick={() => setIsModalOpen(false)}
-                    >
-                        ✖
-                    </button>
-                    <form onSubmit={handleSubmit}>
-                        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                            <div>
-                                <label htmlFor="Name">Nombre del Organizador</label>
-                                <input 
-                                    type="text"
-                                    name="Name"
-                                    id="Name"
-                                    defaultValue={organizerData.Name}
-                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                                    placeholder="Juan Pérez"
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="Email">Email</label>
-                                <input 
-                                    type="email"
-                                    name="Email"
-                                    id="Email"
-                                    defaultValue={organizerData.Email}
-                                    placeholder="juanperez@gmail.com"
-                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="Password">Contraseña</label>
-                                <input 
-                                    type="password"
-                                    name="Password"
-                                    id="Password"
-                                    defaultValue={organizerData.Password}
-                                    placeholder="********"
-                                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="Phone">Teléfono</label>
-                                <input 
-                                    id="Phone"
-                                    type="tel"
-                                    name="Phone"
-                                    defaultValue={organizerData.Phone}
-                                    placeholder="3412345678"
-                                    className="bg-gray-200 pl-4 w-full size-10 rounded-md border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="flex justify-between mt-16">
-                            <button type="button" className="bg-[#9b3d3d] text-white rounded-lg px-4 py-2 flex hover:bg-[#be3232]" onClick={handleDelete}>
-                                Borrar organizador <Trash2 className="ml-2"/>
-                            </button>
-                            <div className="space-x-4">
-                                <button className="bg-[#7b7b86] text-white rounded-lg px-4 py-2 hover:bg-[#3a3a3f]" onClick={() => setIsModalOpen(false)}>
-                                    Cancelar
-                                </button>
-                                <button type="submit" className="bg-[#6366f1] text-white rounded-lg px-4 py-2 hover:bg-[#31339b]">
-                                    Guardar Cambios
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+          <div className="bg-white dark:bg-[#1f1f1f] rounded-lg w-full sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] h-auto p-6 flex-col items-end relative">
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 dark:text-white dark:hover:text-gray-300"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ✖ 
+            </button>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 ">
+                <div>
+                  <label htmlFor="Name" className="dark:text-violet-500">
+                    Nombre del Organizador
+                  </label>
+                  <input
+                    type="text"
+                    name="Name"
+                    id="Name"
+                    defaultValue={organizerData.Name}
+                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                    placeholder="Juan Pérez"
+                    onChange={handleChange}
+                  />
                 </div>
-            </div>
-        </>
-    )
+                <div>
+                  <label htmlFor="Email" className="dark:text-violet-500">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="Email"
+                    id="Email"
+                    defaultValue={organizerData.Email}
+                    placeholder="juanperez@gmail.com"
+                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="Password" className="dark:text-violet-500">
+                    Contraseña
+                  </label>
+                  <input
+                    type="password"
+                    name="Password"
+                    id="Password"
+                    defaultValue={organizerData.Password}
+                    placeholder="********"
+                    className="block w-full rounded-md size-10 bg-gray-200 pl-4 border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="Phone" className="dark:text-violet-500">
+                    Teléfono
+                  </label>
+                  <input
+                    id="Phone"
+                    type="tel"
+                    name="Phone"
+                    defaultValue={organizerData.Phone}
+                    placeholder="3412345678"
+                    className="bg-gray-200 pl-4 w-full size-10 rounded-md border-2 border-gray-300 focus:border-[#6366f1] focus:ring-1 focus:ring-[#6366f1] focus:outline-none"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-between mt-16">
+                <button
+                  type="button"
+                  className="bg-[#9b3d3d] text-white rounded-lg px-4 py-2 flex hover:bg-[#be3232]"
+                  onClick={handleDelete}
+                >
+                  Borrar organizador <Trash2 className="ml-2" />
+                </button>
+                <div className="space-x-4">
+                  <button
+                    className="bg-[#7b7b86] text-white rounded-lg px-4 py-2 hover:bg-[#3a3a3f]"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-[#6366f1] text-white rounded-lg px-4 py-2 hover:bg-[#31339b] dark:bg-violet-600 dark:hover:bg-violet-700"
+                  >
+                    Guardar Cambios
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </>
+    );
 }
 
 export default EditOrganizerModal;

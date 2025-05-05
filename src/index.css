@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.bg-event-form{
+  background-image: url(./assets/background.png);
+}
+
 * {
     font-family: "Poppins", Arial, Helvetica, sans-serif;
 }
@@ -35,15 +39,15 @@ input[type="number"]::-webkit-outer-spin-button {
 
 #ticket-container {
   background-image: radial-gradient(
-    circle at top left, transparent 17px, #6366f1 17px
+    circle at top left, transparent 17px, #6d28d9 17px
   ), radial-gradient(
-    circle at top right, transparent 17px, #6366f1 17px
+    circle at top right, transparent 17px, #6d28d9 17px
   ),
   radial-gradient(
-    circle at bottom left, transparent 17px, #6366f1 17px
+    circle at bottom left, transparent 17px, #6d28d9 17px
   ),
   radial-gradient(
-    circle at bottom right, transparent 17px, #6366f1 17px
+    circle at bottom right, transparent 17px, #6d28d9 17px
   );
   background-size: 51% 51%;
   background-repeat: no-repeat;
@@ -53,20 +57,20 @@ input[type="number"]::-webkit-outer-spin-button {
 #ticket-container::before, #ticket-container::after {
   box-sizing: border-box;
   position: absolute;
-  color: #6366f1;
+  color: #8745f2;
 }
 
 #ticket-container:hover {
   background-image: radial-gradient(
-    circle at top left, transparent 17px, #8082fa 17px
+    circle at top left, transparent 17px, #8745f2 17px
   ), radial-gradient(
-    circle at top right, transparent 17px, #8082fa 17px
+    circle at top right, transparent 17px, #8745f2 17px
   ),
   radial-gradient(
-    circle at bottom left, transparent 17px, #8082fa 17px
+    circle at bottom left, transparent 17px, #8745f2 17px
   ),
   radial-gradient(
-    circle at bottom right, transparent 17px, #8082fa 17px
+    circle at bottom right, transparent 17px, #8745f2 17px
   );
 }
 
@@ -76,7 +80,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 #form-config {
-  box-shadow: 8px 8px #6366f1;
-  border-top: 1px solid #6366f1;
-  border-left: 1px solid #6366f1;
+  box-shadow: 8px 8px #8366f1;
+  border-top: 1px solid #8366f1;
+  border-left: 1px solid #8366f1;
 }

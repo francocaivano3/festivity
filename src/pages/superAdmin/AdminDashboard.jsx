@@ -100,99 +100,160 @@ const AdminDashboard = () => {
     const tableTitles = ["ID", "Organizador", "Email", "Número de teléfono", "Acciones"];
 
     return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-200 to-gray-200">
-          {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={toggleSidebar}
-        />
-      )}
-      <div className="flex p-4">
-        {isSidebarOpen && <Sidebar />}
+      <div className="min-h-screen bg-gradient-to-r from-gray-200 to-gray-200 dark:bg-gradient-to-r dark:from-[#111111] dark:to-[#111111]">
         {isSidebarOpen && (
-          <button className="z-50 sticky top-0" onClick={toggleSidebar}>
-            <AlignLeft className="h-8 w-8 hover:scale-110 transition-all" />
-          </button>
+          <div className="fixed inset-0 z-40" onClick={toggleSidebar} />
         )}
-        <button onClick={toggleSidebar}>
-          <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500" />
-        </button>
+        <div className="flex p-4">
+          {isSidebarOpen && <Sidebar />}
+          {isSidebarOpen && (
+            <button className="z-50 sticky top-0" onClick={toggleSidebar}>
+              <AlignLeft className="h-8 w-8 hover:scale-110 transition-all dark:text-white" />
+            </button>
+          )}
+          <button onClick={toggleSidebar}>
+            <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500 dark:text-violet-500" />
+          </button>
 
-        <h1
-        className={
+          <h1
+            className={
+              isSidebarOpen
+                ? "text-3xl font-bold text-indigo-500 ml-40 dark:text-violet-700"
+                : "text-3xl font-bold text-indigo-500 dark:text-violet-700"
+            }
+          >
+            SuperAdmin Dashboard
+          </h1>
+        </div>
+
+        <div className="bg-gradient-to-r from-violet-500 to-blue-700 dark:bg-gradient-to-r dark:from-[#1f1f1f] dark:to-[#1f1f1f]">
+          <h2
+            className={
+              isSidebarOpen
+                ? "blur-sm text-center pt-4 text-white font-semibold text-xl dark:text-violet-600"
+                : "text-center pt-4 text-white font-semibold text-xl dark:text-violet-600"
+            }
+          >
+            Estadísticas 🚀
+          </h2>
+          <div
+            className={
+              isSidebarOpen
+                ? `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 px-12 pb-8 blur-sm `
+                : `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 px-12 pb-8 `
+            }
+          >
+            <StatCard
+              title={"Organizadores Totales"}
+              value={stats.totalOrganizers}
+              icon={<Users size={28} />}
+            />
+            <StatCard
+              title={"Eventos Totales"}
+              value={stats.totalEvents}
+              icon={<CalendarDays size={28} />}
+            />
+            <StatCard
+              title={"Clientes Totales"}
+              value={stats.totalClients}
+              icon={<PersonStanding size={32} />}
+            />
+          </div>
+        </div>
+
+        <div
+          className={
             isSidebarOpen
-            ? "text-3xl font-bold text-indigo-500 ml-40"
-            : "text-3xl font-bold text-indigo-500"
-        }
+              ? "bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm dark:bg-gradient-to-r dark:from-[#1f1f1f] dark:to-[#1f1f1f] dark:border-none"
+              : "bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 dark:bg-gradient-to-r dark:from-[#1f1f1f] dark:to-[#1f1f1f] dark:border-none"
+          }
         >
-        SuperAdmin Dashboard
-        </h1>
-      </div>
-        
-      <div className="bg-gradient-to-r from-violet-500 to-blue-700">
-        <h2 className={isSidebarOpen ? "blur-sm text-center pt-4 text-white font-semibold text-xl" : "text-center pt-4 text-white font-semibold text-xl"}>Estadísticas 🚀</h2>
-        <div className={isSidebarOpen ? `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 px-12 pb-8 blur-sm` : `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8 px-12 pb-8`}>
-          <StatCard title={"Organizadores Totales"} value={stats.totalOrganizers} icon={<Users size={28}/>} />
-          <StatCard title={"Eventos Totales"} value={stats.totalEvents} icon={<CalendarDays size={28}/>} />
-          <StatCard title={"Clientes Totales"} value={stats.totalClients} icon={<PersonStanding size={32}/>} />
-        </div>
-      </div>
-
-        <div className={isSidebarOpen ? "bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm" : "bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12"}>
-            {organizers.length > 0 ?
+          {organizers.length > 0 ? (
             <>
-            {alert.message && (
-            <Alert variant="filled" severity={alert.type} sx={{mb: 2}} className="w-1/2 mx-auto">
-                {alert.message}
-            </Alert>
-            )}
-            <h2 className="text-xl mb-4 text-center">Organizadores 👨‍💻</h2>
-            <div className="overflow-x-auto max-h-64 overflow-y-auto border border-gray-300 rounded-lg">
-              <table className="w-full min-w-max rounded-lg shadow-lg mx-auto text-center">
-              <thead className="bg-[#6366f1] sticky top-0 z-10">
+              {alert.message && (
+                <Alert
+                  variant="filled"
+                  severity={alert.type}
+                  sx={{ mb: 2 }}
+                  className="w-1/2 mx-auto"
+                >
+                  {alert.message}
+                </Alert>
+              )}
+              <h2 className="text-xl mb-4 text-center dark:text-white">
+                Organizadores 👨‍💻
+              </h2>
+              <div className="overflow-x-auto max-h-64 overflow-y-auto  rounded-lg dark:text-white">
+                <table className="w-full min-w-max rounded-lg shadow-lg mx-auto text-center">
+                  <thead className="bg-[#6366f1] sticky top-0 z-10 dark:bg-violet-700">
                     <tr>
-                        {tableTitles.map((title) => (
-                            <th key={title} className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-white">{title}</th>
-                        ))}
+                      {tableTitles.map((title) => (
+                        <th
+                          key={title}
+                          className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-white"
+                        >
+                          {title}
+                        </th>
+                      ))}
                     </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-300">
-                        {organizers.map((organizer) => (
-                          <tr key={organizer.id}>
-                              <td className="px-4 py-4 whitespace-nowrap">{organizer.id}</td>
-                              <td className="px-4 py-4 whitespace-nowrap">{organizer.name}</td>
-                              <td className="px-4 py-4 whitespace-nowrap">{organizer.email}</td>
-                              <td className="px-4 py-4 whitespace-nowrap">{organizer.phone}</td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <button className="text-blue-600 hover:text-blue-800 mr-2" onClick={() => toggleModal(organizer.id)}>
-                                    <Edit size={18}/>
-                                </button>
-                                <button className="text-red-600 hover:text-red-800" onClick={() => {
-                                  setOrganizerIdToDelete(organizer.id);
-                                  setIsDialogOpen(true);
-                                }}>
-                                    <Trash2 size={18}/>
-                                </button>
-                            </td>
-                          </tr>
-                        ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-gray-300 dark:divide-violet-500">
+                    {organizers.map((organizer) => (
+                      <tr key={organizer.id}>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          {organizer.id}
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          {organizer.name}
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          {organizer.email}
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          {organizer.phone}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <button
+                            className="text-blue-600 hover:text-blue-800 mr-2"
+                            onClick={() => toggleModal(organizer.id)}
+                          >
+                            <Edit size={18} />
+                          </button>
+                          <button
+                            className="text-red-600 hover:text-red-800"
+                            onClick={() => {
+                              setOrganizerIdToDelete(organizer.id);
+                              setIsDialogOpen(true);
+                            }}
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </>
-            :
-            null}
+          ) : null}
         </div>
-          
-        {isModalOpen && <EditOrganizerModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} organizerToEdit={organizerToEdit} setAlert={setAlert}/>}    
-        <ConfirmDialog 
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onConfirm={() => handleConfirmDelete(organizerIdToDelete)}
-        message="Estás seguro de que quieres eliminar a este organizador?"
+
+        {isModalOpen && (
+          <EditOrganizerModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            organizerToEdit={organizerToEdit}
+            setAlert={setAlert}
+          />
+        )}
+        <ConfirmDialog
+          open={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          onConfirm={() => handleConfirmDelete(organizerIdToDelete)}
+          message="Estás seguro de que quieres eliminar a este organizador?"
         />
-    </div>
-    )
+      </div>
+    );
 
 }
 
