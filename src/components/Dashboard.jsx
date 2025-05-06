@@ -65,6 +65,7 @@ const Dashboard = () => {
     Auth.logout();
     setIsAuth(false);
   };
+ 
 
   return (
     <div className="flex-1 min-h-screen bg-gradient-to-r from-violet-200 to-green-200 dark:bg-gradient-to-r dark:from-[#111111] dark:to-[#111111]">

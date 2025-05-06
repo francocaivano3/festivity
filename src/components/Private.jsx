@@ -8,8 +8,8 @@ const Private = ({children, requiredRoles = []}) => {
     if(!authToken){
         return <Navigate to="/login" />;
     }
-    
-    if(requiredRoles && user &&  !requiredRoles.filter((role) => role === user.Role)){
+                               
+    if(requiredRoles && user &&  !requiredRoles.some((role) => role === user.Role)){
         return <Navigate to="/error403" />;
     }
 

@@ -8,7 +8,7 @@ import Skeleton from "../../components/Skeleton";
 import Empty from "../../components/Empty";
 import img from "../../assets/new-years-party-decoration.png";
 
-import { fetchAvailableAllTickets } from "../../utils/fetch";
+import { fetchAvailableTickets } from "../../utils/fetch";
 const OrganizerEvents = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
@@ -34,7 +34,7 @@ const OrganizerEvents = () => {
             const fetchedEvents = await fetchEvents();
             if(fetchedEvents) {
                 const data = fetchedEvents;
-                const availableEventsTickets = await fetchAvailableAllTickets();
+                const availableEventsTickets = await fetchAvailableTickets();
                 const availableEvents = [];
                 for (let i = 0; i < data.length; i++) {
                   for (let j = 0; j < availableEventsTickets.length; j++) {

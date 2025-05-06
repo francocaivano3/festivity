@@ -7,6 +7,8 @@ import Alert from "@mui/material/Alert";
 import Skeleton from "../../components/Skeleton";
 import Empty from "../../components/Empty";
 import img from "../../assets/new-years-party-decoration.png";
+import { fetchAvailableAllTickets } from "../../utils/fetch";
+
 
 const ClientDashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -31,7 +33,24 @@ const ClientDashboard = () => {
         }
         const loadEvents = async() => {
             const data = await fetchAllEvents();
-            if(data) setEvents(data);
+          if (data) {
+              const availableEventsTickets = await fetchAvailableAllTickets();
+                      const availableEvents = [];
+                      for (let i = 0; i < data.length; i++) {
+                        for (let j = 0; j < availableEventsTickets.length; j++) {
+                          if (data[i].id == availableEventsTickets[j].id) {
+                            if (availableEventsTickets[j].availableTickets >= 0) {
+                              const dataCopy = {
+                                ...data[i],
+                                availableTickets: availableEventsTickets[j].availableTickets,
+                              };
+                              availableEvents.push(dataCopy);
+                            }
+                          }
+                        }
+                      }
+                    setEvents(availableEvents);
+            }
         };
 
         setTimeout(() => {
@@ -103,7 +122,7 @@ const ClientDashboard = () => {
                 Address={event.address}
                 City={event.city}
                 Day={event.date}
-                NumberOfTickets={event.numberOfTickets}
+                availableTickets={event.availableTickets}
                 Category={event.category}
                 Price={event.price}
               />

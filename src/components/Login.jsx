@@ -4,10 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo.png";
 import Bgimg from "../assets/hero-image.jpg";
 import { jwtDecode } from "jwt-decode";
+import Alert from "@mui/material/Alert";
+
 const Login = () => {
     const [emailState, setEmailState] = useState("");
     const [passwordState, setPasswordState] = useState("");
     const [error, setError] = useState("");
+    const [alert, setAlert] = useState({message: "", type: ""});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -44,12 +47,12 @@ const Login = () => {
         e.preventDefault();
 
         if(!validateEmail(emailState)){
-            setError("Email inválido");
+          setAlert({ message: "Email inválido", type: "error" });
             return;
         }
 
         if(passwordState === ""){
-            setError("Ingrese la contraseña");
+          setAlert({ message: "Ingrese una contraseña", type: "error" });
             return;
         }
 
@@ -71,11 +74,11 @@ const Login = () => {
               window.location.reload();
             }
             else {
-                setError("Credenciales inválidas");
+              setAlert({ message: "Credenciales inválidas", type: "error" });
             }
 
         } catch(e) {
-            setError("Usuario o Contraseña incorrectas");
+          setAlert({ message: "Usuario o contraseña incorrectas", type: "error" });
         }
     }
 
@@ -128,7 +131,18 @@ const Login = () => {
                 placeholder="**********"
               />
             </div>
-            {error && <p style={{ color: "#FFA500" }}>{error}</p>}
+            {alert.message && (
+             <div className="w-full mx-auto">
+               <Alert
+                 variant="filled"
+                 severity={alert.type}
+                 sx={{ mb: 2 }}
+                 className="w-full mx-auto"
+               >
+                 {alert.message}
+               </Alert>
+             </div>
+           )}
             <button
               type="submit"
               id="button"

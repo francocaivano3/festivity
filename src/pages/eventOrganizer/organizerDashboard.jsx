@@ -6,7 +6,7 @@ import StatCard from "../../components/StatCard";
 import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
 import Alert from "@mui/material/Alert";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import { fetchSold, fetchAvailable, fetchAvailableAllTickets } from "../../utils/fetch";
+import { fetchSold, fetchAvailableTickets } from "../../utils/fetch";
 
 const OrganizerDashboard = () => {
 
@@ -22,7 +22,7 @@ const OrganizerDashboard = () => {
     totalSold: 0,
     averagePrice: 0,
   });
-
+   const [unAvailableEvents, setUnAvailableEvents] = useState([]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -52,20 +52,28 @@ const OrganizerDashboard = () => {
           throw new Error("Failed to fetch events");
         }
         const data = await response.json();
-        const availableEventsTickets = await fetchAvailableAllTickets();
+        const availableEventsTickets = await fetchAvailableTickets();
         const availableEvents = [];
+        const ticketsUnAvailable = [];
         for (let i = 0; i < data.length; i++) {
           for (let j = 0; j < availableEventsTickets.length; j++) {
             if (data[i].id == availableEventsTickets[j].id) {
-              if (availableEventsTickets[j].availableTickets >= 0) {
+              if (availableEventsTickets[j].availableTickets > 0) {
                 const dataCopy = {...data[i], availableTickets : availableEventsTickets[j].availableTickets }
                 availableEvents.push(dataCopy);
+              } else {
+                const dataCopy = {
+                  ...data[i],
+                  availableTickets: availableEventsTickets[j].availableTickets,
+                };
+                ticketsUnAvailable.push(dataCopy)
               }
             }
           }
        
         };
         setEvents(availableEvents);
+        setUnAvailableEvents(ticketsUnAvailable);
         
       } catch (e) {
         console.error("Error while fetching events: ", e);
@@ -97,12 +105,15 @@ const OrganizerDashboard = () => {
     // }
     if (events.length === 0) return;
     const calculateStats = async () => {
-      const soldList = await Promise.all(events.map(e => fetchSold(e.id)));
-      const totalSold = soldList.reduce((acc, curr) => acc + curr, 0);
-      const totalPrice = events.reduce((acc, e) => acc + e.price, 0);
-      const averagePrice = events.length > 0 ? (totalPrice / events.length).toFixed(2) : 0;
+      const allEvents = [...events, ...unAvailableEvents];
+
+      const soldList = await Promise.all(allEvents.map(e => fetchSold(e.id)));
+
+      const totalSold = soldList.reduce((acc, curr) => acc + curr,0);
+      const totalPrice = allEvents.reduce((acc, e) => acc + e.price, 0);
+      const averagePrice = allEvents.length > 0 ? (totalPrice / allEvents.length).toFixed(2) : 0;
     
-      setStats({ totalEvents: events.length, totalSold, averagePrice });
+      setStats({ totalEvents: allEvents.length, totalSold, averagePrice });
     };
 
   
@@ -136,6 +147,7 @@ const OrganizerDashboard = () => {
   };
 
   const tableTitles = ["Nombre del Evento", "Fecha", "Ciudad", "Tickets", "Precio", "Acciones"];
+  console.log(unAvailableEvents)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-r dark:from-neutral-900 dark:to-neutral-900">
@@ -168,8 +180,8 @@ const OrganizerDashboard = () => {
         <h2
           className={
             isSidebarOpen
-              ? "blur-sm text-center pt-4 text-white font-semibold text-xl dark:text-violet-600"
-              : "text-center pt-4 text-white font-semibold text-xl dark:text-violet-600"
+              ? "blur-sm text-center pt-4 text-white font-semibold text-2xl dark:text-violet-600"
+              : "text-center pt-4 text-white font-semibold text-2xl dark:text-violet-600 "
           }
         >
           Estadísticas 🚀
@@ -221,9 +233,9 @@ const OrganizerDashboard = () => {
             <h2 className="text-xl font-semibold mb-4 dark:text-white">
               Eventos Activos 🔥
             </h2>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto max-h-48">
               <table className="w-full min-w-max rounded-lg shadow-lg dark:text-white">
-                <thead className="bg-[#6366f1] dark:bg-violet-700">
+                <thead className="bg-[#6366f1] dark:bg-violet-700 sticky top-0 z-10">
                   <tr>
                     {tableTitles.map((title) => (
                       <th
@@ -279,9 +291,80 @@ const OrganizerDashboard = () => {
         ) : (
           <div className="1/2 bg-white dark:bg-[#1f1f1f]">
             <div className="flex justify-center">
-              <h3 className="font-bold text-violet-700 p-6 mx-auto underline">
+              <h2 className="font-bold text-violet-700 p-6 mx-auto underline">
                 NO HAY EVENTOS ACTIVOS
-              </h3>
+              </h2>
+            </div>
+          </div>
+        )}
+      </div>
+      <div
+        className={
+          isSidebarOpen
+            ? `bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm dark:bg-[#1f1f1f] dark:border-none mt-8`
+            : `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12 dark:bg-[#1f1f1f] dark:border-none mt-8`
+        }
+      >
+        {unAvailableEvents.length > 0 ? (
+          <>
+            <h2 className="text-xl font-semibold mb-4 dark:text-white">
+              Eventos Finalizados <span className="text-blue-500">❄</span>
+            </h2>
+            <div className="overflow-x-auto max-h-48 ">
+              <table className="w-full min-w-max rounded-lg shadow-lg dark:text-white">
+                <thead className="bg-[#6366f1] dark:bg-violet-700 sticky top-0 z-10">
+                  <tr>
+                    {tableTitles.map((title) => (
+                      <th
+                        key={title}
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-white"
+                      >
+                        {title}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-300 dark:divide-violet-500">
+                  {unAvailableEvents.map((unAvailableEvents) => (
+                    <tr key={unAvailableEvents.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {unAvailableEvents.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {new Date(unAvailableEvents.date).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {unAvailableEvents.city}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {unAvailableEvents.availableTickets}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        ${unAvailableEvents.price}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          className="text-red-600 hover:text-red-800"
+                          onClick={() => {
+                            setEventIdToDelete(unAvailableEvents.id);
+                            setIsDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : (
+          <div className="1/2 bg-white dark:bg-[#1f1f1f]">
+            <div className="flex justify-center">
+              <h2 className="font-bold text-violet-700 p-6 mx-auto underline">
+                NO HAY EVENTOS INACTIVOS
+              </h2>
             </div>
           </div>
         )}

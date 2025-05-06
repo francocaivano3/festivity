@@ -73,10 +73,12 @@ input[type="number"]::-webkit-outer-spin-button {
     circle at bottom right, transparent 17px, #8745f2 17px
   );
 }
+#button{
+  transition: 0.3s;
+}
 
 #button:hover {
-  box-shadow: 8px 8px #0d0d0e;
-  transition: 0.2s;
+  box-shadow: 8px 8px #1f1f1f;
 }
 
 #form-config {

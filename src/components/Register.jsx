@@ -28,28 +28,29 @@ const Register = () => {
     e.preventDefault();
 
     if(!validateEmail(emailState)){
-        setError("Invalid email address");
+        // setError("Email inválido");
+        setAlert({ message: "Email inválido", type: "error" });
         return;
     }
 
     if(passwordState === ""){
-        setError("Password is required");
+        setError("la Contraseña es requerida");
         return;
     } else if(passwordState.length < 6){
-      setError("La contraseña debe tener al menos 6 caracteres");
+      setAlert({ message: "La contraseña debe tener al menos 6 carácteres", type: "error" });
       return;
     }
     
     if(userName === ""){
-        setError("El ombre de usuario es requerido");
+      setAlert({ message: "El nombre de usuario es requerido", type: "error" });
         return;
     }
 
     if(phone === ""){
-        setError("El número de teléfono es requerido");
+      setAlert({ message: "El número de teléfono es requerido", type: "error" });
         return;
     } else if(phone.length < 10) {
-      setError("Ingrese un número de teléfono válido");
+      setAlert({ message: "Ingrese un número de teléfono válido", type: "error" });
       return;
     }
 
@@ -152,7 +153,7 @@ const Register = () => {
              />
            </div>
            <br />
-           {error && <p style={{ color: "#D66666" }}>{error}</p>}
+
            {alert.message && (
              <div className="w-full mx-auto">
                <Alert

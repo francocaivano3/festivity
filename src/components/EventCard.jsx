@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { buyTicket } from "../utils/fetch";
 
-const EventCard = ({
-  alert,
-  setAlert,
+const EventCard = ({ alert,setAlert,
   EventId,
   Name,
   Address,
@@ -15,7 +13,7 @@ const EventCard = ({
   availableTickets,
   Category,
   Price,
-  role,
+  role
 }) => {
   const day = new Date(Day).toLocaleDateString();
   const hour = new Date(Day).toLocaleTimeString([], {
@@ -45,9 +43,9 @@ const EventCard = ({
     if (!formData.expiration.match(/^\d{2}\/\d{2}$/)) {
       newErrors.expiration = "Fecha de expiración inválida (MM/YY)";
     }
-
+                                
     if (!formData.cvv.match(/^\d{3,4}$/)) {
-      newErrors.cvv = "CVV inválido (3 carácteres)";
+      newErrors.cvv = "CVV inválido (3 carácteres)"; 
     }
 
     setErrors(newErrors);
@@ -71,10 +69,14 @@ const EventCard = ({
           setErrors({});
           setTimeout(() => {
             navigate("/my-tickets");
-          }, 3000);
+          }, 2500);
         } else {
           setIsModalOpen(false);
           setAlert({ message: "Error al comprar el ticket", type: "error" });
+          setTimeout(() => {
+            setAlert({})
+          }, 3000)
+        
         }
       } catch (e) {
         setAlert({
@@ -132,6 +134,8 @@ const EventCard = ({
     };
   }, [isModalOpen]);
 
+  
+  
   return (
     <div className="flex justify-center p-6">
       <div className="bg-white dark:bg-[#1f1f1f] shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-2xl w-full max-w-xl">
@@ -191,7 +195,7 @@ const EventCard = ({
               >
                 Editar
               </button>
-            ) : availableTickets > 0 && role === "Client" ? (
+            ) : availableTickets >= 0 && role === "Client" ? (
               <button
                 className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white dark:text-black text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
                 onClick={handleModalToggle}
@@ -336,4 +340,4 @@ const EventCard = ({
   );
 };
 
-export default EventCard
+export default EventCard;

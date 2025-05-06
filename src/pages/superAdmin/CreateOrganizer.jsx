@@ -44,27 +44,27 @@ const CreateOrganizer = () => {
         e.preventDefault();
 
         if(organizerToCreate.Name === ""){
-          setError("Ingrese un nombre");
+          setAlert({ message: "Ingrese un nombre", type: "error" });
           return;
         }
         
         if(!validateEmail(organizerToCreate.Email)){
-          setError("Email inválido");
+          setAlert({ message: "Email inválido", type: "error" });
           return;
         }
 
         if(organizerToCreate.Password === ""){
-          setError("Ingrese una contraseña");
+          setAlert({ message: "Ingrese una contraseña", type: "error" });
           return;
         }
       
         if(organizerToCreate.Phone === ""){
-          setError("Ingrese un teléfono");
+          setAlert({ message: "Ingrese un teléfono", type: "error" });
           return;
         }
 
         if(!Number(organizerToCreate.Phone)){
-          setError("Ingrese un teléfono válido");
+          setAlert({ message: "Ingrese un teléfono válido", type: "error" });
           return;
         }
 
@@ -107,16 +107,15 @@ const CreateOrganizer = () => {
     return (
 
       <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url(${bgImg})`}}>
-            {isSidebarOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={toggleSidebar}
-        />
+             {isSidebarOpen && (
+        <div className="fixed inset-0 z-40" onClick={toggleSidebar} />
       )}
       <div className="flex p-4">
         {isSidebarOpen && <Sidebar />}
         {isSidebarOpen && (
-          <div className="fixed inset-0 z-40" onClick={toggleSidebar} />
+          <button className="z-50 sticky top-0" onClick={toggleSidebar}>
+            <AlignLeft className="h-8 w-8 hover:scale-110 transition-all dark:text-white" />
+          </button>
         )}
         <button onClick={toggleSidebar}>
           <AlignLeft className="h-8 w-8 hover:scale-110 transition-all duration-200 mr-10 text-indigo-500 dark:text-violet-700" />
@@ -205,9 +204,6 @@ const CreateOrganizer = () => {
               >
                 Crear organizador
               </button>
-              {error && (
-                <p className="bg-red-700 text-white p-2 rounded-lg">{error}</p>
-              )}
 
               {alert.message && (
                 <div
