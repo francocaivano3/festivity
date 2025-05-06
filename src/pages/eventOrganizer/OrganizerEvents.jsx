@@ -7,6 +7,8 @@ import { fetchEvents } from "../../utils/fetch";
 import Skeleton from "../../components/Skeleton";
 import Empty from "../../components/Empty";
 import img from "../../assets/new-years-party-decoration.png";
+
+import { fetchAvailableAllTickets } from "../../utils/fetch";
 const OrganizerEvents = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [events, setEvents] = useState([]);
@@ -31,7 +33,21 @@ const OrganizerEvents = () => {
         const loadEvents = async () => {
             const fetchedEvents = await fetchEvents();
             if(fetchedEvents) {
-                setEvents(fetchedEvents);
+                const data = fetchedEvents;
+                const availableEventsTickets = await fetchAvailableAllTickets();
+                const availableEvents = [];
+                for (let i = 0; i < data.length; i++) {
+                  for (let j = 0; j < availableEventsTickets.length; j++) {
+                    if (data[i].id == availableEventsTickets[j].id) {
+                      if (availableEventsTickets[j].availableTickets >= 0) {
+                        const dataCopy = { ...data[i], availableTickets: availableEventsTickets[j].availableTickets }
+                        availableEvents.push(dataCopy);
+                        }
+                      }
+                    }
+                       
+              };
+              setEvents(availableEvents)
             }
         };
         setTimeout(() => {
@@ -39,7 +55,7 @@ const OrganizerEvents = () => {
         }, 1500);
         loadEvents();
     }, []);
-
+  
    return (
      <div className="min-h-screen bg-gradient-to-r from-violet-200 to-green-200 min-w-full dark:bg-gradient-to-r dark:from-[#111111] dark:to-[#111111]">
        {isSidebarOpen && (
@@ -87,7 +103,7 @@ const OrganizerEvents = () => {
                Address={event.address}
                City={event.city}
                Day={event.date}
-               NumberOfTickets={event.numberOfTickets}
+               availableTickets={event.availableTickets}
                Category={event.category}
                Price={event.price}
              />

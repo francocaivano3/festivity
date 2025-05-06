@@ -6,7 +6,7 @@ import StatCard from "../../components/StatCard";
 import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
 import Alert from "@mui/material/Alert";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import { fetchSold, fetchAvailable } from "../../utils/fetch";
+import { fetchSold, fetchAvailable, fetchAvailableAllTickets } from "../../utils/fetch";
 
 const OrganizerDashboard = () => {
 
@@ -52,22 +52,26 @@ const OrganizerDashboard = () => {
           throw new Error("Failed to fetch events");
         }
         const data = await response.json();
-        const filteredEvents = await Promise.all(
-        data.map(async (event) => {
-          const available = await fetchAvailable(event.id);
-          return available > 0 ? event : null;
-         })
-        );
-
-        const availableEvents = filteredEvents.filter(Boolean);
-
+        const availableEventsTickets = await fetchAvailableAllTickets();
+        const availableEvents = [];
+        for (let i = 0; i < data.length; i++) {
+          for (let j = 0; j < availableEventsTickets.length; j++) {
+            if (data[i].id == availableEventsTickets[j].id) {
+              if (availableEventsTickets[j].availableTickets >= 0) {
+                const dataCopy = {...data[i], availableTickets : availableEventsTickets[j].availableTickets }
+                availableEvents.push(dataCopy);
+              }
+            }
+          }
+       
+        };
         setEvents(availableEvents);
-        } catch (e) {
-          console.error("Error while fetching events: ", e);
-        }
-      };
+        
+      } catch (e) {
+        console.error("Error while fetching events: ", e);
+      }
+    }
     fetchEvents();
-    console.log(events);
   }, []);
 
   useEffect(() => {
@@ -244,7 +248,7 @@ const OrganizerDashboard = () => {
                         {event.city}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {event.numberOfTickets}
+                        {event.availableTickets}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         ${event.price}

@@ -69,6 +69,12 @@ export const fetchSold = async (eventId) => {
     return await fetchData(`/api/Events/organizers/events/event/tickets/sold?eventId=${eventId}`);
 }
 
+export const fetchAvailableAllTickets = async () => {
+  return await fetchData(
+    `/api/Events/organizers/events/event/tickets/allAvailable`
+  );
+}
+
 export const fetchAvailable = async (eventId) => {
   return await fetchData(
     `/api/Events/organizers/events/event/tickets/available?eventId=${eventId}`

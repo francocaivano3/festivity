@@ -4,72 +4,94 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { buyTicket } from "../utils/fetch";
 
-const EventCard = ({ alert, setAlert, EventId, Name, Address, City, Day, NumberOfTickets, Category, Price, role }) => {
-  const day = new Date(Day).toLocaleDateString()
-  const hour = new Date(Day).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+const EventCard = ({
+  alert,
+  setAlert,
+  EventId,
+  Name,
+  Address,
+  City,
+  Day,
+  availableTickets,
+  Category,
+  Price,
+  role,
+}) => {
+  const day = new Date(Day).toLocaleDateString();
+  const hour = new Date(Day).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-        cardNumber: "",
-        cardName: "",
-        expiration: "",
-        cvv: ""
+    cardNumber: "",
+    cardName: "",
+    expiration: "",
+    cvv: "",
   });
   const [errors, setErrors] = useState({});
 
-const validateForm = () => {
-  const newErrors = {}
-  if(!formData.cardNumber.match(/^\d{16}$/)){
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.cardNumber.match(/^\d{16}$/)) {
       newErrors.cardNumber = "Número de tarjeta inválido";
-  }
+    }
 
-  if(!formData.cardName){
+    if (!formData.cardName) {
       newErrors.cardName = "Ingrese el nombre del titular de la tarjeta";
-  }
+    }
 
-  if(!formData.expiration.match(/^\d{2}\/\d{2}$/)){
+    if (!formData.expiration.match(/^\d{2}\/\d{2}$/)) {
       newErrors.expiration = "Fecha de expiración inválida (MM/YY)";
-  }
+    }
 
-  if(!formData.cvv.match(/^\d{3,4}$/)){
+    if (!formData.cvv.match(/^\d{3,4}$/)) {
       newErrors.cvv = "CVV inválido (3 carácteres)";
-  }
+    }
 
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-}
-
-  const handleSubmit = async(e, eventId) => {
-      e.preventDefault()
-      if (validateForm()) {
-          try {
-              const response = await buyTicket(eventId);
-              if(response.success){
-                  setAlert({message:"Compra realizada con éxito", type:"success"});
-                  setIsModalOpen(false);
-                  setFormData({cardNumber: "", cardName: "", expiration: "", cvv: ""});
-                  setErrors({});
-                  setTimeout(() => {
-                    navigate("/my-tickets");
-                  }, 3000);
-              } else {
-                  setIsModalOpen(false);
-                  setAlert({message:"Error al comprar el ticket", type:"error"});
-              }
-          } catch (e) {
-            setAlert({message:"Error en la compra del ticket, inténtelo nuevamente!", type:"error"});
-          }
+  const handleSubmit = async (e, eventId) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const response = await buyTicket(eventId);
+        if (response.success) {
+          setAlert({ message: "Compra realizada con éxito", type: "success" });
+          setIsModalOpen(false);
+          setFormData({
+            cardNumber: "",
+            cardName: "",
+            expiration: "",
+            cvv: "",
+          });
+          setErrors({});
+          setTimeout(() => {
+            navigate("/my-tickets");
+          }, 3000);
+        } else {
+          setIsModalOpen(false);
+          setAlert({ message: "Error al comprar el ticket", type: "error" });
+        }
+      } catch (e) {
+        setAlert({
+          message: "Error en la compra del ticket, inténtelo nuevamente!",
+          type: "error",
+        });
       }
-}
+    }
+  };
 
   const handleChange = (e) => {
-      const { name, value } = e.target
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }))
-}
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleExpirationChange = (e) => {
     let value = e.target.value;
@@ -77,38 +99,38 @@ const validateForm = () => {
     value = value.replace(/\D/g, "");
 
     if (value.length > 2) {
-        value = value.slice(0, 2) + "/" + value.slice(2, 4);
+      value = value.slice(0, 2) + "/" + value.slice(2, 4);
     }
 
     if (value.length > 5) {
-        value = value.slice(0, 5);
+      value = value.slice(0, 5);
     }
 
     setFormData((prev) => ({
-        ...prev,
-        expiration: value,
+      ...prev,
+      expiration: value,
     }));
-};
+  };
 
-const handleModalToggle = () => {
-  if (!isModalOpen) {
-    setIsModalOpen(true);
-  }
-};
+  const handleModalToggle = () => {
+    if (!isModalOpen) {
+      setIsModalOpen(true);
+    }
+  };
 
   useEffect(() => {
-    const originalStyle = document.body.style.overflow; 
+    const originalStyle = document.body.style.overflow;
 
     if (isModalOpen) {
-        document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
     } else {
-        document.body.style.overflow = originalStyle;
+      document.body.style.overflow = originalStyle;
     }
 
     return () => {
-        document.body.style.overflow = originalStyle; 
+      document.body.style.overflow = originalStyle;
     };
-}, [isModalOpen]);
+  }, [isModalOpen]);
 
   return (
     <div className="flex justify-center p-6">
@@ -155,12 +177,12 @@ const handleModalToggle = () => {
           <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-between items-center">
             <span
               className={`${
-                NumberOfTickets > 0
+                availableTickets > 0
                   ? "bg-green-300 text-green-800 dark:text-white dark:bg-green-500 "
                   : "bg-red-300 text-red-800"
               } p-2 rounded-xl text-xs w-full sm:w-auto text-center`}
             >
-              {NumberOfTickets > 0 ? "Disponible" : "Agotado"}
+              {availableTickets > 0 ? "Disponible" : "Agotado"}
             </span>
             {role === "EventOrganizer" ? (
               <button
@@ -169,7 +191,7 @@ const handleModalToggle = () => {
               >
                 Editar
               </button>
-            ) : NumberOfTickets > 0 && role === "Client" ? (
+            ) : availableTickets > 0 && role === "Client" ? (
               <button
                 className="bg-gradient-to-r from-indigo-400 to-violet-500 px-4 py-2 rounded-lg text-white dark:text-black text-xs w-full sm:w-auto transition-all duration-300 transform hover:scale-105"
                 onClick={handleModalToggle}
@@ -189,7 +211,6 @@ const handleModalToggle = () => {
           </div>
         </div>
       </div>
-
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-40 z-50">
           <div className="bg-white rounded-lg w-3/4 md:w-1/2 h-auto p-6 flex-col items-end relative dark:bg-[#1f1f1f]">
@@ -313,6 +334,6 @@ const handleModalToggle = () => {
       )}
     </div>
   );
-}
+};
 
 export default EventCard

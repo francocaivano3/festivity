@@ -21,7 +21,6 @@ const CreateOrganizer = () => {
     const [alert, setAlert] = useState({ message: "", type: "" });
     const [error, setError] = useState("");
 
-    const {isDark} = useContext(ThemeContext);
     const bgImg = isDark ? background2 : background;
 
 
@@ -107,7 +106,7 @@ const CreateOrganizer = () => {
 
     return (
 
-        <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url(${bgImg})`}}>
+      <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url(${bgImg})`}}>
             {isSidebarOpen && (
         <div
           className="fixed inset-0 z-40"
@@ -134,8 +133,7 @@ const CreateOrganizer = () => {
         </h1>
       </div>
 
-      <div className="w-3/4 sm:w-3/5 mx-auto mt-14">
-            <form onSubmit={handleSubmit} className={isSidebarOpen ? `bg-white dark:bg-[#111111] dark:text-violet-400 p-16 w-full space-y-4 mb-10 ml-12 rounded-xl blur-sm` : `bg-white dark:bg-[#111111] dark:text-violet-400 p-16 w-full space-y-4 mb-10 rounded-xl shadow-xl`}>
+    
 
 
         <div className="w-3/4 sm:w-3/5 mx-auto mt-14">
