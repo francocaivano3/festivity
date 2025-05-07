@@ -6,7 +6,7 @@ import StatCard from "../../components/StatCard";
 import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
 import Alert from "@mui/material/Alert";
 import ConfirmDialog from "../../components/ConfirmDialog";
-import { fetchSold, fetchAvailableTickets } from "../../utils/fetch";
+import { fetchAllSold, fetchAvailableTickets } from "../../utils/fetch";
 
 const OrganizerDashboard = () => {
 
@@ -106,10 +106,7 @@ const OrganizerDashboard = () => {
     if (events.length === 0) return;
     const calculateStats = async () => {
       const allEvents = [...events, ...unAvailableEvents];
-
-      const soldList = await Promise.all(allEvents.map(e => fetchSold(e.id)));
-
-      const totalSold = soldList.reduce((acc, curr) => acc + curr,0);
+      const totalSold = await fetchAllSold();
       const totalPrice = allEvents.reduce((acc, e) => acc + e.price, 0);
       const averagePrice = allEvents.length > 0 ? (totalPrice / allEvents.length).toFixed(2) : 0;
     
@@ -150,7 +147,7 @@ const OrganizerDashboard = () => {
   console.log(unAvailableEvents)
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-r dark:from-neutral-900 dark:to-neutral-900">
+    <div className="min-h-screen  bg-gray-50 dark:bg-gradient-to-r dark:from-neutral-900 dark:to-neutral-900">
       {isSidebarOpen && (
         <div className="fixed inset-0 z-40" onClick={toggleSidebar} />
       )}
@@ -301,8 +298,8 @@ const OrganizerDashboard = () => {
       <div
         className={
           isSidebarOpen
-            ? `bg-gray-100 border-2 rounded-lg shadow-lg p-6 mx-12 blur-sm dark:bg-[#1f1f1f] dark:border-none mt-8`
-            : `bg-gray-100 border-2 rounded-lg shadow-md p-6 mx-12 dark:bg-[#1f1f1f] dark:border-none mt-8`
+            ? `bg-gray-100 border-2 rounded-lg  p-6 mx-12 blur-sm dark:bg-[#1f1f1f] dark:border-none mt-8`
+            : `bg-gray-100 border-2 rounded-lg  p-6 mx-12 dark:bg-[#1f1f1f] dark:border-none mt-8`
         }
       >
         {unAvailableEvents.length > 0 ? (

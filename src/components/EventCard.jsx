@@ -59,6 +59,7 @@ const EventCard = ({ alert,setAlert,
         const response = await buyTicket(eventId);
         if (response.success) {
           setAlert({ message: "Compra realizada con éxito", type: "success" });
+          window.scrollTo({ top: 0, behavior: "smooth" });
           setIsModalOpen(false);
           setFormData({
             cardNumber: "",
@@ -69,7 +70,7 @@ const EventCard = ({ alert,setAlert,
           setErrors({});
           setTimeout(() => {
             navigate("/my-tickets");
-          }, 2500);
+          }, 3000);
         } else {
           setIsModalOpen(false);
           setAlert({ message: "Error al comprar el ticket", type: "error" });
