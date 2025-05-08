@@ -20,6 +20,9 @@ const EventCard = ({ alert,setAlert,
     hour: "2-digit",
     minute: "2-digit",
   });
+  
+  
+ 
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -55,36 +58,45 @@ const EventCard = ({ alert,setAlert,
   const handleSubmit = async (e, eventId) => {
     e.preventDefault();
     if (validateForm()) {
-      try {
-        const response = await buyTicket(eventId);
-        if (response.success) {
-          setAlert({ message: "Compra realizada con éxito", type: "success" });
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          setIsModalOpen(false);
-          setFormData({
-            cardNumber: "",
-            cardName: "",
-            expiration: "",
-            cvv: "",
-          });
-          setErrors({});
-          setTimeout(() => {
-            navigate("/my-tickets");
-          }, 3000);
-        } else {
-          setIsModalOpen(false);
-          setAlert({ message: "Error al comprar el ticket", type: "error" });
-          setTimeout(() => {
-            setAlert({})
-          }, 3000)
-        
+          try {
+            const response = await buyTicket(eventId);
+            if (response.success) {
+              setAlert({
+                message: "Compra realizada con éxito",
+                type: "success",
+              });
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setIsModalOpen(false);
+              setFormData({
+                cardNumber: "",
+                cardName: "",
+                expiration: "",
+                cvv: "",
+              });
+              setErrors({});
+              setTimeout(() => {
+                navigate("/my-tickets");
+              }, 3000);
+            } else {
+              setIsModalOpen(false);
+              setAlert({
+                message: "Error al comprar el ticket",
+                type: "error",
+              });
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setIsModalOpen(false);
+              setTimeout(() => {
+                setAlert({});
+              }, 3000);
+              
+            }
+          } catch (e) {
+            setAlert({
+              message: "Error en la compra del ticket, inténtelo nuevamente!",
+              type: "error",
+            });
+            
         }
-      } catch (e) {
-        setAlert({
-          message: "Error en la compra del ticket, inténtelo nuevamente!",
-          type: "error",
-        });
-      }
     }
   };
 
@@ -116,9 +128,48 @@ const EventCard = ({ alert,setAlert,
   };
 
   const handleModalToggle = () => {
-    if (!isModalOpen) {
-      setIsModalOpen(true);
+    const today = new Date();
+    const actualHour = new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+    
+    if (availableTickets === 0) {
+      setAlert({
+        message: "Evento Agotado! 🚫",
+        type: "error",
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setIsModalOpen(false);
+      setTimeout(() => {
+        setAlert({});
+      }, 3000);
+      return;
+    } else {
+      if (!isModalOpen) {
+        setIsModalOpen(true);
+      }
     }
+     if (today < Day) {
+      if (!isModalOpen) {
+        setIsModalOpen(true);
+      }
+    } else if (today === Day && actualHour < hour) {
+      if (!isModalOpen) {
+        setIsModalOpen(true);
+      }
+    } else {
+      setAlert({
+        message: "Evento en curso o expirado",
+        type: "error",
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setIsModalOpen(false);
+      setTimeout(() => {
+        setAlert({});
+      }, 3000);
+    }
+    
   };
 
   useEffect(() => {
@@ -135,8 +186,30 @@ const EventCard = ({ alert,setAlert,
     };
   }, [isModalOpen]);
 
+  const expiration = () => {
+    const today = new Date();
+    const day = new Date(Day);
+    const actualHour = new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+    
+    const todayStr = getYMD(today);
+    const dayStr = getYMD(day);
+
+    if (todayStr < dayStr) {
+      return true;
+    } else if (todayStr === dayStr && actualHour < hour) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   
-  
+  const getYMD = (date) => {
+  return date.toISOString().split("T")[0].replace(/-/g, "/");
+};
+
   return (
     <div className="flex justify-center p-6">
       <div className="bg-white dark:bg-[#1f1f1f] shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-2xl w-full max-w-xl">
@@ -182,12 +255,12 @@ const EventCard = ({ alert,setAlert,
           <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-between items-center">
             <span
               className={`${
-                availableTickets > 0
+                availableTickets > 0 && expiration()
                   ? "bg-green-300 text-green-800 dark:text-white dark:bg-green-500 "
                   : "bg-red-300 text-red-800"
               } p-2 rounded-xl text-xs w-full sm:w-auto text-center`}
             >
-              {availableTickets > 0 ? "Disponible" : "Agotado"}
+              {availableTickets > 0 && expiration() ? "Disponible" : expiration() ? "Expirado" : "Agotado"}
             </span>
             {role === "EventOrganizer" ? (
               <button

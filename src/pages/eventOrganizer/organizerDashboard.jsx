@@ -58,7 +58,7 @@ const OrganizerDashboard = () => {
         for (let i = 0; i < data.length; i++) {
           for (let j = 0; j < availableEventsTickets.length; j++) {
             if (data[i].id == availableEventsTickets[j].id) {
-              if (availableEventsTickets[j].availableTickets > 0) {
+              if (availableEventsTickets[j].availableTickets > 0 && expiration(data[i].date) ) {
                 const dataCopy = {...data[i], availableTickets : availableEventsTickets[j].availableTickets }
                 availableEvents.push(dataCopy);
               } else {
@@ -117,6 +117,33 @@ const OrganizerDashboard = () => {
     calculateStats();
   }, [events]);
 
+const getYMD = (date) => {
+  return date.toISOString().split("T")[0].replace(/-/g, "/");
+  };
+  
+  const expiration = (Day) => {
+    const today = new Date();
+    const day = new Date(Day);
+    const hour = new Date(Day).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const actualHour = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const todayStr = getYMD(today);
+    const dayStr = getYMD(day);
+
+    if (todayStr < dayStr) {
+      return true;
+    } else if (todayStr === dayStr && actualHour < hour) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const handleConfirmDelete = async (eventIdToDelete) => {
     if (eventIdToDelete && localStorage.getItem("authToken")) {
