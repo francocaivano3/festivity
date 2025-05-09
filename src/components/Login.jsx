@@ -26,6 +26,8 @@ const Login = () => {
                       navigate("/organizer");
                   } else if (role === "Client" && window.location.pathname !== "/client") {
                       navigate("/client");
+                  } else if (role === "SuperAdmin") {
+                    navigate("/superadmin")
                   }
               }, 500);
           } catch (error) {
