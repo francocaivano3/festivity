@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 
 export const ThemeContext = createContext();
 
@@ -24,3 +24,5 @@ export const ThemeProvider = ({children}) => {
         </ThemeContext.Provider>
     )
 }
+
+export const useTheme = () => useContext(ThemeContext);
