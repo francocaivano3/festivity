@@ -3,7 +3,7 @@ import EditEventModal from "./EditEventModal";
 import { useEffect, useState, } from "react";
 import environment from "../../utils/environment";
 import StatCard from "../../components/StatCard";
-import { CalendarDays, Users, DollarSign, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
+import { CalendarDays, Users, TrendingUp, Edit, Trash2, AlignLeft } from "lucide-react";
 import Alert from "@mui/material/Alert";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { fetchAllSold, fetchAvailableTickets } from "../../utils/fetch";

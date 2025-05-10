@@ -133,7 +133,6 @@ const EventCard = ({ alert,setAlert,
         hour: "2-digit",
         minute: "2-digit",
     });
-    
     if (availableTickets === 0) {
       setAlert({
         message: "Evento Agotado! 🚫",
@@ -148,15 +147,18 @@ const EventCard = ({ alert,setAlert,
     } else {
       if (!isModalOpen) {
         setIsModalOpen(true);
+        return;
       }
     }
      if (today < Day) {
       if (!isModalOpen) {
         setIsModalOpen(true);
+        return;
       }
     } else if (today === Day && actualHour < hour) {
       if (!isModalOpen) {
         setIsModalOpen(true);
+        return;
       }
     } else {
       setAlert({
